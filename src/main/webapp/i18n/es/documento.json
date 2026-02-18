@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "documento": {
+      "home": {
+        "title": "Documentos",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Documento",
+        "createOrEditLabel": "Crear o editar Documento",
+        "notFound": "Ningún Documentos encontrado"
+      },
+      "created": "Un nuevo Documento ha sido creado con el identificador {{ param }}",
+      "updated": "Un Documento ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Documento ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Documento {{ id }}?"
+      },
+      "detail": {
+        "title": "Documento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "tipo": "Tipo",
+      "observacion": "Observacion",
+      "fechaCreacion": "Fecha Creacion",
+      "fechaVencimiento": "Fecha Vencimiento",
+      "path": "Path",
+      "cliente": "Cliente",
+      "evento": "Evento"
+    }
+  }
+}

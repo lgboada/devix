@@ -1,0 +1,42 @@
+{
+  "devixApp": {
+    "evento": {
+      "home": {
+        "title": "Eventos",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Evento",
+        "createOrEditLabel": "Créer ou éditer un Evento",
+        "notFound": "Aucun Evento trouvé"
+      },
+      "created": "Un nouveau Evento a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Evento avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Evento avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Evento {{ id }} ?"
+      },
+      "detail": {
+        "title": "Evento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "fecha": "Fecha",
+      "estado": "Estado",
+      "motivoConsulta": "Motivo Consulta",
+      "tratamiento": "Tratamiento",
+      "indicaciones": "Indicaciones",
+      "diagnostico1": "Diagnostico 1",
+      "diagnostico2": "Diagnostico 2",
+      "diagnostico3": "Diagnostico 3",
+      "diagnostico4": "Diagnostico 4",
+      "diagnostico5": "Diagnostico 5",
+      "diagnostico6": "Diagnostico 6",
+      "diagnostico7": "Diagnostico 7",
+      "observacion": "Observacion",
+      "documento": "Documento",
+      "tipoEvento": "Tipo Evento",
+      "centro": "Centro",
+      "cliente": "Cliente"
+    }
+  }
+}

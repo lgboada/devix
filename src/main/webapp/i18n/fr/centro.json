@@ -1,0 +1,28 @@
+{
+  "devixApp": {
+    "centro": {
+      "home": {
+        "title": "Centros",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Centro",
+        "createOrEditLabel": "Créer ou éditer un Centro",
+        "notFound": "Aucun Centro trouvé"
+      },
+      "created": "Un nouveau Centro a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Centro avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Centro avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Centro {{ id }} ?"
+      },
+      "detail": {
+        "title": "Centro"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "factura": "Factura",
+      "evento": "Evento",
+      "compania": "Compania"
+    }
+  }
+}

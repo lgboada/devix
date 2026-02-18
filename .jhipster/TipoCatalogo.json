@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214128"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "categoria",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TipoCatalogo",
+  "relationships": [
+    {
+      "otherEntityName": "catalogo",
+      "otherEntityRelationshipName": "tipoCatalogo",
+      "relationshipName": "catalogo",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

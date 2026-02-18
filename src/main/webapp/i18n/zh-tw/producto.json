@@ -1,0 +1,34 @@
+{
+  "devixApp": {
+    "producto": {
+      "home": {
+        "title": "Productos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Producto",
+        "createOrEditLabel": "建立或編輯 Producto",
+        "notFound": "No Productos found"
+      },
+      "created": "新的 Producto 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Producto 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Producto 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Producto {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Producto"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "precio": "Precio",
+      "stock": "Stock",
+      "pathImagen": "Path Imagen",
+      "codigo": "Codigo",
+      "detalleFactura": "Detalle Factura",
+      "modelo": "Modelo",
+      "tipoProducto": "Tipo Producto",
+      "proveedor": "Proveedor"
+    }
+  }
+}

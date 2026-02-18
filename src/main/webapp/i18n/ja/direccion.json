@@ -1,0 +1,29 @@
+{
+  "devixApp": {
+    "direccion": {
+      "home": {
+        "title": "Direccions",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Direccion の作成",
+        "createOrEditLabel": "Direccionの作成または編集",
+        "notFound": "Direccions が見つかりません。"
+      },
+      "created": "新しい Direccion がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Direccion が更新されました。",
+      "deleted": "ID {{ param }} の Direccion が削除されました。",
+      "delete": {
+        "question": "Direccion {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Direccion"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "pais": "Pais",
+      "provincia": "Provincia",
+      "tipoDireccion": "Tipo Direccion",
+      "cliente": "Cliente"
+    }
+  }
+}

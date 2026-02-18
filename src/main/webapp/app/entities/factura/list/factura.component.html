@@ -1,0 +1,235 @@
+<div>
+  <h2 id="page-heading" data-cy="FacturaHeading">
+    <span jhiTranslate="devixApp.factura.home.title">Facturas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.factura.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-factura"
+        [routerLink]="['/factura/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.factura.home.createLabel">Crear nuevo Factura</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (facturas().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.factura.home.notFound">Ningún Facturas encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="serie">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.serie">Serie</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noFisico">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.noFisico">No Fisico</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fecha">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.fecha">Fecha</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="subtotal">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.subtotal">Subtotal</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="impuesto">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.impuesto">Impuesto</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="impuestoCero">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.impuestoCero">Impuesto Cero</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descuento">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.descuento">Descuento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="total">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.total">Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="porcentajeImpuesto">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.porcentajeImpuesto">Porcentaje Impuesto</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cedula">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.cedula">Cedula</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="direccion">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.direccion">Direccion</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.email">Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="estado">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.estado">Estado</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="centro.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.centro">Centro</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cliente.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.factura.cliente">Cliente</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (factura of facturas(); track trackId(factura)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/factura', factura.id, 'view']">{{ factura.id }}</a>
+              </td>
+              <td>{{ factura.noCia }}</td>
+              <td>{{ factura.serie }}</td>
+              <td>{{ factura.noFisico }}</td>
+              <td>{{ factura.fecha | formatMediumDatetime }}</td>
+              <td>{{ factura.subtotal }}</td>
+              <td>{{ factura.impuesto }}</td>
+              <td>{{ factura.impuestoCero }}</td>
+              <td>{{ factura.descuento }}</td>
+              <td>{{ factura.total }}</td>
+              <td>{{ factura.porcentajeImpuesto }}</td>
+              <td>{{ factura.cedula }}</td>
+              <td>{{ factura.direccion }}</td>
+              <td>{{ factura.email }}</td>
+              <td>{{ factura.estado }}</td>
+              <td>
+                @if (factura.centro) {
+                  <div>
+                    <a [routerLink]="['/centro', factura.centro.id, 'view']">{{ factura.centro.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (factura.cliente) {
+                  <div>
+                    <a [routerLink]="['/cliente', factura.cliente.id, 'view']">{{ factura.cliente.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/factura', factura.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/factura', factura.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(factura)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (facturas().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

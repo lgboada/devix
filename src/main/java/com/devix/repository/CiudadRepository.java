@@ -1,0 +1,12 @@
+package com.devix.repository;
+
+import com.devix.domain.Ciudad;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
+
+/**
+ * Spring Data JPA repository for the Ciudad entity.
+ */
+@SuppressWarnings("unused")
+@Repository
+public interface CiudadRepository extends JpaRepository<Ciudad, Long>, JpaSpecificationExecutor<Ciudad> {}

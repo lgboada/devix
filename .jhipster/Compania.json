@@ -1,0 +1,58 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214120"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dni",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "direccion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique", "pattern"],
+      "fieldValidateRulesPattern": "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+    },
+    {
+      "fieldName": "telefono",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "pathImage",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Compania",
+  "relationships": [
+    {
+      "otherEntityName": "centro",
+      "otherEntityRelationshipName": "compania",
+      "relationshipName": "centros",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

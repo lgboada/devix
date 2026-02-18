@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoDireccion": {
+      "home": {
+        "title": "Tipo Direccions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Tipo Direccion",
+        "createOrEditLabel": "Create or edit a Tipo Direccion",
+        "notFound": "No Tipo Direccions found"
+      },
+      "created": "A new Tipo Direccion is created with identifier {{ param }}",
+      "updated": "A Tipo Direccion is updated with identifier {{ param }}",
+      "deleted": "A Tipo Direccion is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tipo Direccion {{ id }}?"
+      },
+      "detail": {
+        "title": "Tipo Direccion"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "direccion": "Direccion"
+    }
+  }
+}

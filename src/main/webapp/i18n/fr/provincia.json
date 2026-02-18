@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "provincia": {
+      "home": {
+        "title": "Provincias",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Provincia",
+        "createOrEditLabel": "Créer ou éditer un Provincia",
+        "notFound": "Aucun Provincia trouvé"
+      },
+      "created": "Un nouveau Provincia a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Provincia avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Provincia avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Provincia {{ id }} ?"
+      },
+      "detail": {
+        "title": "Provincia"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "ciudad": "Ciudad",
+      "pais": "Pais"
+    }
+  }
+}

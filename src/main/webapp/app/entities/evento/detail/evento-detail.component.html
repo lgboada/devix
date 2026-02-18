@@ -1,0 +1,114 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (evento(); as eventoRef) {
+      <div>
+        <h2 data-cy="eventoDetailsHeading"><span jhiTranslate="devixApp.evento.detail.title">Evento</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ eventoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ eventoRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.descripcion">Descripcion</span></dt>
+          <dd>
+            <span>{{ eventoRef.descripcion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.fecha">Fecha</span></dt>
+          <dd>
+            <span>{{ eventoRef.fecha | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.estado">Estado</span></dt>
+          <dd>
+            <span>{{ eventoRef.estado }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.motivoConsulta">Motivo Consulta</span></dt>
+          <dd>
+            <span>{{ eventoRef.motivoConsulta }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.tratamiento">Tratamiento</span></dt>
+          <dd>
+            <span>{{ eventoRef.tratamiento }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.indicaciones">Indicaciones</span></dt>
+          <dd>
+            <span>{{ eventoRef.indicaciones }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.diagnostico1">Diagnostico 1</span></dt>
+          <dd>
+            <span>{{ eventoRef.diagnostico1 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.diagnostico2">Diagnostico 2</span></dt>
+          <dd>
+            <span>{{ eventoRef.diagnostico2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.diagnostico3">Diagnostico 3</span></dt>
+          <dd>
+            <span>{{ eventoRef.diagnostico3 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.diagnostico4">Diagnostico 4</span></dt>
+          <dd>
+            <span>{{ eventoRef.diagnostico4 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.diagnostico5">Diagnostico 5</span></dt>
+          <dd>
+            <span>{{ eventoRef.diagnostico5 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.diagnostico6">Diagnostico 6</span></dt>
+          <dd>
+            <span>{{ eventoRef.diagnostico6 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.diagnostico7">Diagnostico 7</span></dt>
+          <dd>
+            <span>{{ eventoRef.diagnostico7 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.observacion">Observacion</span></dt>
+          <dd>
+            <span>{{ eventoRef.observacion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.tipoEvento">Tipo Evento</span></dt>
+          <dd>
+            @if (evento()!.tipoEvento) {
+              <div>
+                <a [routerLink]="['/tipo-evento', evento()!.tipoEvento?.id, 'view']">{{ eventoRef.tipoEvento?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.centro">Centro</span></dt>
+          <dd>
+            @if (evento()!.centro) {
+              <div>
+                <a [routerLink]="['/centro', evento()!.centro?.id, 'view']">{{ eventoRef.centro?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.evento.cliente">Cliente</span></dt>
+          <dd>
+            @if (evento()!.cliente) {
+              <div>
+                <a [routerLink]="['/cliente', evento()!.cliente?.id, 'view']">{{ eventoRef.cliente?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/evento', eventoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

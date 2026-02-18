@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "ciudad": {
+      "home": {
+        "title": "Ciudads",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Ciudad の作成",
+        "createOrEditLabel": "Ciudadの作成または編集",
+        "notFound": "Ciudads が見つかりません。"
+      },
+      "created": "新しい Ciudad がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Ciudad が更新されました。",
+      "deleted": "ID {{ param }} の Ciudad が削除されました。",
+      "delete": {
+        "question": "Ciudad {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Ciudad"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "cliente": "Cliente",
+      "provincia": "Provincia"
+    }
+  }
+}

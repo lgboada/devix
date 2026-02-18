@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "ciudad": {
+      "home": {
+        "title": "Ciudads",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Ciudad",
+        "createOrEditLabel": "建立或編輯 Ciudad",
+        "notFound": "No Ciudads found"
+      },
+      "created": "新的 Ciudad 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Ciudad 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Ciudad 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Ciudad {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Ciudad"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "cliente": "Cliente",
+      "provincia": "Provincia"
+    }
+  }
+}

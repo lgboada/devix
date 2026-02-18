@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "compania": {
+      "home": {
+        "title": "Companias",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Compania",
+        "createOrEditLabel": "Créer ou éditer un Compania",
+        "notFound": "Aucun Compania trouvé"
+      },
+      "created": "Un nouveau Compania a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Compania avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Compania avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Compania {{ id }} ?"
+      },
+      "detail": {
+        "title": "Compania"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombre": "Nombre",
+      "direccion": "Direccion",
+      "email": "Email",
+      "telefono": "Telefono",
+      "pathImage": "Path Image",
+      "centros": "Centros"
+    }
+  }
+}

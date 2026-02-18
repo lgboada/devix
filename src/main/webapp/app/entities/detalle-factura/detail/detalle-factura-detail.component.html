@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (detalleFactura(); as detalleFacturaRef) {
+      <div>
+        <h2 data-cy="detalleFacturaDetailsHeading"><span jhiTranslate="devixApp.detalleFactura.detail.title">Detalle Factura</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.cantidad">Cantidad</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.cantidad }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.precioUnitario">Precio Unitario</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.precioUnitario }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.subtotal">Subtotal</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.subtotal }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.descuento">Descuento</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.descuento }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.impuesto">Impuesto</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.impuesto }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.total">Total</span></dt>
+          <dd>
+            <span>{{ detalleFacturaRef.total }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.factura">Factura</span></dt>
+          <dd>
+            @if (detalleFactura()!.factura) {
+              <div>
+                <a [routerLink]="['/factura', detalleFactura()!.factura?.id, 'view']">{{ detalleFacturaRef.factura?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.detalleFactura.producto">Producto</span></dt>
+          <dd>
+            @if (detalleFactura()!.producto) {
+              <div>
+                <a [routerLink]="['/producto', detalleFactura()!.producto?.id, 'view']">{{ detalleFacturaRef.producto?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/detalle-factura', detalleFacturaRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,30 @@
+{
+  "devixApp": {
+    "empleado": {
+      "home": {
+        "title": "Empleados",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Empleado",
+        "createOrEditLabel": "建立或編輯 Empleado",
+        "notFound": "No Empleados found"
+      },
+      "created": "新的 Empleado 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Empleado 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Empleado 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Empleado {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Empleado"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombre": "Nombre",
+      "contacto": "Contacto",
+      "email": "Email",
+      "pathImagen": "Path Imagen",
+      "telefono": "Telefono"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214129"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion1",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion2",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "orden",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "texto1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "texto2",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Catalogo",
+  "relationships": [
+    {
+      "otherEntityName": "tipoCatalogo",
+      "relationshipName": "tipoCatalogo",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

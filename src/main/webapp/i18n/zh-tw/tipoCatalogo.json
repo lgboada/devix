@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "tipoCatalogo": {
+      "home": {
+        "title": "Tipo Catalogos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Tipo Catalogo",
+        "createOrEditLabel": "建立或編輯 Tipo Catalogo",
+        "notFound": "No Tipo Catalogos found"
+      },
+      "created": "新的 Tipo Catalogo 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Tipo Catalogo 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Tipo Catalogo 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Tipo Catalogo {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Tipo Catalogo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "categoria": "Categoria",
+      "catalogo": "Catalogo"
+    }
+  }
+}

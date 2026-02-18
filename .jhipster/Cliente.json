@@ -1,0 +1,115 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214125"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dni",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "nombres",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "apellidos",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nombreComercial",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique", "pattern"],
+      "fieldValidateRulesPattern": "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+    },
+    {
+      "fieldName": "telefono",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fechaNacimiento",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sexo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "estadoCivil",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tipoSangre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "pathImagen",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Cliente",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "direccion",
+      "otherEntityRelationshipName": "cliente",
+      "relationshipName": "direcciones",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "factura",
+      "otherEntityRelationshipName": "cliente",
+      "relationshipName": "facturas",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "evento",
+      "otherEntityRelationshipName": "cliente",
+      "relationshipName": "evento",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "documento",
+      "otherEntityRelationshipName": "cliente",
+      "relationshipName": "documento",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "tipoCliente",
+      "relationshipName": "tipoCliente",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "ciudad",
+      "relationshipName": "ciudad",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

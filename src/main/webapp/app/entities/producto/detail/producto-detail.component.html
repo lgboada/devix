@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (producto(); as productoRef) {
+      <div>
+        <h2 data-cy="productoDetailsHeading"><span jhiTranslate="devixApp.producto.detail.title">Producto</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ productoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ productoRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.nombre">Nombre</span></dt>
+          <dd>
+            <span>{{ productoRef.nombre }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.descripcion">Descripcion</span></dt>
+          <dd>
+            <span>{{ productoRef.descripcion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.precio">Precio</span></dt>
+          <dd>
+            <span>{{ productoRef.precio }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.stock">Stock</span></dt>
+          <dd>
+            <span>{{ productoRef.stock }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.pathImagen">Path Imagen</span></dt>
+          <dd>
+            <span>{{ productoRef.pathImagen }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.codigo">Codigo</span></dt>
+          <dd>
+            <span>{{ productoRef.codigo }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.modelo">Modelo</span></dt>
+          <dd>
+            @if (producto()!.modelo) {
+              <div>
+                <a [routerLink]="['/modelo', producto()!.modelo?.id, 'view']">{{ productoRef.modelo?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.tipoProducto">Tipo Producto</span></dt>
+          <dd>
+            @if (producto()!.tipoProducto) {
+              <div>
+                <a [routerLink]="['/tipo-producto', producto()!.tipoProducto?.id, 'view']">{{ productoRef.tipoProducto?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.producto.proveedor">Proveedor</span></dt>
+          <dd>
+            @if (producto()!.proveedor) {
+              <div>
+                <a [routerLink]="['/proveedor', producto()!.proveedor?.id, 'view']">{{ productoRef.proveedor?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/producto', productoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

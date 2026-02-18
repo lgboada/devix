@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "provincia": {
+      "home": {
+        "title": "Provincias",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Provincia の作成",
+        "createOrEditLabel": "Provinciaの作成または編集",
+        "notFound": "Provincias が見つかりません。"
+      },
+      "created": "新しい Provincia がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Provincia が更新されました。",
+      "deleted": "ID {{ param }} の Provincia が削除されました。",
+      "delete": {
+        "question": "Provincia {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Provincia"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "ciudad": "Ciudad",
+      "pais": "Pais"
+    }
+  }
+}

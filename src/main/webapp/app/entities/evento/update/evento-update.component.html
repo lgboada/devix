@@ -1,0 +1,289 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-evento-heading" data-cy="EventoCreateUpdateHeading" jhiTranslate="devixApp.evento.home.createOrEditLabel">
+        Crear o editar Evento
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="devixApp.evento.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let noCiaRef = editForm.get('noCia')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_noCia" jhiTranslate="devixApp.evento.noCia">No Cia</label>
+          <input type="number" class="form-control" name="noCia" id="field_noCia" data-cy="noCia" formControlName="noCia" />
+          @if (noCiaRef.invalid && (noCiaRef.dirty || noCiaRef.touched)) {
+            <div>
+              @if (editForm.get('noCia')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('noCia')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let descripcionRef = editForm.get('descripcion')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_descripcion" jhiTranslate="devixApp.evento.descripcion">Descripcion</label>
+          <input
+            type="text"
+            class="form-control"
+            name="descripcion"
+            id="field_descripcion"
+            data-cy="descripcion"
+            formControlName="descripcion"
+          />
+          @if (descripcionRef.invalid && (descripcionRef.dirty || descripcionRef.touched)) {
+            <div>
+              @if (editForm.get('descripcion')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let fechaRef = editForm.get('fecha')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_fecha" jhiTranslate="devixApp.evento.fecha">Fecha</label>
+          <div class="d-flex">
+            <input
+              id="field_fecha"
+              data-cy="fecha"
+              type="datetime-local"
+              class="form-control"
+              name="fecha"
+              formControlName="fecha"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (fechaRef.invalid && (fechaRef.dirty || fechaRef.touched)) {
+            <div>
+              @if (editForm.get('fecha')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('fecha')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Este campo debe ser una fecha y hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_estado" jhiTranslate="devixApp.evento.estado">Estado</label>
+          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_motivoConsulta" jhiTranslate="devixApp.evento.motivoConsulta">Motivo Consulta</label>
+          <input
+            type="text"
+            class="form-control"
+            name="motivoConsulta"
+            id="field_motivoConsulta"
+            data-cy="motivoConsulta"
+            formControlName="motivoConsulta"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tratamiento" jhiTranslate="devixApp.evento.tratamiento">Tratamiento</label>
+          <input
+            type="text"
+            class="form-control"
+            name="tratamiento"
+            id="field_tratamiento"
+            data-cy="tratamiento"
+            formControlName="tratamiento"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_indicaciones" jhiTranslate="devixApp.evento.indicaciones">Indicaciones</label>
+          <input
+            type="text"
+            class="form-control"
+            name="indicaciones"
+            id="field_indicaciones"
+            data-cy="indicaciones"
+            formControlName="indicaciones"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diagnostico1" jhiTranslate="devixApp.evento.diagnostico1">Diagnostico 1</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnostico1"
+            id="field_diagnostico1"
+            data-cy="diagnostico1"
+            formControlName="diagnostico1"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diagnostico2" jhiTranslate="devixApp.evento.diagnostico2">Diagnostico 2</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnostico2"
+            id="field_diagnostico2"
+            data-cy="diagnostico2"
+            formControlName="diagnostico2"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diagnostico3" jhiTranslate="devixApp.evento.diagnostico3">Diagnostico 3</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnostico3"
+            id="field_diagnostico3"
+            data-cy="diagnostico3"
+            formControlName="diagnostico3"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diagnostico4" jhiTranslate="devixApp.evento.diagnostico4">Diagnostico 4</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnostico4"
+            id="field_diagnostico4"
+            data-cy="diagnostico4"
+            formControlName="diagnostico4"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diagnostico5" jhiTranslate="devixApp.evento.diagnostico5">Diagnostico 5</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnostico5"
+            id="field_diagnostico5"
+            data-cy="diagnostico5"
+            formControlName="diagnostico5"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diagnostico6" jhiTranslate="devixApp.evento.diagnostico6">Diagnostico 6</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnostico6"
+            id="field_diagnostico6"
+            data-cy="diagnostico6"
+            formControlName="diagnostico6"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diagnostico7" jhiTranslate="devixApp.evento.diagnostico7">Diagnostico 7</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnostico7"
+            id="field_diagnostico7"
+            data-cy="diagnostico7"
+            formControlName="diagnostico7"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_observacion" jhiTranslate="devixApp.evento.observacion">Observacion</label>
+          <input
+            type="text"
+            class="form-control"
+            name="observacion"
+            id="field_observacion"
+            data-cy="observacion"
+            formControlName="observacion"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoEvento" jhiTranslate="devixApp.evento.tipoEvento">Tipo Evento</label>
+          <select
+            class="form-control"
+            id="field_tipoEvento"
+            data-cy="tipoEvento"
+            name="tipoEvento"
+            formControlName="tipoEvento"
+            [compareWith]="compareTipoEvento"
+          >
+            <option [ngValue]="null"></option>
+            @for (tipoEventoOption of tipoEventosSharedCollection; track $index) {
+              <option [ngValue]="tipoEventoOption">{{ tipoEventoOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_centro" jhiTranslate="devixApp.evento.centro">Centro</label>
+          <select
+            class="form-control"
+            id="field_centro"
+            data-cy="centro"
+            name="centro"
+            formControlName="centro"
+            [compareWith]="compareCentro"
+          >
+            <option [ngValue]="null"></option>
+            @for (centroOption of centrosSharedCollection; track $index) {
+              <option [ngValue]="centroOption">{{ centroOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cliente" jhiTranslate="devixApp.evento.cliente">Cliente</label>
+          <select
+            class="form-control"
+            id="field_cliente"
+            data-cy="cliente"
+            name="cliente"
+            formControlName="cliente"
+            [compareWith]="compareCliente"
+          >
+            <option [ngValue]="null"></option>
+            @for (clienteOption of clientesSharedCollection; track $index) {
+              <option [ngValue]="clienteOption">{{ clienteOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

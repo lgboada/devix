@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoProducto": {
+      "home": {
+        "title": "TipoProductos",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Tipo Producto",
+        "createOrEditLabel": "Créer ou éditer un Tipo Producto",
+        "notFound": "Aucun Tipo Producto trouvé"
+      },
+      "created": "Un nouveau Tipo Producto a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Tipo Producto avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Tipo Producto avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Tipo Producto {{ id }} ?"
+      },
+      "detail": {
+        "title": "Tipo Producto"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "producto": "Producto"
+    }
+  }
+}

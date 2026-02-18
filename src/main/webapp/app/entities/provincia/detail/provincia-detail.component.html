@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (provincia(); as provinciaRef) {
+      <div>
+        <h2 data-cy="provinciaDetailsHeading"><span jhiTranslate="devixApp.provincia.detail.title">Provincia</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ provinciaRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.provincia.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ provinciaRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.provincia.descripcion">Descripcion</span></dt>
+          <dd>
+            <span>{{ provinciaRef.descripcion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.provincia.pais">Pais</span></dt>
+          <dd>
+            @if (provincia()!.pais) {
+              <div>
+                <a [routerLink]="['/pais', provincia()!.pais?.id, 'view']">{{ provinciaRef.pais?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/provincia', provinciaRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

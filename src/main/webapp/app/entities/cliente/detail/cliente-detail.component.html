@@ -1,0 +1,94 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (cliente(); as clienteRef) {
+      <div>
+        <h2 data-cy="clienteDetailsHeading"><span jhiTranslate="devixApp.cliente.detail.title">Cliente</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ clienteRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ clienteRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.dni">Dni</span></dt>
+          <dd>
+            <span>{{ clienteRef.dni }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.nombres">Nombres</span></dt>
+          <dd>
+            <span>{{ clienteRef.nombres }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.apellidos">Apellidos</span></dt>
+          <dd>
+            <span>{{ clienteRef.apellidos }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.nombreComercial">Nombre Comercial</span></dt>
+          <dd>
+            <span>{{ clienteRef.nombreComercial }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.email">Email</span></dt>
+          <dd>
+            <span>{{ clienteRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.telefono">Telefono</span></dt>
+          <dd>
+            <span>{{ clienteRef.telefono }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.fechaNacimiento">Fecha Nacimiento</span></dt>
+          <dd>
+            <span>{{ clienteRef.fechaNacimiento | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.sexo">Sexo</span></dt>
+          <dd>
+            <span>{{ clienteRef.sexo }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.estadoCivil">Estado Civil</span></dt>
+          <dd>
+            <span>{{ clienteRef.estadoCivil }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.tipoSangre">Tipo Sangre</span></dt>
+          <dd>
+            <span>{{ clienteRef.tipoSangre }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.pathImagen">Path Imagen</span></dt>
+          <dd>
+            <span>{{ clienteRef.pathImagen }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.tipoCliente">Tipo Cliente</span></dt>
+          <dd>
+            @if (cliente()!.tipoCliente) {
+              <div>
+                <a [routerLink]="['/tipo-cliente', cliente()!.tipoCliente?.id, 'view']">{{ clienteRef.tipoCliente?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.cliente.ciudad">Ciudad</span></dt>
+          <dd>
+            @if (cliente()!.ciudad) {
+              <div>
+                <a [routerLink]="['/ciudad', cliente()!.ciudad?.id, 'view']">{{ clienteRef.ciudad?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/cliente', clienteRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

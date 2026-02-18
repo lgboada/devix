@@ -1,0 +1,34 @@
+{
+  "devixApp": {
+    "producto": {
+      "home": {
+        "title": "Productos",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Producto の作成",
+        "createOrEditLabel": "Productoの作成または編集",
+        "notFound": "Productos が見つかりません。"
+      },
+      "created": "新しい Producto がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Producto が更新されました。",
+      "deleted": "ID {{ param }} の Producto が削除されました。",
+      "delete": {
+        "question": "Producto {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Producto"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "precio": "Precio",
+      "stock": "Stock",
+      "pathImagen": "Path Imagen",
+      "codigo": "Codigo",
+      "detalleFactura": "Detalle Factura",
+      "modelo": "Modelo",
+      "tipoProducto": "Tipo Producto",
+      "proveedor": "Proveedor"
+    }
+  }
+}

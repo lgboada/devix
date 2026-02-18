@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "tipoCatalogo": {
+      "home": {
+        "title": "TipoCatalogos",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Tipo Catalogo の作成",
+        "createOrEditLabel": "Tipo Catalogoの作成または編集",
+        "notFound": "Tipo Catalogos が見つかりません。"
+      },
+      "created": "新しい Tipo Catalogo がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Tipo Catalogo が更新されました。",
+      "deleted": "ID {{ param }} の Tipo Catalogo が削除されました。",
+      "delete": {
+        "question": "Tipo Catalogo {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Tipo Catalogo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "categoria": "Categoria",
+      "catalogo": "Catalogo"
+    }
+  }
+}

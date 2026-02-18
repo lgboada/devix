@@ -1,0 +1,34 @@
+{
+  "devixApp": {
+    "producto": {
+      "home": {
+        "title": "Productos",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Producto",
+        "createOrEditLabel": "Créer ou éditer un Producto",
+        "notFound": "Aucun Producto trouvé"
+      },
+      "created": "Un nouveau Producto a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Producto avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Producto avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Producto {{ id }} ?"
+      },
+      "detail": {
+        "title": "Producto"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "precio": "Precio",
+      "stock": "Stock",
+      "pathImagen": "Path Imagen",
+      "codigo": "Codigo",
+      "detalleFactura": "Detalle Factura",
+      "modelo": "Modelo",
+      "tipoProducto": "Tipo Producto",
+      "proveedor": "Proveedor"
+    }
+  }
+}

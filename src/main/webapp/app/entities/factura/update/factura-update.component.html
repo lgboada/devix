@@ -1,0 +1,350 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-factura-heading" data-cy="FacturaCreateUpdateHeading" jhiTranslate="devixApp.factura.home.createOrEditLabel">
+        Crear o editar Factura
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="devixApp.factura.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let noCiaRef = editForm.get('noCia')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_noCia" jhiTranslate="devixApp.factura.noCia">No Cia</label>
+          <input type="number" class="form-control" name="noCia" id="field_noCia" data-cy="noCia" formControlName="noCia" />
+          @if (noCiaRef.invalid && (noCiaRef.dirty || noCiaRef.touched)) {
+            <div>
+              @if (editForm.get('noCia')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('noCia')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let serieRef = editForm.get('serie')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_serie" jhiTranslate="devixApp.factura.serie">Serie</label>
+          <input type="text" class="form-control" name="serie" id="field_serie" data-cy="serie" formControlName="serie" />
+          @if (serieRef.invalid && (serieRef.dirty || serieRef.touched)) {
+            <div>
+              @if (editForm.get('serie')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let noFisicoRef = editForm.get('noFisico')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_noFisico" jhiTranslate="devixApp.factura.noFisico">No Fisico</label>
+          <input type="text" class="form-control" name="noFisico" id="field_noFisico" data-cy="noFisico" formControlName="noFisico" />
+          @if (noFisicoRef.invalid && (noFisicoRef.dirty || noFisicoRef.touched)) {
+            <div>
+              @if (editForm.get('noFisico')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let fechaRef = editForm.get('fecha')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_fecha" jhiTranslate="devixApp.factura.fecha">Fecha</label>
+          <div class="d-flex">
+            <input
+              id="field_fecha"
+              data-cy="fecha"
+              type="datetime-local"
+              class="form-control"
+              name="fecha"
+              formControlName="fecha"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (fechaRef.invalid && (fechaRef.dirty || fechaRef.touched)) {
+            <div>
+              @if (editForm.get('fecha')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('fecha')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Este campo debe ser una fecha y hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let subtotalRef = editForm.get('subtotal')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_subtotal" jhiTranslate="devixApp.factura.subtotal">Subtotal</label>
+          <input type="number" class="form-control" name="subtotal" id="field_subtotal" data-cy="subtotal" formControlName="subtotal" />
+          @if (subtotalRef.invalid && (subtotalRef.dirty || subtotalRef.touched)) {
+            <div>
+              @if (editForm.get('subtotal')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('subtotal')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('subtotal')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let impuestoRef = editForm.get('impuesto')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_impuesto" jhiTranslate="devixApp.factura.impuesto">Impuesto</label>
+          <input type="number" class="form-control" name="impuesto" id="field_impuesto" data-cy="impuesto" formControlName="impuesto" />
+          @if (impuestoRef.invalid && (impuestoRef.dirty || impuestoRef.touched)) {
+            <div>
+              @if (editForm.get('impuesto')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('impuesto')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('impuesto')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let impuestoCeroRef = editForm.get('impuestoCero')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_impuestoCero" jhiTranslate="devixApp.factura.impuestoCero">Impuesto Cero</label>
+          <input
+            type="number"
+            class="form-control"
+            name="impuestoCero"
+            id="field_impuestoCero"
+            data-cy="impuestoCero"
+            formControlName="impuestoCero"
+          />
+          @if (impuestoCeroRef.invalid && (impuestoCeroRef.dirty || impuestoCeroRef.touched)) {
+            <div>
+              @if (editForm.get('impuestoCero')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('impuestoCero')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('impuestoCero')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let descuentoRef = editForm.get('descuento')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_descuento" jhiTranslate="devixApp.factura.descuento">Descuento</label>
+          <input type="number" class="form-control" name="descuento" id="field_descuento" data-cy="descuento" formControlName="descuento" />
+          @if (descuentoRef.invalid && (descuentoRef.dirty || descuentoRef.touched)) {
+            <div>
+              @if (editForm.get('descuento')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('descuento')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('descuento')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let totalRef = editForm.get('total')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_total" jhiTranslate="devixApp.factura.total">Total</label>
+          <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
+          @if (totalRef.invalid && (totalRef.dirty || totalRef.touched)) {
+            <div>
+              @if (editForm.get('total')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('total')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('total')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let porcentajeImpuestoRef = editForm.get('porcentajeImpuesto')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_porcentajeImpuesto" jhiTranslate="devixApp.factura.porcentajeImpuesto"
+            >Porcentaje Impuesto</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="porcentajeImpuesto"
+            id="field_porcentajeImpuesto"
+            data-cy="porcentajeImpuesto"
+            formControlName="porcentajeImpuesto"
+          />
+          @if (porcentajeImpuestoRef.invalid && (porcentajeImpuestoRef.dirty || porcentajeImpuestoRef.touched)) {
+            <div>
+              @if (editForm.get('porcentajeImpuesto')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('porcentajeImpuesto')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('porcentajeImpuesto')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let cedulaRef = editForm.get('cedula')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_cedula" jhiTranslate="devixApp.factura.cedula">Cedula</label>
+          <input type="text" class="form-control" name="cedula" id="field_cedula" data-cy="cedula" formControlName="cedula" />
+          @if (cedulaRef.invalid && (cedulaRef.dirty || cedulaRef.touched)) {
+            <div>
+              @if (editForm.get('cedula')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let direccionRef = editForm.get('direccion')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_direccion" jhiTranslate="devixApp.factura.direccion">Direccion</label>
+          <input type="text" class="form-control" name="direccion" id="field_direccion" data-cy="direccion" formControlName="direccion" />
+          @if (direccionRef.invalid && (direccionRef.dirty || direccionRef.touched)) {
+            <div>
+              @if (editForm.get('direccion')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let emailRef = editForm.get('email')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_email" jhiTranslate="devixApp.factura.email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let estadoRef = editForm.get('estado')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_estado" jhiTranslate="devixApp.factura.estado">Estado</label>
+          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
+          @if (estadoRef.invalid && (estadoRef.dirty || estadoRef.touched)) {
+            <div>
+              @if (editForm.get('estado')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_centro" jhiTranslate="devixApp.factura.centro">Centro</label>
+          <select
+            class="form-control"
+            id="field_centro"
+            data-cy="centro"
+            name="centro"
+            formControlName="centro"
+            [compareWith]="compareCentro"
+          >
+            <option [ngValue]="null"></option>
+            @for (centroOption of centrosSharedCollection; track $index) {
+              <option [ngValue]="centroOption">{{ centroOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cliente" jhiTranslate="devixApp.factura.cliente">Cliente</label>
+          <select
+            class="form-control"
+            id="field_cliente"
+            data-cy="cliente"
+            name="cliente"
+            formControlName="cliente"
+            [compareWith]="compareCliente"
+          >
+            <option [ngValue]="null"></option>
+            @for (clienteOption of clientesSharedCollection; track $index) {
+              <option [ngValue]="clienteOption">{{ clienteOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

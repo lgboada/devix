@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "catalogo": {
+      "home": {
+        "title": "Catalogos",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Catalogo",
+        "createOrEditLabel": "Crear o editar Catalogo",
+        "notFound": "Ningún Catalogos encontrado"
+      },
+      "created": "Un nuevo Catalogo ha sido creado con el identificador {{ param }}",
+      "updated": "Un Catalogo ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Catalogo ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Catalogo {{ id }}?"
+      },
+      "detail": {
+        "title": "Catalogo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion1": "Descripcion 1",
+      "descripcion2": "Descripcion 2",
+      "estado": "Estado",
+      "orden": "Orden",
+      "texto1": "Texto 1",
+      "texto2": "Texto 2",
+      "tipoCatalogo": "Tipo Catalogo"
+    }
+  }
+}

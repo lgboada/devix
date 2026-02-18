@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoCliente": {
+      "home": {
+        "title": "TipoClientes",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Tipo Cliente の作成",
+        "createOrEditLabel": "Tipo Clienteの作成または編集",
+        "notFound": "Tipo Clientes が見つかりません。"
+      },
+      "created": "新しい Tipo Cliente がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Tipo Cliente が更新されました。",
+      "deleted": "ID {{ param }} の Tipo Cliente が削除されました。",
+      "delete": {
+        "question": "Tipo Cliente {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Tipo Cliente"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "cliente": "Cliente"
+    }
+  }
+}

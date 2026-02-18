@@ -1,0 +1,28 @@
+{
+  "devixApp": {
+    "centro": {
+      "home": {
+        "title": "Centros",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Centro の作成",
+        "createOrEditLabel": "Centroの作成または編集",
+        "notFound": "Centros が見つかりません。"
+      },
+      "created": "新しい Centro がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Centro が更新されました。",
+      "deleted": "ID {{ param }} の Centro が削除されました。",
+      "delete": {
+        "question": "Centro {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Centro"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "factura": "Factura",
+      "evento": "Evento",
+      "compania": "Compania"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214133"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "precio",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "stock",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "pathImagen",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "codigo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Producto",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "detalleFactura",
+      "otherEntityRelationshipName": "producto",
+      "relationshipName": "detalleFactura",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "modelo",
+      "relationshipName": "modelo",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "tipoProducto",
+      "relationshipName": "tipoProducto",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "proveedor",
+      "otherEntityRelationshipName": "productos",
+      "relationshipName": "proveedor",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,46 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214127"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "pais",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "provincia",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Direccion",
+  "relationships": [
+    {
+      "otherEntityName": "tipoDireccion",
+      "relationshipName": "tipoDireccion",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "cliente",
+      "otherEntityRelationshipName": "direcciones",
+      "relationshipName": "cliente",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

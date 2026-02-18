@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "marca": {
+      "home": {
+        "title": "Marcas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Marca",
+        "createOrEditLabel": "建立或編輯 Marca",
+        "notFound": "No Marcas found"
+      },
+      "created": "新的 Marca 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Marca 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Marca 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Marca {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Marca"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "pathImagen": "Path Imagen",
+      "modelos": "Modelos"
+    }
+  }
+}

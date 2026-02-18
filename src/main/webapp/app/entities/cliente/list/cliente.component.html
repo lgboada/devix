@@ -1,0 +1,234 @@
+<div>
+  <h2 id="page-heading" data-cy="ClienteHeading">
+    <span jhiTranslate="devixApp.cliente.home.title">Clientes</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.cliente.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cliente"
+        [routerLink]="['/cliente/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.cliente.home.createLabel">Crear nuevo Cliente</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (clientes().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.cliente.home.notFound">Ningún Clientes encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dni">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.dni">Dni</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nombres">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.nombres">Nombres</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="apellidos">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.apellidos">Apellidos</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nombreComercial">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.nombreComercial">Nombre Comercial</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.email">Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="telefono">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.telefono">Telefono</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fechaNacimiento">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.fechaNacimiento">Fecha Nacimiento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="sexo">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.sexo">Sexo</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="estadoCivil">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.estadoCivil">Estado Civil</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipoSangre">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.tipoSangre">Tipo Sangre</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pathImagen">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.pathImagen">Path Imagen</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipoCliente.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.tipoCliente">Tipo Cliente</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="ciudad.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.cliente.ciudad">Ciudad</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cliente of clientes(); track trackId(cliente)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/cliente', cliente.id, 'view']">{{ cliente.id }}</a>
+              </td>
+              <td>{{ cliente.noCia }}</td>
+              <td>{{ cliente.dni }}</td>
+              <td>{{ cliente.nombres }}</td>
+              <td>{{ cliente.apellidos }}</td>
+              <td>{{ cliente.nombreComercial }}</td>
+              <td>{{ cliente.email }}</td>
+              <td>{{ cliente.telefono }}</td>
+              <td>{{ cliente.fechaNacimiento | formatMediumDate }}</td>
+              <td>{{ cliente.sexo }}</td>
+              <td>{{ cliente.estadoCivil }}</td>
+              <td>{{ cliente.tipoSangre }}</td>
+              <td>{{ cliente.pathImagen }}</td>
+              <td>
+                @if (cliente.tipoCliente) {
+                  <div>
+                    <a [routerLink]="['/tipo-cliente', cliente.tipoCliente.id, 'view']">{{ cliente.tipoCliente.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (cliente.ciudad) {
+                  <div>
+                    <a [routerLink]="['/ciudad', cliente.ciudad.id, 'view']">{{ cliente.ciudad.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/factura']"
+                    [queryParams]="{ 'filter[clienteId.in]': cliente.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('devixApp.cliente.facturas' | translate) }"
+                      >Show Facturas</span
+                    >
+                  </button>
+                  <a [routerLink]="['/cliente', cliente.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/cliente', cliente.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(cliente)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (clientes().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

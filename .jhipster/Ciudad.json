@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214119"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Ciudad",
+  "relationships": [
+    {
+      "otherEntityName": "cliente",
+      "otherEntityRelationshipName": "ciudad",
+      "relationshipName": "cliente",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "provincia",
+      "relationshipName": "provincia",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

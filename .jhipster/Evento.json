@@ -1,0 +1,103 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214137"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fecha",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "motivoConsulta",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tratamiento",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "indicaciones",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diagnostico1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diagnostico2",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diagnostico3",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diagnostico4",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diagnostico5",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diagnostico6",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diagnostico7",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "observacion",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Evento",
+  "relationships": [
+    {
+      "otherEntityName": "documento",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "documento",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "tipoEvento",
+      "relationshipName": "tipoEvento",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "centro",
+      "relationshipName": "centro",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "cliente",
+      "relationshipName": "cliente",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

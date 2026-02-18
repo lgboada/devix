@@ -1,0 +1,40 @@
+{
+  "devixApp": {
+    "factura": {
+      "home": {
+        "title": "Facturas",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Factura の作成",
+        "createOrEditLabel": "Facturaの作成または編集",
+        "notFound": "Facturas が見つかりません。"
+      },
+      "created": "新しい Factura がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Factura が更新されました。",
+      "deleted": "ID {{ param }} の Factura が削除されました。",
+      "delete": {
+        "question": "Factura {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Factura"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "serie": "Serie",
+      "noFisico": "No Fisico",
+      "fecha": "Fecha",
+      "subtotal": "Subtotal",
+      "impuesto": "Impuesto",
+      "impuestoCero": "Impuesto Cero",
+      "descuento": "Descuento",
+      "total": "Total",
+      "porcentajeImpuesto": "Porcentaje Impuesto",
+      "cedula": "Cedula",
+      "direccion": "Direccion",
+      "email": "Email",
+      "estado": "Estado",
+      "detalles": "Detalles",
+      "centro": "Centro",
+      "cliente": "Cliente"
+    }
+  }
+}

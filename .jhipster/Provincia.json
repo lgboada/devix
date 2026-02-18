@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214118"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Provincia",
+  "relationships": [
+    {
+      "otherEntityName": "ciudad",
+      "otherEntityRelationshipName": "provincia",
+      "relationshipName": "ciudad",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "pais",
+      "relationshipName": "pais",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

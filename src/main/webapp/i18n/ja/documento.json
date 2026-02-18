@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "documento": {
+      "home": {
+        "title": "Documentos",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Documento の作成",
+        "createOrEditLabel": "Documentoの作成または編集",
+        "notFound": "Documentos が見つかりません。"
+      },
+      "created": "新しい Documento がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Documento が更新されました。",
+      "deleted": "ID {{ param }} の Documento が削除されました。",
+      "delete": {
+        "question": "Documento {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Documento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "tipo": "Tipo",
+      "observacion": "Observacion",
+      "fechaCreacion": "Fecha Creacion",
+      "fechaVencimiento": "Fecha Vencimiento",
+      "path": "Path",
+      "cliente": "Cliente",
+      "evento": "Evento"
+    }
+  }
+}

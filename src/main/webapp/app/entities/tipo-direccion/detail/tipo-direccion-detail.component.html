@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tipoDireccion(); as tipoDireccionRef) {
+      <div>
+        <h2 data-cy="tipoDireccionDetailsHeading"><span jhiTranslate="devixApp.tipoDireccion.detail.title">Tipo Direccion</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ tipoDireccionRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.tipoDireccion.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ tipoDireccionRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.tipoDireccion.descripcion">Descripcion</span></dt>
+          <dd>
+            <span>{{ tipoDireccionRef.descripcion }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tipo-direccion', tipoDireccionRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

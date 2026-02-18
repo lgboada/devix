@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "marca": {
+      "home": {
+        "title": "Marcas",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Marca の作成",
+        "createOrEditLabel": "Marcaの作成または編集",
+        "notFound": "Marcas が見つかりません。"
+      },
+      "created": "新しい Marca がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Marca が更新されました。",
+      "deleted": "ID {{ param }} の Marca が削除されました。",
+      "delete": {
+        "question": "Marca {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Marca"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "pathImagen": "Path Imagen",
+      "modelos": "Modelos"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tipoProducto(); as tipoProductoRef) {
+      <div>
+        <h2 data-cy="tipoProductoDetailsHeading"><span jhiTranslate="devixApp.tipoProducto.detail.title">Tipo Producto</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ tipoProductoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.tipoProducto.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ tipoProductoRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.tipoProducto.nombre">Nombre</span></dt>
+          <dd>
+            <span>{{ tipoProductoRef.nombre }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tipo-producto', tipoProductoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

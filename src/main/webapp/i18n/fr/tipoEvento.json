@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoEvento": {
+      "home": {
+        "title": "TipoEventos",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Tipo Evento",
+        "createOrEditLabel": "Créer ou éditer un Tipo Evento",
+        "notFound": "Aucun Tipo Evento trouvé"
+      },
+      "created": "Un nouveau Tipo Evento a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Tipo Evento avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Tipo Evento avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Tipo Evento {{ id }} ?"
+      },
+      "detail": {
+        "title": "Tipo Evento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "evento": "Evento"
+    }
+  }
+}

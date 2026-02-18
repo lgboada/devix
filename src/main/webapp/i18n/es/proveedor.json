@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "proveedor": {
+      "home": {
+        "title": "Proveedors",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Proveedor",
+        "createOrEditLabel": "Crear o editar Proveedor",
+        "notFound": "Ningún Proveedors encontrado"
+      },
+      "created": "Un nuevo Proveedor ha sido creado con el identificador {{ param }}",
+      "updated": "Un Proveedor ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Proveedor ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Proveedor {{ id }}?"
+      },
+      "detail": {
+        "title": "Proveedor"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombre": "Nombre",
+      "contacto": "Contacto",
+      "email": "Email",
+      "pathImagen": "Path Imagen",
+      "telefono": "Telefono",
+      "productos": "Productos"
+    }
+  }
+}

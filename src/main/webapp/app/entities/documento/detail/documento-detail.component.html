@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (documento(); as documentoRef) {
+      <div>
+        <h2 data-cy="documentoDetailsHeading"><span jhiTranslate="devixApp.documento.detail.title">Documento</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ documentoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ documentoRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.tipo">Tipo</span></dt>
+          <dd>
+            <span>{{ documentoRef.tipo }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.observacion">Observacion</span></dt>
+          <dd>
+            <span>{{ documentoRef.observacion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.fechaCreacion">Fecha Creacion</span></dt>
+          <dd>
+            <span>{{ documentoRef.fechaCreacion | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.fechaVencimiento">Fecha Vencimiento</span></dt>
+          <dd>
+            <span>{{ documentoRef.fechaVencimiento | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.path">Path</span></dt>
+          <dd>
+            <span>{{ documentoRef.path }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.cliente">Cliente</span></dt>
+          <dd>
+            @if (documento()!.cliente) {
+              <div>
+                <a [routerLink]="['/cliente', documento()!.cliente?.id, 'view']">{{ documentoRef.cliente?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.documento.evento">Evento</span></dt>
+          <dd>
+            @if (documento()!.evento) {
+              <div>
+                <a [routerLink]="['/evento', documento()!.evento?.id, 'view']">{{ documentoRef.evento?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/documento', documentoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

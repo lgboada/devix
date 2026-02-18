@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoDireccion": {
+      "home": {
+        "title": "TipoDireccions",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Tipo Direccion の作成",
+        "createOrEditLabel": "Tipo Direccionの作成または編集",
+        "notFound": "Tipo Direccions が見つかりません。"
+      },
+      "created": "新しい Tipo Direccion がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Tipo Direccion が更新されました。",
+      "deleted": "ID {{ param }} の Tipo Direccion が削除されました。",
+      "delete": {
+        "question": "Tipo Direccion {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Tipo Direccion"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "direccion": "Direccion"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "documento": {
+      "home": {
+        "title": "Documentos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Documento",
+        "createOrEditLabel": "Create or edit a Documento",
+        "notFound": "No Documentos found"
+      },
+      "created": "A new Documento is created with identifier {{ param }}",
+      "updated": "A Documento is updated with identifier {{ param }}",
+      "deleted": "A Documento is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Documento {{ id }}?"
+      },
+      "detail": {
+        "title": "Documento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "tipo": "Tipo",
+      "observacion": "Observacion",
+      "fechaCreacion": "Fecha Creacion",
+      "fechaVencimiento": "Fecha Vencimiento",
+      "path": "Path",
+      "cliente": "Cliente",
+      "evento": "Evento"
+    }
+  }
+}

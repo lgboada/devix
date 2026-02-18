@@ -1,0 +1,102 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (factura(); as facturaRef) {
+      <div>
+        <h2 data-cy="facturaDetailsHeading"><span jhiTranslate="devixApp.factura.detail.title">Factura</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ facturaRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ facturaRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.serie">Serie</span></dt>
+          <dd>
+            <span>{{ facturaRef.serie }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.noFisico">No Fisico</span></dt>
+          <dd>
+            <span>{{ facturaRef.noFisico }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.fecha">Fecha</span></dt>
+          <dd>
+            <span>{{ facturaRef.fecha | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.subtotal">Subtotal</span></dt>
+          <dd>
+            <span>{{ facturaRef.subtotal }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.impuesto">Impuesto</span></dt>
+          <dd>
+            <span>{{ facturaRef.impuesto }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.impuestoCero">Impuesto Cero</span></dt>
+          <dd>
+            <span>{{ facturaRef.impuestoCero }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.descuento">Descuento</span></dt>
+          <dd>
+            <span>{{ facturaRef.descuento }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.total">Total</span></dt>
+          <dd>
+            <span>{{ facturaRef.total }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.porcentajeImpuesto">Porcentaje Impuesto</span></dt>
+          <dd>
+            <span>{{ facturaRef.porcentajeImpuesto }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.cedula">Cedula</span></dt>
+          <dd>
+            <span>{{ facturaRef.cedula }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.direccion">Direccion</span></dt>
+          <dd>
+            <span>{{ facturaRef.direccion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.email">Email</span></dt>
+          <dd>
+            <span>{{ facturaRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.estado">Estado</span></dt>
+          <dd>
+            <span>{{ facturaRef.estado }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.centro">Centro</span></dt>
+          <dd>
+            @if (factura()!.centro) {
+              <div>
+                <a [routerLink]="['/centro', factura()!.centro?.id, 'view']">{{ facturaRef.centro?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.factura.cliente">Cliente</span></dt>
+          <dd>
+            @if (factura()!.cliente) {
+              <div>
+                <a [routerLink]="['/cliente', factura()!.cliente?.id, 'view']">{{ facturaRef.cliente?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/factura', facturaRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

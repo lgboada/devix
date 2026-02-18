@@ -1,0 +1,41 @@
+{
+  "devixApp": {
+    "cliente": {
+      "home": {
+        "title": "Clientes",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Cliente の作成",
+        "createOrEditLabel": "Clienteの作成または編集",
+        "notFound": "Clientes が見つかりません。"
+      },
+      "created": "新しい Cliente がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Cliente が更新されました。",
+      "deleted": "ID {{ param }} の Cliente が削除されました。",
+      "delete": {
+        "question": "Cliente {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Cliente"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombres": "Nombres",
+      "apellidos": "Apellidos",
+      "nombreComercial": "Nombre Comercial",
+      "email": "Email",
+      "telefono": "Telefono",
+      "fechaNacimiento": "Fecha Nacimiento",
+      "sexo": "Sexo",
+      "estadoCivil": "Estado Civil",
+      "tipoSangre": "Tipo Sangre",
+      "pathImagen": "Path Imagen",
+      "direcciones": "Direcciones",
+      "facturas": "Facturas",
+      "evento": "Evento",
+      "documento": "Documento",
+      "tipoCliente": "Tipo Cliente",
+      "ciudad": "Ciudad"
+    }
+  }
+}

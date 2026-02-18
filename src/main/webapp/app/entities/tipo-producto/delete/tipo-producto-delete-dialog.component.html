@@ -1,0 +1,30 @@
+@if (tipoProducto) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(tipoProducto.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="tipoProductoDeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirmar operación de borrado
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p
+        id="jhi-delete-tipoProducto-heading"
+        jhiTranslate="devixApp.tipoProducto.delete.question"
+        [translateValues]="{ id: tipoProducto.id }"
+      >
+        ¿Seguro que quiere eliminar Tipo Producto {{ tipoProducto.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+      </button>
+
+      <button id="jhi-confirm-delete-tipoProducto" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Eliminar</span>
+      </button>
+    </div>
+  </form>
+}

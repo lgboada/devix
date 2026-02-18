@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "compania": {
+      "home": {
+        "title": "Companias",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Compania の作成",
+        "createOrEditLabel": "Companiaの作成または編集",
+        "notFound": "Companias が見つかりません。"
+      },
+      "created": "新しい Compania がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Compania が更新されました。",
+      "deleted": "ID {{ param }} の Compania が削除されました。",
+      "delete": {
+        "question": "Compania {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Compania"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombre": "Nombre",
+      "direccion": "Direccion",
+      "email": "Email",
+      "telefono": "Telefono",
+      "pathImage": "Path Image",
+      "centros": "Centros"
+    }
+  }
+}

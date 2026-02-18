@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (direccion(); as direccionRef) {
+      <div>
+        <h2 data-cy="direccionDetailsHeading"><span jhiTranslate="devixApp.direccion.detail.title">Direccion</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ direccionRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.direccion.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ direccionRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.direccion.descripcion">Descripcion</span></dt>
+          <dd>
+            <span>{{ direccionRef.descripcion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.direccion.pais">Pais</span></dt>
+          <dd>
+            <span>{{ direccionRef.pais }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.direccion.provincia">Provincia</span></dt>
+          <dd>
+            <span>{{ direccionRef.provincia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.direccion.tipoDireccion">Tipo Direccion</span></dt>
+          <dd>
+            @if (direccion()!.tipoDireccion) {
+              <div>
+                <a [routerLink]="['/tipo-direccion', direccion()!.tipoDireccion?.id, 'view']">{{ direccionRef.tipoDireccion?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.direccion.cliente">Cliente</span></dt>
+          <dd>
+            @if (direccion()!.cliente) {
+              <div>
+                <a [routerLink]="['/cliente', direccion()!.cliente?.id, 'view']">{{ direccionRef.cliente?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/direccion', direccionRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,166 @@
+<div>
+  <h2 id="page-heading" data-cy="DetalleFacturaHeading">
+    <span jhiTranslate="devixApp.detalleFactura.home.title">Detalle Facturas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.detalleFactura.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-detalle-factura"
+        [routerLink]="['/detalle-factura/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.detalleFactura.home.createLabel">Crear nuevo Detalle Factura</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (detalleFacturas().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.detalleFactura.home.notFound">Ningún Detalle Facturas encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cantidad">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.cantidad">Cantidad</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="precioUnitario">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.precioUnitario">Precio Unitario</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="subtotal">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.subtotal">Subtotal</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descuento">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.descuento">Descuento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="impuesto">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.impuesto">Impuesto</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="total">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.total">Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="factura.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.factura">Factura</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="producto.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.detalleFactura.producto">Producto</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
+          @for (detalleFactura of detalleFacturas(); track trackId(detalleFactura)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/detalle-factura', detalleFactura.id, 'view']">{{ detalleFactura.id }}</a>
+              </td>
+              <td>{{ detalleFactura.noCia }}</td>
+              <td>{{ detalleFactura.cantidad }}</td>
+              <td>{{ detalleFactura.precioUnitario }}</td>
+              <td>{{ detalleFactura.subtotal }}</td>
+              <td>{{ detalleFactura.descuento }}</td>
+              <td>{{ detalleFactura.impuesto }}</td>
+              <td>{{ detalleFactura.total }}</td>
+              <td>
+                @if (detalleFactura.factura) {
+                  <div>
+                    <a [routerLink]="['/factura', detalleFactura.factura.id, 'view']">{{ detalleFactura.factura.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (detalleFactura.producto) {
+                  <div>
+                    <a [routerLink]="['/producto', detalleFactura.producto.id, 'view']">{{ detalleFactura.producto.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/detalle-factura', detalleFactura.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/detalle-factura', detalleFactura.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(detalleFactura)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

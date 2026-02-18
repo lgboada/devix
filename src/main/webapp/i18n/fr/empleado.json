@@ -1,0 +1,30 @@
+{
+  "devixApp": {
+    "empleado": {
+      "home": {
+        "title": "Empleados",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Empleado",
+        "createOrEditLabel": "Créer ou éditer un Empleado",
+        "notFound": "Aucun Empleado trouvé"
+      },
+      "created": "Un nouveau Empleado a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Empleado avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Empleado avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Empleado {{ id }} ?"
+      },
+      "detail": {
+        "title": "Empleado"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombre": "Nombre",
+      "contacto": "Contacto",
+      "email": "Email",
+      "pathImagen": "Path Imagen",
+      "telefono": "Telefono"
+    }
+  }
+}

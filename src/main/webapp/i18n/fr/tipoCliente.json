@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoCliente": {
+      "home": {
+        "title": "TipoClientes",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Tipo Cliente",
+        "createOrEditLabel": "Créer ou éditer un Tipo Cliente",
+        "notFound": "Aucun Tipo Cliente trouvé"
+      },
+      "created": "Un nouveau Tipo Cliente a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Tipo Cliente avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Tipo Cliente avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Tipo Cliente {{ id }} ?"
+      },
+      "detail": {
+        "title": "Tipo Cliente"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "cliente": "Cliente"
+    }
+  }
+}

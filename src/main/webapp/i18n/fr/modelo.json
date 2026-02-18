@@ -1,0 +1,28 @@
+{
+  "devixApp": {
+    "modelo": {
+      "home": {
+        "title": "Modelos",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Modelo",
+        "createOrEditLabel": "Créer ou éditer un Modelo",
+        "notFound": "Aucun Modelo trouvé"
+      },
+      "created": "Un nouveau Modelo a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Modelo avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Modelo avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Modelo {{ id }} ?"
+      },
+      "detail": {
+        "title": "Modelo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "pathImagen": "Path Imagen",
+      "producto": "Producto",
+      "marca": "Marca"
+    }
+  }
+}

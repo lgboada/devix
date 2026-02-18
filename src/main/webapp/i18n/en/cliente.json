@@ -1,0 +1,41 @@
+{
+  "devixApp": {
+    "cliente": {
+      "home": {
+        "title": "Clientes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cliente",
+        "createOrEditLabel": "Create or edit a Cliente",
+        "notFound": "No Clientes found"
+      },
+      "created": "A new Cliente is created with identifier {{ param }}",
+      "updated": "A Cliente is updated with identifier {{ param }}",
+      "deleted": "A Cliente is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cliente {{ id }}?"
+      },
+      "detail": {
+        "title": "Cliente"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombres": "Nombres",
+      "apellidos": "Apellidos",
+      "nombreComercial": "Nombre Comercial",
+      "email": "Email",
+      "telefono": "Telefono",
+      "fechaNacimiento": "Fecha Nacimiento",
+      "sexo": "Sexo",
+      "estadoCivil": "Estado Civil",
+      "tipoSangre": "Tipo Sangre",
+      "pathImagen": "Path Imagen",
+      "direcciones": "Direcciones",
+      "facturas": "Facturas",
+      "evento": "Evento",
+      "documento": "Documento",
+      "tipoCliente": "Tipo Cliente",
+      "ciudad": "Ciudad"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "devixApp": {
+    "detalleFactura": {
+      "home": {
+        "title": "DetalleFacturas",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Detalle Factura の作成",
+        "createOrEditLabel": "Detalle Facturaの作成または編集",
+        "notFound": "Detalle Facturas が見つかりません。"
+      },
+      "created": "新しい Detalle Factura がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Detalle Factura が更新されました。",
+      "deleted": "ID {{ param }} の Detalle Factura が削除されました。",
+      "delete": {
+        "question": "Detalle Factura {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Detalle Factura"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "cantidad": "Cantidad",
+      "precioUnitario": "Precio Unitario",
+      "subtotal": "Subtotal",
+      "descuento": "Descuento",
+      "impuesto": "Impuesto",
+      "total": "Total",
+      "factura": "Factura",
+      "producto": "Producto"
+    }
+  }
+}

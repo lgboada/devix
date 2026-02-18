@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214132"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "pathImagen",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Modelo",
+  "relationships": [
+    {
+      "otherEntityName": "producto",
+      "otherEntityRelationshipName": "modelo",
+      "relationshipName": "producto",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "marca",
+      "otherEntityRelationshipName": "modelos",
+      "relationshipName": "marca",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

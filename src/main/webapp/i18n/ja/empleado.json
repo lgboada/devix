@@ -1,0 +1,30 @@
+{
+  "devixApp": {
+    "empleado": {
+      "home": {
+        "title": "Empleados",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Empleado の作成",
+        "createOrEditLabel": "Empleadoの作成または編集",
+        "notFound": "Empleados が見つかりません。"
+      },
+      "created": "新しい Empleado がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Empleado が更新されました。",
+      "deleted": "ID {{ param }} の Empleado が削除されました。",
+      "delete": {
+        "question": "Empleado {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Empleado"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombre": "Nombre",
+      "contacto": "Contacto",
+      "email": "Email",
+      "pathImagen": "Path Imagen",
+      "telefono": "Telefono"
+    }
+  }
+}

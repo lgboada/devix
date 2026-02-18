@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (catalogo(); as catalogoRef) {
+      <div>
+        <h2 data-cy="catalogoDetailsHeading"><span jhiTranslate="devixApp.catalogo.detail.title">Catalogo</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ catalogoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ catalogoRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.descripcion1">Descripcion 1</span></dt>
+          <dd>
+            <span>{{ catalogoRef.descripcion1 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.descripcion2">Descripcion 2</span></dt>
+          <dd>
+            <span>{{ catalogoRef.descripcion2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.estado">Estado</span></dt>
+          <dd>
+            <span>{{ catalogoRef.estado }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.orden">Orden</span></dt>
+          <dd>
+            <span>{{ catalogoRef.orden }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.texto1">Texto 1</span></dt>
+          <dd>
+            <span>{{ catalogoRef.texto1 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.texto2">Texto 2</span></dt>
+          <dd>
+            <span>{{ catalogoRef.texto2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.catalogo.tipoCatalogo">Tipo Catalogo</span></dt>
+          <dd>
+            @if (catalogo()!.tipoCatalogo) {
+              <div>
+                <a [routerLink]="['/tipo-catalogo', catalogo()!.tipoCatalogo?.id, 'view']">{{ catalogoRef.tipoCatalogo?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/catalogo', catalogoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

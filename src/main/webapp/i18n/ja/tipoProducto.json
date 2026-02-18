@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoProducto": {
+      "home": {
+        "title": "TipoProductos",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Tipo Producto の作成",
+        "createOrEditLabel": "Tipo Productoの作成または編集",
+        "notFound": "Tipo Productos が見つかりません。"
+      },
+      "created": "新しい Tipo Producto がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Tipo Producto が更新されました。",
+      "deleted": "ID {{ param }} の Tipo Producto が削除されました。",
+      "delete": {
+        "question": "Tipo Producto {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Tipo Producto"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "producto": "Producto"
+    }
+  }
+}

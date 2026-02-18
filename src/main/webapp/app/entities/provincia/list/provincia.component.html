@@ -1,0 +1,105 @@
+<div>
+  <h2 id="page-heading" data-cy="ProvinciaHeading">
+    <span jhiTranslate="devixApp.provincia.home.title">Provincias</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.provincia.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-provincia"
+        [routerLink]="['/provincia/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.provincia.home.createLabel">Crear nuevo Provincia</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (provincias().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.provincia.home.notFound">Ningún Provincias encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.provincia.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descripcion">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.provincia.descripcion">Descripcion</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pais.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.provincia.pais">Pais</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (provincia of provincias(); track trackId(provincia)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/provincia', provincia.id, 'view']">{{ provincia.id }}</a>
+              </td>
+              <td>{{ provincia.noCia }}</td>
+              <td>{{ provincia.descripcion }}</td>
+              <td>
+                @if (provincia.pais) {
+                  <div>
+                    <a [routerLink]="['/pais', provincia.pais.id, 'view']">{{ provincia.pais.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/provincia', provincia.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/provincia', provincia.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(provincia)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

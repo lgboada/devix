@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoEvento": {
+      "home": {
+        "title": "TipoEventos",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Tipo Evento の作成",
+        "createOrEditLabel": "Tipo Eventoの作成または編集",
+        "notFound": "Tipo Eventos が見つかりません。"
+      },
+      "created": "新しい Tipo Evento がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Tipo Evento が更新されました。",
+      "deleted": "ID {{ param }} の Tipo Evento が削除されました。",
+      "delete": {
+        "question": "Tipo Evento {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Tipo Evento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "evento": "Evento"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (centro(); as centroRef) {
+      <div>
+        <h2 data-cy="centroDetailsHeading"><span jhiTranslate="devixApp.centro.detail.title">Centro</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ centroRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.centro.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ centroRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.centro.descripcion">Descripcion</span></dt>
+          <dd>
+            <span>{{ centroRef.descripcion }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.centro.compania">Compania</span></dt>
+          <dd>
+            @if (centro()!.compania) {
+              <div>
+                <a [routerLink]="['/compania', centro()!.compania?.id, 'view']">{{ centroRef.compania?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/centro', centroRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

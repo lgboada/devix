@@ -1,0 +1,206 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-producto-heading" data-cy="ProductoCreateUpdateHeading" jhiTranslate="devixApp.producto.home.createOrEditLabel">
+        Crear o editar Producto
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="devixApp.producto.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let noCiaRef = editForm.get('noCia')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_noCia" jhiTranslate="devixApp.producto.noCia">No Cia</label>
+          <input type="number" class="form-control" name="noCia" id="field_noCia" data-cy="noCia" formControlName="noCia" />
+          @if (noCiaRef.invalid && (noCiaRef.dirty || noCiaRef.touched)) {
+            <div>
+              @if (editForm.get('noCia')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('noCia')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let nombreRef = editForm.get('nombre')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_nombre" jhiTranslate="devixApp.producto.nombre">Nombre</label>
+          <input type="text" class="form-control" name="nombre" id="field_nombre" data-cy="nombre" formControlName="nombre" />
+          @if (nombreRef.invalid && (nombreRef.dirty || nombreRef.touched)) {
+            <div>
+              @if (editForm.get('nombre')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_descripcion" jhiTranslate="devixApp.producto.descripcion">Descripcion</label>
+          <input
+            type="text"
+            class="form-control"
+            name="descripcion"
+            id="field_descripcion"
+            data-cy="descripcion"
+            formControlName="descripcion"
+          />
+        </div>
+
+        @let precioRef = editForm.get('precio')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_precio" jhiTranslate="devixApp.producto.precio">Precio</label>
+          <input type="number" class="form-control" name="precio" id="field_precio" data-cy="precio" formControlName="precio" />
+          @if (precioRef.invalid && (precioRef.dirty || precioRef.touched)) {
+            <div>
+              @if (editForm.get('precio')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('precio')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('precio')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let stockRef = editForm.get('stock')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_stock" jhiTranslate="devixApp.producto.stock">Stock</label>
+          <input type="number" class="form-control" name="stock" id="field_stock" data-cy="stock" formControlName="stock" />
+          @if (stockRef.invalid && (stockRef.dirty || stockRef.touched)) {
+            <div>
+              @if (editForm.get('stock')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('stock')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Este campo debe ser mayor que 0.</small
+                >
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('stock')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let pathImagenRef = editForm.get('pathImagen')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_pathImagen" jhiTranslate="devixApp.producto.pathImagen">Path Imagen</label>
+          <input
+            type="text"
+            class="form-control"
+            name="pathImagen"
+            id="field_pathImagen"
+            data-cy="pathImagen"
+            formControlName="pathImagen"
+          />
+          @if (pathImagenRef.invalid && (pathImagenRef.dirty || pathImagenRef.touched)) {
+            <div>
+              @if (editForm.get('pathImagen')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let codigoRef = editForm.get('codigo')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_codigo" jhiTranslate="devixApp.producto.codigo">Codigo</label>
+          <input type="text" class="form-control" name="codigo" id="field_codigo" data-cy="codigo" formControlName="codigo" />
+          @if (codigoRef.invalid && (codigoRef.dirty || codigoRef.touched)) {
+            <div>
+              @if (editForm.get('codigo')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_modelo" jhiTranslate="devixApp.producto.modelo">Modelo</label>
+          <select
+            class="form-control"
+            id="field_modelo"
+            data-cy="modelo"
+            name="modelo"
+            formControlName="modelo"
+            [compareWith]="compareModelo"
+          >
+            <option [ngValue]="null"></option>
+            @for (modeloOption of modelosSharedCollection; track $index) {
+              <option [ngValue]="modeloOption">{{ modeloOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoProducto" jhiTranslate="devixApp.producto.tipoProducto">Tipo Producto</label>
+          <select
+            class="form-control"
+            id="field_tipoProducto"
+            data-cy="tipoProducto"
+            name="tipoProducto"
+            formControlName="tipoProducto"
+            [compareWith]="compareTipoProducto"
+          >
+            <option [ngValue]="null"></option>
+            @for (tipoProductoOption of tipoProductosSharedCollection; track $index) {
+              <option [ngValue]="tipoProductoOption">{{ tipoProductoOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_proveedor" jhiTranslate="devixApp.producto.proveedor">Proveedor</label>
+          <select
+            class="form-control"
+            id="field_proveedor"
+            data-cy="proveedor"
+            name="proveedor"
+            formControlName="proveedor"
+            [compareWith]="compareProveedor"
+          >
+            <option [ngValue]="null"></option>
+            @for (proveedorOption of proveedorsSharedCollection; track $index) {
+              <option [ngValue]="proveedorOption">{{ proveedorOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

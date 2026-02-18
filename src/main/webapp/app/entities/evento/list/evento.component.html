@@ -1,0 +1,235 @@
+<div>
+  <h2 id="page-heading" data-cy="EventoHeading">
+    <span jhiTranslate="devixApp.evento.home.title">Eventos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.evento.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-evento"
+        [routerLink]="['/evento/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.evento.home.createLabel">Crear nuevo Evento</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (eventos().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.evento.home.notFound">Ningún Eventos encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descripcion">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.descripcion">Descripcion</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fecha">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.fecha">Fecha</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="estado">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.estado">Estado</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="motivoConsulta">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.motivoConsulta">Motivo Consulta</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tratamiento">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.tratamiento">Tratamiento</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="indicaciones">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.indicaciones">Indicaciones</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnostico1">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.diagnostico1">Diagnostico 1</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnostico2">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.diagnostico2">Diagnostico 2</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnostico3">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.diagnostico3">Diagnostico 3</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnostico4">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.diagnostico4">Diagnostico 4</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnostico5">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.diagnostico5">Diagnostico 5</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnostico6">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.diagnostico6">Diagnostico 6</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnostico7">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.diagnostico7">Diagnostico 7</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observacion">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.observacion">Observacion</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipoEvento.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.tipoEvento">Tipo Evento</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="centro.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.centro">Centro</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cliente.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.evento.cliente">Cliente</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (evento of eventos(); track trackId(evento)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/evento', evento.id, 'view']">{{ evento.id }}</a>
+              </td>
+              <td>{{ evento.noCia }}</td>
+              <td>{{ evento.descripcion }}</td>
+              <td>{{ evento.fecha | formatMediumDatetime }}</td>
+              <td>{{ evento.estado }}</td>
+              <td>{{ evento.motivoConsulta }}</td>
+              <td>{{ evento.tratamiento }}</td>
+              <td>{{ evento.indicaciones }}</td>
+              <td>{{ evento.diagnostico1 }}</td>
+              <td>{{ evento.diagnostico2 }}</td>
+              <td>{{ evento.diagnostico3 }}</td>
+              <td>{{ evento.diagnostico4 }}</td>
+              <td>{{ evento.diagnostico5 }}</td>
+              <td>{{ evento.diagnostico6 }}</td>
+              <td>{{ evento.diagnostico7 }}</td>
+              <td>{{ evento.observacion }}</td>
+              <td>
+                @if (evento.tipoEvento) {
+                  <div>
+                    <a [routerLink]="['/tipo-evento', evento.tipoEvento.id, 'view']">{{ evento.tipoEvento.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (evento.centro) {
+                  <div>
+                    <a [routerLink]="['/centro', evento.centro.id, 'view']">{{ evento.centro.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (evento.cliente) {
+                  <div>
+                    <a [routerLink]="['/cliente', evento.cliente.id, 'view']">{{ evento.cliente.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/evento', evento.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/evento', evento.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(evento)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

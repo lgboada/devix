@@ -1,0 +1,128 @@
+<div>
+  <h2 id="page-heading" data-cy="ModeloHeading">
+    <span jhiTranslate="devixApp.modelo.home.title">Modelos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.modelo.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-modelo"
+        [routerLink]="['/modelo/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.modelo.home.createLabel">Crear nuevo Modelo</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (modelos().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.modelo.home.notFound">Ningún Modelos encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.modelo.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nombre">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.modelo.nombre">Nombre</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pathImagen">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.modelo.pathImagen">Path Imagen</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="marca.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.modelo.marca">Marca</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (modelo of modelos(); track trackId(modelo)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/modelo', modelo.id, 'view']">{{ modelo.id }}</a>
+              </td>
+              <td>{{ modelo.noCia }}</td>
+              <td>{{ modelo.nombre }}</td>
+              <td>{{ modelo.pathImagen }}</td>
+              <td>
+                @if (modelo.marca) {
+                  <div>
+                    <a [routerLink]="['/marca', modelo.marca.id, 'view']">{{ modelo.marca.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/producto']"
+                    [queryParams]="{ 'filter[modeloId.in]': modelo.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span
+                      class="d-none d-md-inline"
+                      jhiTranslate="entity.action.show"
+                      [translateValues]="{ otherEntity: ('devixApp.modelo.producto' | translate) }"
+                      >Show Producto</span
+                    >
+                  </button>
+                  <a [routerLink]="['/modelo', modelo.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/modelo', modelo.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(modelo)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

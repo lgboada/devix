@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "documento": {
+      "home": {
+        "title": "Documentos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Documento",
+        "createOrEditLabel": "建立或編輯 Documento",
+        "notFound": "No Documentos found"
+      },
+      "created": "新的 Documento 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Documento 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Documento 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Documento {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Documento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "tipo": "Tipo",
+      "observacion": "Observacion",
+      "fechaCreacion": "Fecha Creacion",
+      "fechaVencimiento": "Fecha Vencimiento",
+      "path": "Path",
+      "cliente": "Cliente",
+      "evento": "Evento"
+    }
+  }
+}

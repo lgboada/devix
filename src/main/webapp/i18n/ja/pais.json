@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "pais": {
+      "home": {
+        "title": "Pais",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Pais の作成",
+        "createOrEditLabel": "Paisの作成または編集",
+        "notFound": "Pais が見つかりません。"
+      },
+      "created": "新しい Pais がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Pais が更新されました。",
+      "deleted": "ID {{ param }} の Pais が削除されました。",
+      "delete": {
+        "question": "Pais {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Pais"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "provincia": "Provincia"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "devixApp": {
+    "tipoCliente": {
+      "home": {
+        "title": "Tipo Clientes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Tipo Cliente",
+        "createOrEditLabel": "建立或編輯 Tipo Cliente",
+        "notFound": "No Tipo Clientes found"
+      },
+      "created": "新的 Tipo Cliente 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Tipo Cliente 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Tipo Cliente 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Tipo Cliente {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Tipo Cliente"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "cliente": "Cliente"
+    }
+  }
+}

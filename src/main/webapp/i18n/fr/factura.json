@@ -1,0 +1,40 @@
+{
+  "devixApp": {
+    "factura": {
+      "home": {
+        "title": "Facturas",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Factura",
+        "createOrEditLabel": "Créer ou éditer un Factura",
+        "notFound": "Aucun Factura trouvé"
+      },
+      "created": "Un nouveau Factura a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Factura avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Factura avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Factura {{ id }} ?"
+      },
+      "detail": {
+        "title": "Factura"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "serie": "Serie",
+      "noFisico": "No Fisico",
+      "fecha": "Fecha",
+      "subtotal": "Subtotal",
+      "impuesto": "Impuesto",
+      "impuestoCero": "Impuesto Cero",
+      "descuento": "Descuento",
+      "total": "Total",
+      "porcentajeImpuesto": "Porcentaje Impuesto",
+      "cedula": "Cedula",
+      "direccion": "Direccion",
+      "email": "Email",
+      "estado": "Estado",
+      "detalles": "Detalles",
+      "centro": "Centro",
+      "cliente": "Cliente"
+    }
+  }
+}

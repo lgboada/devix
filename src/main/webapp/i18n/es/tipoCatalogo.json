@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "tipoCatalogo": {
+      "home": {
+        "title": "Tipo Catalogos",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Tipo Catalogo",
+        "createOrEditLabel": "Crear o editar Tipo Catalogo",
+        "notFound": "Ningún Tipo Catalogos encontrado"
+      },
+      "created": "Un nuevo Tipo Catalogo ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tipo Catalogo ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tipo Catalogo ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tipo Catalogo {{ id }}?"
+      },
+      "detail": {
+        "title": "Tipo Catalogo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "categoria": "Categoria",
+      "catalogo": "Catalogo"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (empleado(); as empleadoRef) {
+      <div>
+        <h2 data-cy="empleadoDetailsHeading"><span jhiTranslate="devixApp.empleado.detail.title">Empleado</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ empleadoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.empleado.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ empleadoRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.empleado.dni">Dni</span></dt>
+          <dd>
+            <span>{{ empleadoRef.dni }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.empleado.nombre">Nombre</span></dt>
+          <dd>
+            <span>{{ empleadoRef.nombre }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.empleado.contacto">Contacto</span></dt>
+          <dd>
+            <span>{{ empleadoRef.contacto }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.empleado.email">Email</span></dt>
+          <dd>
+            <span>{{ empleadoRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.empleado.pathImagen">Path Imagen</span></dt>
+          <dd>
+            <span>{{ empleadoRef.pathImagen }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.empleado.telefono">Telefono</span></dt>
+          <dd>
+            <span>{{ empleadoRef.telefono }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/empleado', empleadoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

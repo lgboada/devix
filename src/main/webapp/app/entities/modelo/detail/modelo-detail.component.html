@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (modelo(); as modeloRef) {
+      <div>
+        <h2 data-cy="modeloDetailsHeading"><span jhiTranslate="devixApp.modelo.detail.title">Modelo</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ modeloRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.modelo.noCia">No Cia</span></dt>
+          <dd>
+            <span>{{ modeloRef.noCia }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.modelo.nombre">Nombre</span></dt>
+          <dd>
+            <span>{{ modeloRef.nombre }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.modelo.pathImagen">Path Imagen</span></dt>
+          <dd>
+            <span>{{ modeloRef.pathImagen }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.modelo.marca">Marca</span></dt>
+          <dd>
+            @if (modelo()!.marca) {
+              <div>
+                <a [routerLink]="['/marca', modelo()!.marca?.id, 'view']">{{ modeloRef.marca?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/modelo', modeloRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

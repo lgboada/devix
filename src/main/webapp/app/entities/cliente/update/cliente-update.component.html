@@ -1,0 +1,260 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-cliente-heading" data-cy="ClienteCreateUpdateHeading" jhiTranslate="devixApp.cliente.home.createOrEditLabel">
+        Crear o editar Cliente
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="devixApp.cliente.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let noCiaRef = editForm.get('noCia')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_noCia" jhiTranslate="devixApp.cliente.noCia">No Cia</label>
+          <input type="number" class="form-control" name="noCia" id="field_noCia" data-cy="noCia" formControlName="noCia" />
+          @if (noCiaRef.invalid && (noCiaRef.dirty || noCiaRef.touched)) {
+            <div>
+              @if (editForm.get('noCia')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('noCia')?.errors?.number" jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let dniRef = editForm.get('dni')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_dni" jhiTranslate="devixApp.cliente.dni">Dni</label>
+          <input type="text" class="form-control" name="dni" id="field_dni" data-cy="dni" formControlName="dni" />
+          @if (dniRef.invalid && (dniRef.dirty || dniRef.touched)) {
+            <div>
+              @if (editForm.get('dni')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let nombresRef = editForm.get('nombres')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_nombres" jhiTranslate="devixApp.cliente.nombres">Nombres</label>
+          <input type="text" class="form-control" name="nombres" id="field_nombres" data-cy="nombres" formControlName="nombres" />
+          @if (nombresRef.invalid && (nombresRef.dirty || nombresRef.touched)) {
+            <div>
+              @if (editForm.get('nombres')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let apellidosRef = editForm.get('apellidos')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_apellidos" jhiTranslate="devixApp.cliente.apellidos">Apellidos</label>
+          <input type="text" class="form-control" name="apellidos" id="field_apellidos" data-cy="apellidos" formControlName="apellidos" />
+          @if (apellidosRef.invalid && (apellidosRef.dirty || apellidosRef.touched)) {
+            <div>
+              @if (editForm.get('apellidos')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nombreComercial" jhiTranslate="devixApp.cliente.nombreComercial">Nombre Comercial</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nombreComercial"
+            id="field_nombreComercial"
+            data-cy="nombreComercial"
+            formControlName="nombreComercial"
+          />
+        </div>
+
+        @let emailRef = editForm.get('email')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_email" jhiTranslate="devixApp.cliente.email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('email')?.errors?.pattern) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Email' }"
+                  >Este campo debe seguir el patrón Email.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_telefono" jhiTranslate="devixApp.cliente.telefono">Telefono</label>
+          <input type="text" class="form-control" name="telefono" id="field_telefono" data-cy="telefono" formControlName="telefono" />
+        </div>
+
+        @let fechaNacimientoRef = editForm.get('fechaNacimiento')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_fechaNacimiento" jhiTranslate="devixApp.cliente.fechaNacimiento">Fecha Nacimiento</label>
+          <div class="input-group">
+            <input
+              id="field_fechaNacimiento"
+              data-cy="fechaNacimiento"
+              type="text"
+              class="form-control"
+              name="fechaNacimiento"
+              ngbDatepicker
+              #fechaNacimientoDp="ngbDatepicker"
+              formControlName="fechaNacimiento"
+            />
+            <button type="button" class="btn btn-secondary" (click)="fechaNacimientoDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+          @if (fechaNacimientoRef.invalid && (fechaNacimientoRef.dirty || fechaNacimientoRef.touched)) {
+            <div>
+              @if (editForm.get('fechaNacimiento')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let sexoRef = editForm.get('sexo')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_sexo" jhiTranslate="devixApp.cliente.sexo">Sexo</label>
+          <input type="text" class="form-control" name="sexo" id="field_sexo" data-cy="sexo" formControlName="sexo" />
+          @if (sexoRef.invalid && (sexoRef.dirty || sexoRef.touched)) {
+            <div>
+              @if (editForm.get('sexo')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let estadoCivilRef = editForm.get('estadoCivil')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_estadoCivil" jhiTranslate="devixApp.cliente.estadoCivil">Estado Civil</label>
+          <input
+            type="text"
+            class="form-control"
+            name="estadoCivil"
+            id="field_estadoCivil"
+            data-cy="estadoCivil"
+            formControlName="estadoCivil"
+          />
+          @if (estadoCivilRef.invalid && (estadoCivilRef.dirty || estadoCivilRef.touched)) {
+            <div>
+              @if (editForm.get('estadoCivil')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let tipoSangreRef = editForm.get('tipoSangre')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoSangre" jhiTranslate="devixApp.cliente.tipoSangre">Tipo Sangre</label>
+          <input
+            type="text"
+            class="form-control"
+            name="tipoSangre"
+            id="field_tipoSangre"
+            data-cy="tipoSangre"
+            formControlName="tipoSangre"
+          />
+          @if (tipoSangreRef.invalid && (tipoSangreRef.dirty || tipoSangreRef.touched)) {
+            <div>
+              @if (editForm.get('tipoSangre')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let pathImagenRef = editForm.get('pathImagen')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_pathImagen" jhiTranslate="devixApp.cliente.pathImagen">Path Imagen</label>
+          <input
+            type="text"
+            class="form-control"
+            name="pathImagen"
+            id="field_pathImagen"
+            data-cy="pathImagen"
+            formControlName="pathImagen"
+          />
+          @if (pathImagenRef.invalid && (pathImagenRef.dirty || pathImagenRef.touched)) {
+            <div>
+              @if (editForm.get('pathImagen')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoCliente" jhiTranslate="devixApp.cliente.tipoCliente">Tipo Cliente</label>
+          <select
+            class="form-control"
+            id="field_tipoCliente"
+            data-cy="tipoCliente"
+            name="tipoCliente"
+            formControlName="tipoCliente"
+            [compareWith]="compareTipoCliente"
+          >
+            <option [ngValue]="null"></option>
+            @for (tipoClienteOption of tipoClientesSharedCollection; track $index) {
+              <option [ngValue]="tipoClienteOption">{{ tipoClienteOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_ciudad" jhiTranslate="devixApp.cliente.ciudad">Ciudad</label>
+          <select
+            class="form-control"
+            id="field_ciudad"
+            data-cy="ciudad"
+            name="ciudad"
+            formControlName="ciudad"
+            [compareWith]="compareCiudad"
+          >
+            <option [ngValue]="null"></option>
+            @for (ciudadOption of ciudadsSharedCollection; track $index) {
+              <option [ngValue]="ciudadOption">{{ ciudadOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

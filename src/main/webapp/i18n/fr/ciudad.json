@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "ciudad": {
+      "home": {
+        "title": "Ciudads",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Ciudad",
+        "createOrEditLabel": "Créer ou éditer un Ciudad",
+        "notFound": "Aucun Ciudad trouvé"
+      },
+      "created": "Un nouveau Ciudad a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Ciudad avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Ciudad avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Ciudad {{ id }} ?"
+      },
+      "detail": {
+        "title": "Ciudad"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "cliente": "Cliente",
+      "provincia": "Provincia"
+    }
+  }
+}

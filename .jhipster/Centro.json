@@ -1,0 +1,46 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214121"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Centro",
+  "relationships": [
+    {
+      "otherEntityName": "factura",
+      "otherEntityRelationshipName": "centro",
+      "relationshipName": "factura",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "evento",
+      "otherEntityRelationshipName": "centro",
+      "relationshipName": "evento",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "compania",
+      "otherEntityRelationshipName": "centros",
+      "relationshipName": "compania",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

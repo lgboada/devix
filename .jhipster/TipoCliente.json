@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214122"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TipoCliente",
+  "relationships": [
+    {
+      "otherEntityName": "cliente",
+      "otherEntityRelationshipName": "tipoCliente",
+      "relationshipName": "cliente",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

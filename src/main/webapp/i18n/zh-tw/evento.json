@@ -1,0 +1,42 @@
+{
+  "devixApp": {
+    "evento": {
+      "home": {
+        "title": "Eventos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Evento",
+        "createOrEditLabel": "建立或編輯 Evento",
+        "notFound": "No Eventos found"
+      },
+      "created": "新的 Evento 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Evento 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Evento 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Evento {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Evento"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "fecha": "Fecha",
+      "estado": "Estado",
+      "motivoConsulta": "Motivo Consulta",
+      "tratamiento": "Tratamiento",
+      "indicaciones": "Indicaciones",
+      "diagnostico1": "Diagnostico 1",
+      "diagnostico2": "Diagnostico 2",
+      "diagnostico3": "Diagnostico 3",
+      "diagnostico4": "Diagnostico 4",
+      "diagnostico5": "Diagnostico 5",
+      "diagnostico6": "Diagnostico 6",
+      "diagnostico7": "Diagnostico 7",
+      "observacion": "Observacion",
+      "documento": "Documento",
+      "tipoEvento": "Tipo Evento",
+      "centro": "Centro",
+      "cliente": "Cliente"
+    }
+  }
+}

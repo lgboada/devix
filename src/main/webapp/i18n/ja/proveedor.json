@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "proveedor": {
+      "home": {
+        "title": "Proveedors",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Proveedor の作成",
+        "createOrEditLabel": "Proveedorの作成または編集",
+        "notFound": "Proveedors が見つかりません。"
+      },
+      "created": "新しい Proveedor がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Proveedor が更新されました。",
+      "deleted": "ID {{ param }} の Proveedor が削除されました。",
+      "delete": {
+        "question": "Proveedor {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Proveedor"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "Dni",
+      "nombre": "Nombre",
+      "contacto": "Contacto",
+      "email": "Email",
+      "pathImagen": "Path Imagen",
+      "telefono": "Telefono",
+      "productos": "Productos"
+    }
+  }
+}

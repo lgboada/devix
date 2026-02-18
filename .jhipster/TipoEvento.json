@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214136"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TipoEvento",
+  "relationships": [
+    {
+      "otherEntityName": "evento",
+      "otherEntityRelationshipName": "tipoEvento",
+      "relationshipName": "evento",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

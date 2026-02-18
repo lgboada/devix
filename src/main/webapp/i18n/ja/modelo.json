@@ -1,0 +1,28 @@
+{
+  "devixApp": {
+    "modelo": {
+      "home": {
+        "title": "Modelos",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Modelo の作成",
+        "createOrEditLabel": "Modeloの作成または編集",
+        "notFound": "Modelos が見つかりません。"
+      },
+      "created": "新しい Modelo がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Modelo が更新されました。",
+      "deleted": "ID {{ param }} の Modelo が削除されました。",
+      "delete": {
+        "question": "Modelo {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Modelo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre",
+      "pathImagen": "Path Imagen",
+      "producto": "Producto",
+      "marca": "Marca"
+    }
+  }
+}

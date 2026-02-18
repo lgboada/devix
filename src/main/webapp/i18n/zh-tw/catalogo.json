@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "catalogo": {
+      "home": {
+        "title": "Catalogos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "建立一筆新的 Catalogo",
+        "createOrEditLabel": "建立或編輯 Catalogo",
+        "notFound": "No Catalogos found"
+      },
+      "created": "新的 Catalogo 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Catalogo 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Catalogo 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Catalogo {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Catalogo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion1": "Descripcion 1",
+      "descripcion2": "Descripcion 2",
+      "estado": "Estado",
+      "orden": "Orden",
+      "texto1": "Texto 1",
+      "texto2": "Texto 2",
+      "tipoCatalogo": "Tipo Catalogo"
+    }
+  }
+}

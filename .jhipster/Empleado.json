@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20260205214134"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "noCia",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dni",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "contacto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique", "pattern"],
+      "fieldValidateRulesPattern": "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+    },
+    {
+      "fieldName": "pathImagen",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "telefono",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Empleado",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

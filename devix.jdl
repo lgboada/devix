@@ -1,0 +1,225 @@
+
+entity Pais {
+	noCia Long required,
+    descripcion String required
+}
+
+entity Provincia {
+	noCia Long required,
+    descripcion String required
+}
+
+entity Ciudad {
+	noCia Long required,
+    descripcion String required
+}
+
+
+entity Compania {
+    noCia Long required,
+    dni String required unique,
+    nombre String required,
+    direccion String required,
+    email String required unique pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/),
+    telefono String required,
+    pathImage String required
+}
+
+entity Centro {
+	noCia Long required,
+    descripcion String required
+}
+
+entity TipoCliente {
+	noCia Long required,
+    descripcion String required
+}
+
+entity Factura {
+	noCia Long required,
+    serie String required,
+    noFisico String required,
+    fecha Instant required,
+    subtotal Double required min(0),
+    impuesto Double required min(0),
+    impuestoCero Double required min(0),
+    descuento Double required min(0),
+    total Double required min(0),
+    porcentajeImpuesto Double required min(0),
+    cedula String required,
+    direccion String required,
+    email String required,
+    estado String required
+}
+
+entity DetalleFactura {
+	noCia Long required,
+    cantidad Integer required min(1),
+    precioUnitario Double required min(0),
+    subtotal Double required min(0),
+    descuento Double required min(0),
+    impuesto Double required min(0),
+    total Double required min(0)
+}
+
+
+entity Cliente {
+    noCia Long required,
+    dni String required unique,
+    nombres String required,
+    apellidos String required,
+    nombreComercial String,
+    email String required unique pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/),
+    telefono String ,
+    fechaNacimiento LocalDate required,
+    sexo String required,
+    estadoCivil String required,
+    tipoSangre String required,
+    pathImagen String required
+}
+
+
+entity TipoDireccion {
+	noCia Long required,
+    descripcion String required
+}
+
+entity Direccion {
+	noCia Long required,
+    descripcion String required,
+    pais String,
+    provincia String 
+}
+
+entity TipoCatalogo {
+	noCia Long required,
+    descripcion String required,
+    categoria String required
+}
+
+entity Catalogo {
+	noCia Long required,
+    descripcion1 String required,
+    descripcion2 String,
+    estado String,
+    orden Integer,
+    texto1 String ,
+    texto2 String 
+}
+
+
+entity TipoProducto {
+	noCia Long required,
+    nombre String required unique
+}
+
+entity Marca {
+	noCia Long required,
+    nombre String required unique,
+    pathImagen String required
+}
+entity Modelo {
+	noCia Long required,
+    nombre String required unique,
+    pathImagen String required
+}
+
+entity Producto {
+	noCia Long required,
+    nombre String required,
+    descripcion String,
+    precio BigDecimal required min(0),
+    stock Integer required min(0),
+    pathImagen String required,
+    codigo String required unique
+}
+
+entity Empleado {
+    noCia Long required,
+    dni String required,
+    nombre String required,
+    contacto String,
+    email String required unique pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/),
+    pathImagen String required,
+    telefono String required
+}
+
+
+entity Proveedor {
+    noCia Long required,
+    dni String required,
+    nombre String required,
+    contacto String,
+    email String required unique pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/),
+    pathImagen String required,
+    telefono String required
+}
+
+entity TipoEvento {
+	noCia Long required,
+    nombre String required unique
+}
+
+
+entity Evento {
+    noCia Long required,
+    descripcion String required,
+    fecha Instant required,
+    estado String,
+    motivoConsulta String,
+    tratamiento String,
+    indicaciones String,
+    diagnostico1 String,
+    diagnostico2 String,
+    diagnostico3 String,
+    diagnostico4 String,
+    diagnostico5 String,
+    diagnostico6 String,
+    diagnostico7 String,
+    observacion String
+    
+}
+
+entity Documento {
+	noCia Long required,
+    tipo String,
+    observacion String,
+    fechaCreacion Instant,
+    fechaVencimiento Instant,
+    path String required
+}
+
+
+relationship OneToMany {
+    Compania{centros} to Centro{compania},
+    Pais to Provincia{pais},
+    Provincia to Ciudad{provincia},
+    TipoCatalogo to Catalogo{tipoCatalogo},
+    TipoDireccion to Direccion{tipoDireccion},
+    TipoCliente to Cliente{tipoCliente},
+    Ciudad to Cliente{ciudad},
+    Cliente{direcciones} to Direccion{cliente},
+    Centro to Factura{centro},
+    Cliente{facturas} to Factura{cliente},
+    Factura{detalles} to DetalleFactura{factura},
+    Producto to DetalleFactura{producto} ,
+    Marca{modelos} to Modelo{marca},
+    Modelo to Producto{modelo},
+    TipoProducto to Producto{tipoProducto},
+    Proveedor{productos} to Producto{proveedor},
+    TipoEvento to Evento{tipoEvento},
+    Centro to Evento{centro},
+    Cliente to Evento{cliente},
+    Cliente to Documento{cliente},
+    Evento to Documento{evento}
+}
+
+// ==========================
+// CONFIGURACIONES ADICIONALES
+// ==========================
+paginate Factura, Cliente, Producto with pagination
+paginate DetalleFactura with infinite-scroll
+dto * with mapstruct
+service * with serviceClass
+filter *
+

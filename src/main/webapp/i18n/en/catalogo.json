@@ -1,0 +1,31 @@
+{
+  "devixApp": {
+    "catalogo": {
+      "home": {
+        "title": "Catalogos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Catalogo",
+        "createOrEditLabel": "Create or edit a Catalogo",
+        "notFound": "No Catalogos found"
+      },
+      "created": "A new Catalogo is created with identifier {{ param }}",
+      "updated": "A Catalogo is updated with identifier {{ param }}",
+      "deleted": "A Catalogo is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Catalogo {{ id }}?"
+      },
+      "detail": {
+        "title": "Catalogo"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion1": "Descripcion 1",
+      "descripcion2": "Descripcion 2",
+      "estado": "Estado",
+      "orden": "Orden",
+      "texto1": "Texto 1",
+      "texto2": "Texto 2",
+      "tipoCatalogo": "Tipo Catalogo"
+    }
+  }
+}

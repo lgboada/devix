@@ -1,0 +1,134 @@
+<div>
+  <h2 id="page-heading" data-cy="DireccionHeading">
+    <span jhiTranslate="devixApp.direccion.home.title">Direccions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.direccion.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-direccion"
+        [routerLink]="['/direccion/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.direccion.home.createLabel">Crear nuevo Direccion</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (direccions().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.direccion.home.notFound">Ningún Direccions encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.direccion.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descripcion">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.direccion.descripcion">Descripcion</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pais">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.direccion.pais">Pais</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="provincia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.direccion.provincia">Provincia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tipoDireccion.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.direccion.tipoDireccion">Tipo Direccion</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cliente.id">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.direccion.cliente">Cliente</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (direccion of direccions(); track trackId(direccion)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/direccion', direccion.id, 'view']">{{ direccion.id }}</a>
+              </td>
+              <td>{{ direccion.noCia }}</td>
+              <td>{{ direccion.descripcion }}</td>
+              <td>{{ direccion.pais }}</td>
+              <td>{{ direccion.provincia }}</td>
+              <td>
+                @if (direccion.tipoDireccion) {
+                  <div>
+                    <a [routerLink]="['/tipo-direccion', direccion.tipoDireccion.id, 'view']">{{ direccion.tipoDireccion.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (direccion.cliente) {
+                  <div>
+                    <a [routerLink]="['/cliente', direccion.cliente.id, 'view']">{{ direccion.cliente.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/direccion', direccion.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/direccion', direccion.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(direccion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

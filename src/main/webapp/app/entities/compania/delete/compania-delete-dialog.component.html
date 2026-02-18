@@ -1,0 +1,24 @@
+@if (compania) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(compania.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="companiaDeleteDialogHeading" jhiTranslate="entity.delete.title">Confirmar operación de borrado</h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p id="jhi-delete-compania-heading" jhiTranslate="devixApp.compania.delete.question" [translateValues]="{ id: compania.id }">
+        ¿Seguro que quiere eliminar Compania {{ compania.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+      </button>
+
+      <button id="jhi-confirm-delete-compania" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Eliminar</span>
+      </button>
+    </div>
+  </form>
+}

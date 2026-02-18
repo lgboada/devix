@@ -1,0 +1,29 @@
+{
+  "devixApp": {
+    "direccion": {
+      "home": {
+        "title": "Direccions",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Direccion",
+        "createOrEditLabel": "Créer ou éditer un Direccion",
+        "notFound": "Aucun Direccion trouvé"
+      },
+      "created": "Un nouveau Direccion a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Direccion avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Direccion avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Direccion {{ id }} ?"
+      },
+      "detail": {
+        "title": "Direccion"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "descripcion": "Descripcion",
+      "pais": "Pais",
+      "provincia": "Provincia",
+      "tipoDireccion": "Tipo Direccion",
+      "cliente": "Cliente"
+    }
+  }
+}
