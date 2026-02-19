@@ -48,8 +48,7 @@ public class Compania implements Serializable {
     @Column(name = "telefono", nullable = false)
     private String telefono;
 
-    @NotNull
-    @Column(name = "path_image", nullable = false)
+    @Column(name = "path_image", nullable = true)
     private String pathImage;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "compania")

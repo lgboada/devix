@@ -168,6 +168,10 @@ spring:
         size: 2
   thymeleaf:
     mode: HTML
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   output:
     ansi:
       console-available: true
@@ -232,4 +236,6 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+app:
+  files:
+    upload-dir: uploads

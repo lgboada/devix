@@ -63,7 +63,7 @@ export class CompaniaFormService {
         validators: [Validators.required],
       }),
       pathImage: new FormControl(companiaRawValue.pathImage, {
-        validators: [Validators.required],
+        validators: [], // pathImage no es obligatorio
       }),
     });
   }
