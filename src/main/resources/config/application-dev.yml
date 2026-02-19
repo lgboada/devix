@@ -97,4 +97,4 @@ jhipster:
 
 app:
   files:
-    upload-dir: uploads
+    upload-dir: C:/proyectos_devix/devix/uploads

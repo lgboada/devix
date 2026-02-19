@@ -1,0 +1,243 @@
+	PROCEDURE act_fecha_detalle_vehi_de_tde is
+
+	CURSOR A_CUR IS 
+	SELECT decode(RESERVA_CEDULA,'1791945069001','01','1790009459001','01','0993144029001','TY','1891709478001','L2') NO_CIA, FECHA_SOL_PDI, SVINCODI,FECHA_SOL_PDI_MOD
+	FROM SVFINVEN@TMC1.WORLD
+	--FROM SVFINVEN
+	WHERE RESERVA_CEDULA IN ('1791945069001','1790009459001','0993144029001','1891709478001')
+	AND SVINSTOCK = 1;
+
+
+	--cursor para recuperar la fecha de llegada del stock de tde para cl
+	CURSOR L2_CUR (P_CHASIS IN VARCHAR2) IS 
+	SELECT decode(RESERVA_CEDULA,'1891709478001','L2') NO_CIA, FECHA_SOL_PDI, SVINCODI
+	FROM SVFINVEN@TMC1.WORLD
+	--FROM SVFINVEN
+	WHERE RESERVA_CEDULA = '1891709478001'
+	AND SVINCODI = P_CHASIS
+	AND SVINSTOCK = 1;
+
+	--cursor para recuperar la fecha de llegada del transito de tde para cl
+	CURSOR L2_CUR_TRANSITO_TDE IS 
+	SELECT a.CHASIS,a.FECHA_LLEGADA,a.PEDIDO_NO,a.LINEA_NO,a.MASTER,a.SFX, decode(a.CEDULA,'1891709478001','L2') NO_CIA 
+	from VEH_DETALLE_VEHICULOS@TMC1.WORLD a 
+	--from VEH_DETALLE_VEHICULOS
+	WHERE a.CEDULA ='1891709478001'
+    AND a.anio_de_fabricacion between to_char(sysdate,'yyyy')-1 and to_char(sysdate,'yyyy')+1
+    and a.anulado <>'S'
+	AND a.CHASIS NOT IN (SELECT i.SVINCODI FROM SVFINVEN@TMC1.WORLD i WHERE i.NO_CIA='TE' and i.svincodi = a.chasis)
+	;
+
+	CURSOR B_CUR(P_NO_CIA IN VARCHAR2, P_CHASIS IN VARCHAR2) IS 
+	SELECT NVL(FECHA_ASIGNACION,TO_DATE('01-ENE-2000','DD-MON-RRRR')) FECHA_ASIGNACION
+	FROM VEH_DETALLE_VEHICULOS
+	WHERE NO_CIA = P_NO_CIA
+	  AND CHASIS = P_CHASIS;
+
+	--Cursor para recuperar los usuarios del grupo
+	Cursor usergrupo_cur is
+	 SELECT A.USUARIO,A.EMAIL MAIL_NOR,B.EMAIL EMAIL, A.E_MAIL MAIL_CEL,B.CELULAR
+	   FROM USUARIOS_SIS A, SIS_MAIL_USUARIOS B
+	  WHERE A.USUARIO    = B.USUARIO
+		AND B.GRUPO_MAIL = 'VEHAC'
+		AND (B.EMAIL = 'S' OR B.CELULAR = 'S')
+		AND NVL(A.ESTADO,'A') <> 'I';
+
+
+	-- CURSOR PARA ACTUALIZAR LOS DATOS DE LA UBICACION DE LOS VEHICULOS DE CASABACA QUE NO ESTAN EN STOCK
+	CURSOR E_CUR IS
+	SELECT ROWID, NO_CIA,CHASIS , MASTER , SFX
+	FROM VEH_DETALLE_VEHICULOS A
+	WHERE A.NO_CIA IN ('01','50','TY')
+	AND A.GENERADO_STOCK = 'N'
+	AND A.CHASIS IS NOT NULL
+    and a.chasis not in (select i.svincodi from svfinven i where i.no_cia=a.no_cia and i.svincodi=a.chasis)
+    and a.chasis not in (select f.chasis from fac_ventas_vehiculos f where f.no_cia=a.no_cia and f.chasis=a.chasis)
+    and a.pertenece_a not in ('H','I','L')
+    AND a.anio_de_fabricacion between to_char(sysdate,'yyyy')-1 and to_char(sysdate,'yyyy')+1
+    and a.anulado <>'S';
+
+
+	W_FECHA_SOL_PDI DATE;
+	W_FECHA_SOL_PDI_MOD DATE;
+	W_NO_CIA VARCHAR2(2);
+	W_FECHA_ASIGNACION DATE;
+	w_linea number := 0;
+	vc_archivo      varchar2(10000);
+	wmail                 USUARIOS_SIS.EMAIL%TYPE;
+	w_ubicacion varchar2(50);
+	FECHA_LLEGADA_STOCK DATE;
+	FECHA_LLEGADA_TRANSITO DATE;
+	CHASIS_TRANSITO varchar2(50);
+	W_CHASIS_T varchar2(30);
+	W_FECHA_LLEGADA_T DATE;
+	W_MASTER_T varchar2(50);
+	W_PEDIDO_NO_T varchar2(20);
+	W_LINEA_NO_T varchar2(3);
+	W_SFX_T varchar2(5);
+
+	BEGIN
+
+	 vc_archivo := '.'||chr(10);
+	 vc_archivo := vc_archivo||'Listado de Vehiculos Actualizados desde TDE en Casabaca '||chr(10);
+	 vc_archivo := vc_archivo||'---------------------------------------------------------------------------------'||chr(10);
+	 w_linea := 3;
+	 FOR A IN A_CUR LOOP
+		W_FECHA_SOL_PDI := A.FECHA_SOL_PDI;
+		W_FECHA_SOL_PDI_MOD := A.FECHA_SOL_PDI_MOD;
+		W_NO_CIA := A.NO_CIA;
+
+		W_FECHA_ASIGNACION := NULL;
+		-- VALIDAMOS EL REGISTRO EN VEH_DETALLE_VEHICULOS
+		FOR B IN B_CUR(A.NO_CIA, A.SVINCODI) LOOP
+		  W_FECHA_ASIGNACION := B.FECHA_ASIGNACION;
+		END LOOP;
+		
+		-- VALIDAMOS EL REGISTRO EN VEH_DETALLE_VEHICULOS
+		FOR L2 IN L2_CUR (A.SVINCODI)LOOP
+		  FECHA_LLEGADA_STOCK := L2.FECHA_SOL_PDI;
+		END LOOP;
+
+		-- VALIDAMOS EL REGISTRO EN VEH_DETALLE_VEHICULOS
+		
+		IF W_FECHA_SOL_PDI_MOD IS NOT NULL THEN
+			W_FECHA_SOL_PDI := W_FECHA_SOL_PDI_MOD;
+		END IF;
+		
+		 IF A.NO_CIA = 'L2' THEN
+			IF FECHA_LLEGADA_STOCK IS NULL THEN
+				UPDATE VEH_DETALLE_VEHICULOS
+				SET FECHA_LLEGADA = trunc(sysdate + 15)
+				WHERE NO_CIA = A.NO_CIA
+				AND CHASIS = A.SVINCODI;
+				
+				COMMIT;
+				
+			END IF;
+			IF FECHA_LLEGADA_STOCK IS NOT NULL THEN
+				UPDATE VEH_DETALLE_VEHICULOS
+				SET FECHA_LLEGADA = trunc(FECHA_LLEGADA_STOCK + 1)
+				WHERE NO_CIA = A.NO_CIA
+				AND CHASIS = A.SVINCODI;
+				
+				COMMIT;
+				   	
+			END IF;
+			 
+		  END IF;
+		
+		IF TRUNC(W_FECHA_ASIGNACION) <> TRUNC(W_FECHA_SOL_PDI) THEN
+			  
+			  w_linea := w_linea + 1;
+			  
+			UPDATE VEH_DETALLE_VEHICULOS
+			   SET FECHA_ASIGNACION = W_FECHA_SOL_PDI
+			 WHERE NO_CIA = A.NO_CIA
+			   AND CHASIS = A.SVINCODI;
+
+			COMMIT;
+				
+			if(A.NO_CIA = '01') then
+				EMAIL_PCK.mail_directo('dmontenegro@casabaca.com',  null, 'Act. de Fecha desde TDE en inventario de CASABACA', 'Chasis : '||A.SVINCODI||'  Con la fecha : '||W_FECHA_ASIGNACION);
+				-- EMAIL_PCK.mail_directo('jcguanoluisa@casabaca.com', null, 'Act. de Fecha desde TDE en inventario de CASABACA', 'Chasis : '||A.SVINCODI||'  Con la fecha : '||W_FECHA_ASIGNACION);
+			end if;
+
+			
+												 
+			vc_archivo := vc_archivo||'Chasis : '||A.SVINCODI||'  Con la fecha : '||W_FECHA_ASIGNACION||chr(10);
+				 
+			if w_linea >= 30 then
+
+				 -- enviamos el email;
+				 vc_archivo := '.'||chr(10);
+				 vc_archivo := vc_archivo||'Listado de Vehiculos Actualizados desde TDE '||chr(10);
+				 vc_archivo := vc_archivo||'---------------------------------------------------------------------------------'||chr(10);
+				 w_linea := 3;
+				 for mai in usergrupo_cur loop 
+					  if mai.email = 'S' then
+						   wmail := mai.MAIL_NOR;
+						  if wmail is not null then
+						   email_pck.mail_usuarios(mai.usuario,null,'Vehiculos actualizados desde TDE',vc_archivo,'50');
+						end if;
+					  end if;
+				 end loop;     
+
+			end if;
+		END IF;
+	 END LOOP;  
+	 COMMIT;
+	  
+	 if w_linea > 3 then 
+		for mai in usergrupo_cur loop 
+		  if mai.email = 'S' then
+			 wmail := mai.MAIL_NOR;
+			 if wmail is not null then
+				 email_pck.mail_usuarios(mai.usuario,null,'Vehiculos actualizados desde TDE',vc_archivo,'50');
+			 end if;
+		   end if;
+		end loop;     
+	 end if;
+		
+	 -- ACTUALIZAMOS LA UBICACION
+	 FOR E IN E_CUR LOOP
+		begin
+		  w_ubicacion := null;
+		  
+		  SELECT DISTINCT UBICACION 
+			INTO w_ubicacion
+			FROM VEH_DETALLE_VEHICULOS@TMC1.WORLD
+			-- FROM VEH_DETALLE_VEHICULOS
+		 WHERE NO_CIA = 'TE'
+		   AND CHASIS = E.CHASIS;
+		  
+		  UPDATE VEH_DETALLE_VEHICULOS
+			 SET UBICACION = w_ubicacion
+		   WHERE ROWID = E.ROWID;
+		   
+		exception when no_data_found then
+			 null;
+			 
+		end;
+		
+	 END LOOP;
+
+	FOR F IN L2_CUR_TRANSITO_TDE LOOP
+			W_FECHA_LLEGADA_T := F.FECHA_LLEGADA;
+			W_CHASIS_T := F.CHASIS;
+			W_MASTER_T := F.MASTER;
+			W_PEDIDO_NO_T := F.PEDIDO_NO;
+			W_LINEA_NO_T := F.LINEA_NO;
+			W_SFX_T := F.SFX;
+				
+			IF	F.CHASIS IS NULL THEN
+
+				UPDATE VEH_DETALLE_VEHICULOS
+				SET FECHA_LLEGADA = NULL
+				WHERE NO_CIA ='L2'
+				AND PEDIDO_NO = W_PEDIDO_NO_T
+				AND LINEA_NO = W_LINEA_NO_T
+				AND SFX = W_SFX_T
+				and MASTER = W_MASTER_T;
+										
+				COMMIT;
+					
+			END IF;
+			IF	F.CHASIS IS NOT NULL THEN
+				UPDATE VEH_DETALLE_VEHICULOS
+				SET FECHA_LLEGADA = trunc(sysdate + 30)
+				WHERE NO_CIA ='L2'
+				AND CHASIS = W_CHASIS_T
+				AND PEDIDO_NO = W_PEDIDO_NO_T
+				AND LINEA_NO = W_LINEA_NO_T
+				AND SFX = W_SFX_T
+				and MASTER = W_MASTER_T;
+
+				COMMIT;
+				
+			END IF;
+
+	END LOOP;
+
+	COMMIT;
+
+	END;
