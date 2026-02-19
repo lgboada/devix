@@ -1,0 +1,126 @@
+Estoy trabajando con jhipster, keycloak, postgres, ya he levantado todo, 
+y configurado los roles USER y ADMIN y he generado,
+desde un JDL las interfaces graficas, 
+ahora lo que quiero es subir mi codigo a un repositorio git, 
+y que pueda un modelo de IA, conectarse a mi repositorio y 
+que me ayude a generar codigo con rapidez, pantallas tipo 
+maestro detalle como una factura, ya tengo instalado ollama, 
+y podria trabajar con visualstudio code, ya instale ollama y 
+baje el modelo qwen3-coder:30b, ya tengo tambien conectado mi proyecto a mi repositorio git 
+https://github.com/lgboada/devix,  ahora quisiera poder interactuar con una IA para seguir avanzando
+en el desarrollo, que pasos debo seguir?
+
+
+Actúa como un arquitecto senior especializado en JHipster, Spring Boot, Angular 17+, Keycloak y aplicaciones ERP empresariales.
+
+Analiza el proyecto actual antes de generar código y respeta estrictamente su estructura, convenciones, paquetes, naming, seguridad y estilo de JHipster.
+
+NO regeneres el proyecto completo.
+NO modifiques configuraciones globales innecesariamente.
+Genera únicamente los cambios necesarios para implementar el módulo solicitado.
+
+### OBJETIVO
+Implementar un módulo de FACTURACIÓN con estructura maestro–detalle:
+
+Entidad principal: Invoice (Factura)
+Entidad detalle: InvoiceLine (Detalle de factura)
+
+Relación: OneToMany (Invoice → InvoiceLine)
+
+### BACKEND — SPRING BOOT
+
+Generar:
+
+1) Entidades JPA:
+- Invoice:
+  - id (Long)
+  - invoiceNumber (String, único)
+  - date (LocalDate)
+  - customerName (String)
+  - subtotal (BigDecimal)
+  - tax (BigDecimal)
+  - total (BigDecimal)
+  - status (String o Enum)
+  - relación OneToMany con InvoiceLine (cascade ALL, orphanRemoval true)
+
+- InvoiceLine:
+  - id (Long)
+  - productName (String)
+  - quantity (Integer)
+  - unitPrice (BigDecimal)
+  - discount (BigDecimal)
+  - lineTotal (BigDecimal)
+  - ManyToOne hacia Invoice
+
+2) DTOs y Mappers (MapStruct)
+
+3) Repositories Spring Data JPA
+
+4) Services con lógica de negocio:
+- Recalcular subtotal, impuesto y total al guardar
+- Validaciones básicas
+
+5) REST Controllers:
+- CRUD completo de Invoice
+- Endpoint para obtener factura con líneas
+- Paginación estándar JHipster
+
+6) Validaciones Bean Validation
+
+7) Seguridad:
+- Solo ROLE_ADMIN puede crear/editar/eliminar
+- ROLE_USER solo lectura
+
+8) Tests básicos (si el proyecto usa testing)
+
+---
+
+### FRONTEND — ANGULAR 17+ (JHIPSTER)
+
+Generar una pantalla maestro–detalle funcional:
+
+Componente InvoiceUpdateComponent:
+
+Formulario principal (Reactive Forms):
+- invoiceNumber
+- date
+- customerName
+- status
+
+Detalle como tabla editable con FormArray:
+Columnas:
+- productName
+- quantity
+- unitPrice
+- discount
+- lineTotal (calculado)
+
+Funcionalidades:
+- Agregar/eliminar líneas
+- Cálculo automático de totales al cambiar valores
+- Mostrar subtotal, impuesto y total en tiempo real
+- Validaciones en formulario
+- Integración con servicios REST generados
+- Navegación compatible con routing JHipster
+
+Estilo consistente con componentes existentes.
+
+---
+
+### REGLAS IMPORTANTES
+
+- Seguir arquitectura estándar de JHipster
+- Mantener consistencia con el código existente
+- Evitar dependencias externas innecesarias
+- Generar código listo para compilar
+- Explicar brevemente los archivos creados o modificados
+- Si algo no existe en el proyecto, usar la aproximación estándar JHipster
+
+---
+
+### SALIDA ESPERADA
+
+1) Lista de archivos nuevos/modificados
+2) Código completo de cada archivo
+3) Notas de integración si son necesarias
+4) NO generar texto innecesario ni tutoriales
