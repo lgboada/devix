@@ -16,12 +16,16 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "pais",
+      "fieldName": "telefono",
       "fieldType": "String"
     },
     {
-      "fieldName": "provincia",
-      "fieldType": "String"
+      "fieldName": "latitud",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "longitud",
+      "fieldType": "Double"
     }
   ],
   "jpaMetamodelFiltering": true,

@@ -20,8 +20,9 @@
       "id": "ID",
       "noCia": "No Cia",
       "descripcion": "Descripcion",
-      "pais": "Pais",
-      "provincia": "Provincia",
+      "telefono": "Telefono",
+      "latitud": "Latitud",
+      "longitud": "Longitud",
       "tipoDireccion": "Tipo Direccion",
       "cliente": "Cliente"
     }

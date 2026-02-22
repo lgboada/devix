@@ -82,7 +82,8 @@ class ClienteCriteriaTest {
         clienteCriteria.apellidos();
         clienteCriteria.nombreComercial();
         clienteCriteria.email();
-        clienteCriteria.telefono();
+        clienteCriteria.telefono1();
+        clienteCriteria.telefono2();
         clienteCriteria.fechaNacimiento();
         clienteCriteria.sexo();
         clienteCriteria.estadoCivil();
@@ -107,7 +108,8 @@ class ClienteCriteriaTest {
                 condition.apply(criteria.getApellidos()) &&
                 condition.apply(criteria.getNombreComercial()) &&
                 condition.apply(criteria.getEmail()) &&
-                condition.apply(criteria.getTelefono()) &&
+                condition.apply(criteria.getTelefono1()) &&
+                condition.apply(criteria.getTelefono2()) &&
                 condition.apply(criteria.getFechaNacimiento()) &&
                 condition.apply(criteria.getSexo()) &&
                 condition.apply(criteria.getEstadoCivil()) &&
@@ -134,7 +136,8 @@ class ClienteCriteriaTest {
                 condition.apply(criteria.getApellidos(), copy.getApellidos()) &&
                 condition.apply(criteria.getNombreComercial(), copy.getNombreComercial()) &&
                 condition.apply(criteria.getEmail(), copy.getEmail()) &&
-                condition.apply(criteria.getTelefono(), copy.getTelefono()) &&
+                condition.apply(criteria.getTelefono1(), copy.getTelefono1()) &&
+                condition.apply(criteria.getTelefono2(), copy.getTelefono2()) &&
                 condition.apply(criteria.getFechaNacimiento(), copy.getFechaNacimiento()) &&
                 condition.apply(criteria.getSexo(), copy.getSexo()) &&
                 condition.apply(criteria.getEstadoCivil(), copy.getEstadoCivil()) &&

@@ -53,7 +53,8 @@ public class CompaniaAsserts {
             .satisfies(a -> assertThat(a.getDireccion()).as("check direccion").isEqualTo(expected.getDireccion()))
             .satisfies(a -> assertThat(a.getEmail()).as("check email").isEqualTo(expected.getEmail()))
             .satisfies(a -> assertThat(a.getTelefono()).as("check telefono").isEqualTo(expected.getTelefono()))
-            .satisfies(a -> assertThat(a.getPathImage()).as("check pathImage").isEqualTo(expected.getPathImage()));
+            .satisfies(a -> assertThat(a.getPathImage()).as("check pathImage").isEqualTo(expected.getPathImage()))
+            .satisfies(a -> assertThat(a.getActiva()).as("check activa").isEqualTo(expected.getActiva()));
     }
 
     /**

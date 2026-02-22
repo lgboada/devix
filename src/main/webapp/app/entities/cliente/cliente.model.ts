@@ -10,7 +10,8 @@ export interface ICliente {
   apellidos?: string | null;
   nombreComercial?: string | null;
   email?: string | null;
-  telefono?: string | null;
+  telefono1?: string | null;
+  telefono2?: string | null;
   fechaNacimiento?: dayjs.Dayjs | null;
   sexo?: string | null;
   estadoCivil?: string | null;

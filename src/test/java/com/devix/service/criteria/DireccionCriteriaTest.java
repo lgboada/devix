@@ -78,8 +78,9 @@ class DireccionCriteriaTest {
         direccionCriteria.id();
         direccionCriteria.noCia();
         direccionCriteria.descripcion();
-        direccionCriteria.pais();
-        direccionCriteria.provincia();
+        direccionCriteria.telefono();
+        direccionCriteria.latitud();
+        direccionCriteria.longitud();
         direccionCriteria.tipoDireccionId();
         direccionCriteria.clienteId();
         direccionCriteria.distinct();
@@ -91,8 +92,9 @@ class DireccionCriteriaTest {
                 condition.apply(criteria.getId()) &&
                 condition.apply(criteria.getNoCia()) &&
                 condition.apply(criteria.getDescripcion()) &&
-                condition.apply(criteria.getPais()) &&
-                condition.apply(criteria.getProvincia()) &&
+                condition.apply(criteria.getTelefono()) &&
+                condition.apply(criteria.getLatitud()) &&
+                condition.apply(criteria.getLongitud()) &&
                 condition.apply(criteria.getTipoDireccionId()) &&
                 condition.apply(criteria.getClienteId()) &&
                 condition.apply(criteria.getDistinct()),
@@ -106,8 +108,9 @@ class DireccionCriteriaTest {
                 condition.apply(criteria.getId(), copy.getId()) &&
                 condition.apply(criteria.getNoCia(), copy.getNoCia()) &&
                 condition.apply(criteria.getDescripcion(), copy.getDescripcion()) &&
-                condition.apply(criteria.getPais(), copy.getPais()) &&
-                condition.apply(criteria.getProvincia(), copy.getProvincia()) &&
+                condition.apply(criteria.getTelefono(), copy.getTelefono()) &&
+                condition.apply(criteria.getLatitud(), copy.getLatitud()) &&
+                condition.apply(criteria.getLongitud(), copy.getLongitud()) &&
                 condition.apply(criteria.getTipoDireccionId(), copy.getTipoDireccionId()) &&
                 condition.apply(criteria.getClienteId(), copy.getClienteId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),

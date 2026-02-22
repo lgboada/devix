@@ -48,8 +48,8 @@ class ProveedorResourceIT {
     private static final String DEFAULT_CONTACTO = "AAAAAAAAAA";
     private static final String UPDATED_CONTACTO = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "tha@sp.er";
-    private static final String UPDATED_EMAIL = "2uq8@u.dbc";
+    private static final String DEFAULT_EMAIL = "f0gs@bmgs6.vly";
+    private static final String UPDATED_EMAIL = "892rsk@syemrk.gs";
 
     private static final String DEFAULT_PATH_IMAGEN = "AAAAAAAAAA";
     private static final String UPDATED_PATH_IMAGEN = "BBBBBBBBBB";
@@ -873,7 +873,7 @@ class ProveedorResourceIT {
         Proveedor partialUpdatedProveedor = new Proveedor();
         partialUpdatedProveedor.setId(proveedor.getId());
 
-        partialUpdatedProveedor.contacto(UPDATED_CONTACTO).email(UPDATED_EMAIL).pathImagen(UPDATED_PATH_IMAGEN);
+        partialUpdatedProveedor.dni(UPDATED_DNI).contacto(UPDATED_CONTACTO).email(UPDATED_EMAIL).pathImagen(UPDATED_PATH_IMAGEN);
 
         restProveedorMockMvc
             .perform(

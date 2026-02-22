@@ -858,7 +858,7 @@ class CatalogoResourceIT {
         Catalogo partialUpdatedCatalogo = new Catalogo();
         partialUpdatedCatalogo.setId(catalogo.getId());
 
-        partialUpdatedCatalogo.descripcion1(UPDATED_DESCRIPCION_1).descripcion2(UPDATED_DESCRIPCION_2).orden(UPDATED_ORDEN);
+        partialUpdatedCatalogo.noCia(UPDATED_NO_CIA).estado(UPDATED_ESTADO).orden(UPDATED_ORDEN);
 
         restCatalogoMockMvc
             .perform(

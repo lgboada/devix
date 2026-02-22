@@ -36,12 +36,13 @@
       "Proveedor",
       "TipoEvento",
       "Evento",
-      "Documento"
+      "Documento",
+      "UsuarioCentro"
     ],
     "feignClient": null,
     "jhipsterVersion": "8.11.0",
     "languages": ["es", "zh-tw", "en", "fr", "ja"],
-    "lastLiquibaseTimestamp": 1770327698000,
+    "lastLiquibaseTimestamp": 1771765946000,
     "microfrontend": null,
     "microfrontends": [],
     "nativeLanguage": "es",
@@ -51,7 +52,7 @@
     "serverPort": null,
     "serviceDiscoveryType": null,
     "skipUserManagement": true,
-    "syncUserWithIdp": false,
+    "syncUserWithIdp": true,
     "testFrameworks": [],
     "withAdminUi": true
   }

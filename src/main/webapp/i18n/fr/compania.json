@@ -25,6 +25,7 @@
       "email": "Email",
       "telefono": "Telefono",
       "pathImage": "Path Image",
+      "activa": "Activa",
       "centros": "Centros"
     }
   }

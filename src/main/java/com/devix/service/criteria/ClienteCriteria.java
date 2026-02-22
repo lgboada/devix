@@ -36,7 +36,9 @@ public class ClienteCriteria implements Serializable, Criteria {
 
     private StringFilter email;
 
-    private StringFilter telefono;
+    private StringFilter telefono1;
+
+    private StringFilter telefono2;
 
     private LocalDateFilter fechaNacimiento;
 
@@ -72,7 +74,8 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.apellidos = other.optionalApellidos().map(StringFilter::copy).orElse(null);
         this.nombreComercial = other.optionalNombreComercial().map(StringFilter::copy).orElse(null);
         this.email = other.optionalEmail().map(StringFilter::copy).orElse(null);
-        this.telefono = other.optionalTelefono().map(StringFilter::copy).orElse(null);
+        this.telefono1 = other.optionalTelefono1().map(StringFilter::copy).orElse(null);
+        this.telefono2 = other.optionalTelefono2().map(StringFilter::copy).orElse(null);
         this.fechaNacimiento = other.optionalFechaNacimiento().map(LocalDateFilter::copy).orElse(null);
         this.sexo = other.optionalSexo().map(StringFilter::copy).orElse(null);
         this.estadoCivil = other.optionalEstadoCivil().map(StringFilter::copy).orElse(null);
@@ -225,23 +228,42 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.email = email;
     }
 
-    public StringFilter getTelefono() {
-        return telefono;
+    public StringFilter getTelefono1() {
+        return telefono1;
     }
 
-    public Optional<StringFilter> optionalTelefono() {
-        return Optional.ofNullable(telefono);
+    public Optional<StringFilter> optionalTelefono1() {
+        return Optional.ofNullable(telefono1);
     }
 
-    public StringFilter telefono() {
-        if (telefono == null) {
-            setTelefono(new StringFilter());
+    public StringFilter telefono1() {
+        if (telefono1 == null) {
+            setTelefono1(new StringFilter());
         }
-        return telefono;
+        return telefono1;
     }
 
-    public void setTelefono(StringFilter telefono) {
-        this.telefono = telefono;
+    public void setTelefono1(StringFilter telefono1) {
+        this.telefono1 = telefono1;
+    }
+
+    public StringFilter getTelefono2() {
+        return telefono2;
+    }
+
+    public Optional<StringFilter> optionalTelefono2() {
+        return Optional.ofNullable(telefono2);
+    }
+
+    public StringFilter telefono2() {
+        if (telefono2 == null) {
+            setTelefono2(new StringFilter());
+        }
+        return telefono2;
+    }
+
+    public void setTelefono2(StringFilter telefono2) {
+        this.telefono2 = telefono2;
     }
 
     public LocalDateFilter getFechaNacimiento() {
@@ -489,7 +511,8 @@ public class ClienteCriteria implements Serializable, Criteria {
             Objects.equals(apellidos, that.apellidos) &&
             Objects.equals(nombreComercial, that.nombreComercial) &&
             Objects.equals(email, that.email) &&
-            Objects.equals(telefono, that.telefono) &&
+            Objects.equals(telefono1, that.telefono1) &&
+            Objects.equals(telefono2, that.telefono2) &&
             Objects.equals(fechaNacimiento, that.fechaNacimiento) &&
             Objects.equals(sexo, that.sexo) &&
             Objects.equals(estadoCivil, that.estadoCivil) &&
@@ -515,7 +538,8 @@ public class ClienteCriteria implements Serializable, Criteria {
             apellidos,
             nombreComercial,
             email,
-            telefono,
+            telefono1,
+            telefono2,
             fechaNacimiento,
             sexo,
             estadoCivil,
@@ -542,7 +566,8 @@ public class ClienteCriteria implements Serializable, Criteria {
             optionalApellidos().map(f -> "apellidos=" + f + ", ").orElse("") +
             optionalNombreComercial().map(f -> "nombreComercial=" + f + ", ").orElse("") +
             optionalEmail().map(f -> "email=" + f + ", ").orElse("") +
-            optionalTelefono().map(f -> "telefono=" + f + ", ").orElse("") +
+            optionalTelefono1().map(f -> "telefono1=" + f + ", ").orElse("") +
+            optionalTelefono2().map(f -> "telefono2=" + f + ", ").orElse("") +
             optionalFechaNacimiento().map(f -> "fechaNacimiento=" + f + ", ").orElse("") +
             optionalSexo().map(f -> "sexo=" + f + ", ").orElse("") +
             optionalEstadoCivil().map(f -> "estadoCivil=" + f + ", ").orElse("") +

@@ -1601,14 +1601,12 @@ class FacturaResourceIT {
         partialUpdatedFactura.setId(factura.getId());
 
         partialUpdatedFactura
-            .noCia(UPDATED_NO_CIA)
-            .noFisico(UPDATED_NO_FISICO)
-            .fecha(UPDATED_FECHA)
             .impuesto(UPDATED_IMPUESTO)
             .impuestoCero(UPDATED_IMPUESTO_CERO)
-            .total(UPDATED_TOTAL)
-            .porcentajeImpuesto(UPDATED_PORCENTAJE_IMPUESTO)
-            .cedula(UPDATED_CEDULA);
+            .descuento(UPDATED_DESCUENTO)
+            .cedula(UPDATED_CEDULA)
+            .email(UPDATED_EMAIL)
+            .estado(UPDATED_ESTADO);
 
         restFacturaMockMvc
             .perform(

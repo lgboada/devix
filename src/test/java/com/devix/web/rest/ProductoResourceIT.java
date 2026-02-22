@@ -993,8 +993,8 @@ class ProductoResourceIT {
             .noCia(UPDATED_NO_CIA)
             .nombre(UPDATED_NOMBRE)
             .descripcion(UPDATED_DESCRIPCION)
-            .stock(UPDATED_STOCK)
-            .codigo(UPDATED_CODIGO);
+            .precio(UPDATED_PRECIO)
+            .pathImagen(UPDATED_PATH_IMAGEN);
 
         restProductoMockMvc
             .perform(

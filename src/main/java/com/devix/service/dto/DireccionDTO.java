@@ -18,9 +18,11 @@ public class DireccionDTO implements Serializable {
     @NotNull
     private String descripcion;
 
-    private String pais;
+    private String telefono;
 
-    private String provincia;
+    private Double latitud;
+
+    private Double longitud;
 
     private TipoDireccionDTO tipoDireccion;
 
@@ -50,20 +52,28 @@ public class DireccionDTO implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getPais() {
-        return pais;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setPais(String pais) {
-        this.pais = pais;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public String getProvincia() {
-        return provincia;
+    public Double getLatitud() {
+        return latitud;
     }
 
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 
     public TipoDireccionDTO getTipoDireccion() {
@@ -110,8 +120,9 @@ public class DireccionDTO implements Serializable {
             "id=" + getId() +
             ", noCia=" + getNoCia() +
             ", descripcion='" + getDescripcion() + "'" +
-            ", pais='" + getPais() + "'" +
-            ", provincia='" + getProvincia() + "'" +
+            ", telefono='" + getTelefono() + "'" +
+            ", latitud=" + getLatitud() +
+            ", longitud=" + getLongitud() +
             ", tipoDireccion=" + getTipoDireccion() +
             ", cliente=" + getCliente() +
             "}";

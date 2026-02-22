@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "usuarioCentro": {
+      "home": {
+        "title": "Usuario Centros",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Usuario Centro",
+        "createOrEditLabel": "Create or edit a Usuario Centro",
+        "notFound": "No Usuario Centros found"
+      },
+      "created": "A new Usuario Centro is created with identifier {{ param }}",
+      "updated": "A Usuario Centro is updated with identifier {{ param }}",
+      "deleted": "A Usuario Centro is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Usuario Centro {{ id }}?"
+      },
+      "detail": {
+        "title": "Usuario Centro"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "principal": "Principal",
+      "centro": "Centro",
+      "user": "User"
+    }
+  }
+}

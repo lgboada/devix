@@ -18,7 +18,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="dni" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_cliente__dni" />
+                <constraints nullable="false" />
             </column>
             <column name="nombres" type="varchar(255)">
                 <constraints nullable="false" />
@@ -30,9 +30,12 @@
                 <constraints nullable="true" />
             </column>
             <column name="email" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_cliente__email" />
+                <constraints nullable="false" />
             </column>
-            <column name="telefono" type="varchar(255)">
+            <column name="telefono_1" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="telefono_2" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="fecha_nacimiento" type="date">
@@ -83,7 +86,8 @@
             <column name="apellidos" type="string"/>
             <column name="nombre_comercial" type="string"/>
             <column name="email" type="string"/>
-            <column name="telefono" type="string"/>
+            <column name="telefono_1" type="string"/>
+            <column name="telefono_2" type="string"/>
             <column name="fecha_nacimiento" type="date"/>
             <column name="sexo" type="string"/>
             <column name="estado_civil" type="string"/>

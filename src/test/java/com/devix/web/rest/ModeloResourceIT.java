@@ -595,6 +595,8 @@ class ModeloResourceIT {
         Modelo partialUpdatedModelo = new Modelo();
         partialUpdatedModelo.setId(modelo.getId());
 
+        partialUpdatedModelo.nombre(UPDATED_NOMBRE).pathImagen(UPDATED_PATH_IMAGEN);
+
         restModeloMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedModelo.getId())

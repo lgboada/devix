@@ -48,14 +48,17 @@ class CompaniaResourceIT {
     private static final String DEFAULT_DIRECCION = "AAAAAAAAAA";
     private static final String UPDATED_DIRECCION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "hp@zb.wkj";
-    private static final String UPDATED_EMAIL = ".aj986@r32.wygk";
+    private static final String DEFAULT_EMAIL = "d0.2@vx3pc.pho";
+    private static final String UPDATED_EMAIL = "h@.y..tpi";
 
     private static final String DEFAULT_TELEFONO = "AAAAAAAAAA";
     private static final String UPDATED_TELEFONO = "BBBBBBBBBB";
 
     private static final String DEFAULT_PATH_IMAGE = "AAAAAAAAAA";
     private static final String UPDATED_PATH_IMAGE = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_ACTIVA = false;
+    private static final Boolean UPDATED_ACTIVA = true;
 
     private static final String ENTITY_API_URL = "/api/companias";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -96,7 +99,8 @@ class CompaniaResourceIT {
             .direccion(DEFAULT_DIRECCION)
             .email(DEFAULT_EMAIL)
             .telefono(DEFAULT_TELEFONO)
-            .pathImage(DEFAULT_PATH_IMAGE);
+            .pathImage(DEFAULT_PATH_IMAGE)
+            .activa(DEFAULT_ACTIVA);
     }
 
     /**
@@ -113,7 +117,8 @@ class CompaniaResourceIT {
             .direccion(UPDATED_DIRECCION)
             .email(UPDATED_EMAIL)
             .telefono(UPDATED_TELEFONO)
-            .pathImage(UPDATED_PATH_IMAGE);
+            .pathImage(UPDATED_PATH_IMAGE)
+            .activa(UPDATED_ACTIVA);
     }
 
     @BeforeEach
@@ -294,6 +299,23 @@ class CompaniaResourceIT {
 
     @Test
     @Transactional
+    void checkActivaIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        compania.setActiva(null);
+
+        // Create the Compania, which fails.
+        CompaniaDTO companiaDTO = companiaMapper.toDto(compania);
+
+        restCompaniaMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(companiaDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllCompanias() throws Exception {
         // Initialize the database
         insertedCompania = companiaRepository.saveAndFlush(compania);
@@ -310,7 +332,8 @@ class CompaniaResourceIT {
             .andExpect(jsonPath("$.[*].direccion").value(hasItem(DEFAULT_DIRECCION)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO)))
-            .andExpect(jsonPath("$.[*].pathImage").value(hasItem(DEFAULT_PATH_IMAGE)));
+            .andExpect(jsonPath("$.[*].pathImage").value(hasItem(DEFAULT_PATH_IMAGE)))
+            .andExpect(jsonPath("$.[*].activa").value(hasItem(DEFAULT_ACTIVA)));
     }
 
     @Test
@@ -331,7 +354,8 @@ class CompaniaResourceIT {
             .andExpect(jsonPath("$.direccion").value(DEFAULT_DIRECCION))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO))
-            .andExpect(jsonPath("$.pathImage").value(DEFAULT_PATH_IMAGE));
+            .andExpect(jsonPath("$.pathImage").value(DEFAULT_PATH_IMAGE))
+            .andExpect(jsonPath("$.activa").value(DEFAULT_ACTIVA));
     }
 
     @Test
@@ -719,6 +743,36 @@ class CompaniaResourceIT {
         defaultCompaniaFiltering("pathImage.doesNotContain=" + UPDATED_PATH_IMAGE, "pathImage.doesNotContain=" + DEFAULT_PATH_IMAGE);
     }
 
+    @Test
+    @Transactional
+    void getAllCompaniasByActivaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedCompania = companiaRepository.saveAndFlush(compania);
+
+        // Get all the companiaList where activa equals to
+        defaultCompaniaFiltering("activa.equals=" + DEFAULT_ACTIVA, "activa.equals=" + UPDATED_ACTIVA);
+    }
+
+    @Test
+    @Transactional
+    void getAllCompaniasByActivaIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedCompania = companiaRepository.saveAndFlush(compania);
+
+        // Get all the companiaList where activa in
+        defaultCompaniaFiltering("activa.in=" + DEFAULT_ACTIVA + "," + UPDATED_ACTIVA, "activa.in=" + UPDATED_ACTIVA);
+    }
+
+    @Test
+    @Transactional
+    void getAllCompaniasByActivaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedCompania = companiaRepository.saveAndFlush(compania);
+
+        // Get all the companiaList where activa is not null
+        defaultCompaniaFiltering("activa.specified=true", "activa.specified=false");
+    }
+
     private void defaultCompaniaFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {
         defaultCompaniaShouldBeFound(shouldBeFound);
         defaultCompaniaShouldNotBeFound(shouldNotBeFound);
@@ -739,7 +793,8 @@ class CompaniaResourceIT {
             .andExpect(jsonPath("$.[*].direccion").value(hasItem(DEFAULT_DIRECCION)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO)))
-            .andExpect(jsonPath("$.[*].pathImage").value(hasItem(DEFAULT_PATH_IMAGE)));
+            .andExpect(jsonPath("$.[*].pathImage").value(hasItem(DEFAULT_PATH_IMAGE)))
+            .andExpect(jsonPath("$.[*].activa").value(hasItem(DEFAULT_ACTIVA)));
 
         // Check, that the count call also returns 1
         restCompaniaMockMvc
@@ -794,7 +849,8 @@ class CompaniaResourceIT {
             .direccion(UPDATED_DIRECCION)
             .email(UPDATED_EMAIL)
             .telefono(UPDATED_TELEFONO)
-            .pathImage(UPDATED_PATH_IMAGE);
+            .pathImage(UPDATED_PATH_IMAGE)
+            .activa(UPDATED_ACTIVA);
         CompaniaDTO companiaDTO = companiaMapper.toDto(updatedCompania);
 
         restCompaniaMockMvc
@@ -887,7 +943,13 @@ class CompaniaResourceIT {
         Compania partialUpdatedCompania = new Compania();
         partialUpdatedCompania.setId(compania.getId());
 
-        partialUpdatedCompania.nombre(UPDATED_NOMBRE).direccion(UPDATED_DIRECCION);
+        partialUpdatedCompania
+            .noCia(UPDATED_NO_CIA)
+            .dni(UPDATED_DNI)
+            .nombre(UPDATED_NOMBRE)
+            .direccion(UPDATED_DIRECCION)
+            .telefono(UPDATED_TELEFONO)
+            .activa(UPDATED_ACTIVA);
 
         restCompaniaMockMvc
             .perform(
@@ -923,7 +985,8 @@ class CompaniaResourceIT {
             .direccion(UPDATED_DIRECCION)
             .email(UPDATED_EMAIL)
             .telefono(UPDATED_TELEFONO)
-            .pathImage(UPDATED_PATH_IMAGE);
+            .pathImage(UPDATED_PATH_IMAGE)
+            .activa(UPDATED_ACTIVA);
 
         restCompaniaMockMvc
             .perform(

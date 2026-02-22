@@ -89,6 +89,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="activa">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.compania.activa">Activa</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -105,6 +112,7 @@
               <td>{{ compania.email }}</td>
               <td>{{ compania.telefono }}</td>
               <td>{{ compania.pathImage }}</td>
+              <td>{{ compania.activa }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/compania', compania.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

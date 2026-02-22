@@ -38,6 +38,8 @@ public class CompaniaCriteria implements Serializable, Criteria {
 
     private StringFilter pathImage;
 
+    private BooleanFilter activa;
+
     private LongFilter centrosId;
 
     private Boolean distinct;
@@ -53,6 +55,7 @@ public class CompaniaCriteria implements Serializable, Criteria {
         this.email = other.optionalEmail().map(StringFilter::copy).orElse(null);
         this.telefono = other.optionalTelefono().map(StringFilter::copy).orElse(null);
         this.pathImage = other.optionalPathImage().map(StringFilter::copy).orElse(null);
+        this.activa = other.optionalActiva().map(BooleanFilter::copy).orElse(null);
         this.centrosId = other.optionalCentrosId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
@@ -214,6 +217,25 @@ public class CompaniaCriteria implements Serializable, Criteria {
         this.pathImage = pathImage;
     }
 
+    public BooleanFilter getActiva() {
+        return activa;
+    }
+
+    public Optional<BooleanFilter> optionalActiva() {
+        return Optional.ofNullable(activa);
+    }
+
+    public BooleanFilter activa() {
+        if (activa == null) {
+            setActiva(new BooleanFilter());
+        }
+        return activa;
+    }
+
+    public void setActiva(BooleanFilter activa) {
+        this.activa = activa;
+    }
+
     public LongFilter getCentrosId() {
         return centrosId;
     }
@@ -270,6 +292,7 @@ public class CompaniaCriteria implements Serializable, Criteria {
             Objects.equals(email, that.email) &&
             Objects.equals(telefono, that.telefono) &&
             Objects.equals(pathImage, that.pathImage) &&
+            Objects.equals(activa, that.activa) &&
             Objects.equals(centrosId, that.centrosId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -277,7 +300,7 @@ public class CompaniaCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, noCia, dni, nombre, direccion, email, telefono, pathImage, centrosId, distinct);
+        return Objects.hash(id, noCia, dni, nombre, direccion, email, telefono, pathImage, activa, centrosId, distinct);
     }
 
     // prettier-ignore
@@ -292,6 +315,7 @@ public class CompaniaCriteria implements Serializable, Criteria {
             optionalEmail().map(f -> "email=" + f + ", ").orElse("") +
             optionalTelefono().map(f -> "telefono=" + f + ", ").orElse("") +
             optionalPathImage().map(f -> "pathImage=" + f + ", ").orElse("") +
+            optionalActiva().map(f -> "activa=" + f + ", ").orElse("") +
             optionalCentrosId().map(f -> "centrosId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";

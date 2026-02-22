@@ -28,9 +28,11 @@ public class DireccionCriteria implements Serializable, Criteria {
 
     private StringFilter descripcion;
 
-    private StringFilter pais;
+    private StringFilter telefono;
 
-    private StringFilter provincia;
+    private DoubleFilter latitud;
+
+    private DoubleFilter longitud;
 
     private LongFilter tipoDireccionId;
 
@@ -44,8 +46,9 @@ public class DireccionCriteria implements Serializable, Criteria {
         this.id = other.optionalId().map(LongFilter::copy).orElse(null);
         this.noCia = other.optionalNoCia().map(LongFilter::copy).orElse(null);
         this.descripcion = other.optionalDescripcion().map(StringFilter::copy).orElse(null);
-        this.pais = other.optionalPais().map(StringFilter::copy).orElse(null);
-        this.provincia = other.optionalProvincia().map(StringFilter::copy).orElse(null);
+        this.telefono = other.optionalTelefono().map(StringFilter::copy).orElse(null);
+        this.latitud = other.optionalLatitud().map(DoubleFilter::copy).orElse(null);
+        this.longitud = other.optionalLongitud().map(DoubleFilter::copy).orElse(null);
         this.tipoDireccionId = other.optionalTipoDireccionId().map(LongFilter::copy).orElse(null);
         this.clienteId = other.optionalClienteId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
@@ -113,42 +116,61 @@ public class DireccionCriteria implements Serializable, Criteria {
         this.descripcion = descripcion;
     }
 
-    public StringFilter getPais() {
-        return pais;
+    public StringFilter getTelefono() {
+        return telefono;
     }
 
-    public Optional<StringFilter> optionalPais() {
-        return Optional.ofNullable(pais);
+    public Optional<StringFilter> optionalTelefono() {
+        return Optional.ofNullable(telefono);
     }
 
-    public StringFilter pais() {
-        if (pais == null) {
-            setPais(new StringFilter());
+    public StringFilter telefono() {
+        if (telefono == null) {
+            setTelefono(new StringFilter());
         }
-        return pais;
+        return telefono;
     }
 
-    public void setPais(StringFilter pais) {
-        this.pais = pais;
+    public void setTelefono(StringFilter telefono) {
+        this.telefono = telefono;
     }
 
-    public StringFilter getProvincia() {
-        return provincia;
+    public DoubleFilter getLatitud() {
+        return latitud;
     }
 
-    public Optional<StringFilter> optionalProvincia() {
-        return Optional.ofNullable(provincia);
+    public Optional<DoubleFilter> optionalLatitud() {
+        return Optional.ofNullable(latitud);
     }
 
-    public StringFilter provincia() {
-        if (provincia == null) {
-            setProvincia(new StringFilter());
+    public DoubleFilter latitud() {
+        if (latitud == null) {
+            setLatitud(new DoubleFilter());
         }
-        return provincia;
+        return latitud;
     }
 
-    public void setProvincia(StringFilter provincia) {
-        this.provincia = provincia;
+    public void setLatitud(DoubleFilter latitud) {
+        this.latitud = latitud;
+    }
+
+    public DoubleFilter getLongitud() {
+        return longitud;
+    }
+
+    public Optional<DoubleFilter> optionalLongitud() {
+        return Optional.ofNullable(longitud);
+    }
+
+    public DoubleFilter longitud() {
+        if (longitud == null) {
+            setLongitud(new DoubleFilter());
+        }
+        return longitud;
+    }
+
+    public void setLongitud(DoubleFilter longitud) {
+        this.longitud = longitud;
     }
 
     public LongFilter getTipoDireccionId() {
@@ -221,8 +243,9 @@ public class DireccionCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(noCia, that.noCia) &&
             Objects.equals(descripcion, that.descripcion) &&
-            Objects.equals(pais, that.pais) &&
-            Objects.equals(provincia, that.provincia) &&
+            Objects.equals(telefono, that.telefono) &&
+            Objects.equals(latitud, that.latitud) &&
+            Objects.equals(longitud, that.longitud) &&
             Objects.equals(tipoDireccionId, that.tipoDireccionId) &&
             Objects.equals(clienteId, that.clienteId) &&
             Objects.equals(distinct, that.distinct)
@@ -231,7 +254,7 @@ public class DireccionCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, noCia, descripcion, pais, provincia, tipoDireccionId, clienteId, distinct);
+        return Objects.hash(id, noCia, descripcion, telefono, latitud, longitud, tipoDireccionId, clienteId, distinct);
     }
 
     // prettier-ignore
@@ -241,8 +264,9 @@ public class DireccionCriteria implements Serializable, Criteria {
             optionalId().map(f -> "id=" + f + ", ").orElse("") +
             optionalNoCia().map(f -> "noCia=" + f + ", ").orElse("") +
             optionalDescripcion().map(f -> "descripcion=" + f + ", ").orElse("") +
-            optionalPais().map(f -> "pais=" + f + ", ").orElse("") +
-            optionalProvincia().map(f -> "provincia=" + f + ", ").orElse("") +
+            optionalTelefono().map(f -> "telefono=" + f + ", ").orElse("") +
+            optionalLatitud().map(f -> "latitud=" + f + ", ").orElse("") +
+            optionalLongitud().map(f -> "longitud=" + f + ", ").orElse("") +
             optionalTipoDireccionId().map(f -> "tipoDireccionId=" + f + ", ").orElse("") +
             optionalClienteId().map(f -> "clienteId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +

@@ -527,7 +527,7 @@ class ProvinciaResourceIT {
         Provincia partialUpdatedProvincia = new Provincia();
         partialUpdatedProvincia.setId(provincia.getId());
 
-        partialUpdatedProvincia.noCia(UPDATED_NO_CIA).descripcion(UPDATED_DESCRIPCION);
+        partialUpdatedProvincia.noCia(UPDATED_NO_CIA);
 
         restProvinciaMockMvc
             .perform(

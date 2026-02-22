@@ -20,10 +20,13 @@
             <column name="descripcion" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="pais" type="varchar(255)">
+            <column name="telefono" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="provincia" type="varchar(255)">
+            <column name="latitud" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="longitud" type="double">
                 <constraints nullable="true" />
             </column>
             <column name="tipo_direccion_id" type="bigint">
@@ -55,8 +58,9 @@
             <column name="id" type="numeric"/>
             <column name="no_cia" type="numeric"/>
             <column name="descripcion" type="string"/>
-            <column name="pais" type="string"/>
-            <column name="provincia" type="string"/>
+            <column name="telefono" type="string"/>
+            <column name="latitud" type="numeric"/>
+            <column name="longitud" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

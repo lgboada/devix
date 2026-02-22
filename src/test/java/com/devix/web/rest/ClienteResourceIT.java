@@ -55,11 +55,14 @@ class ClienteResourceIT {
     private static final String DEFAULT_NOMBRE_COMERCIAL = "AAAAAAAAAA";
     private static final String UPDATED_NOMBRE_COMERCIAL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "c@3d.opip";
-    private static final String UPDATED_EMAIL = "f@bwt1g.hdxq";
+    private static final String DEFAULT_EMAIL = "u9%1z@l.gfkd";
+    private static final String UPDATED_EMAIL = "pex76o@x.oq2s.ty";
 
-    private static final String DEFAULT_TELEFONO = "AAAAAAAAAA";
-    private static final String UPDATED_TELEFONO = "BBBBBBBBBB";
+    private static final String DEFAULT_TELEFONO_1 = "AAAAAAAAAA";
+    private static final String UPDATED_TELEFONO_1 = "BBBBBBBBBB";
+
+    private static final String DEFAULT_TELEFONO_2 = "AAAAAAAAAA";
+    private static final String UPDATED_TELEFONO_2 = "BBBBBBBBBB";
 
     private static final LocalDate DEFAULT_FECHA_NACIMIENTO = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_FECHA_NACIMIENTO = LocalDate.now(ZoneId.systemDefault());
@@ -116,7 +119,8 @@ class ClienteResourceIT {
             .apellidos(DEFAULT_APELLIDOS)
             .nombreComercial(DEFAULT_NOMBRE_COMERCIAL)
             .email(DEFAULT_EMAIL)
-            .telefono(DEFAULT_TELEFONO)
+            .telefono1(DEFAULT_TELEFONO_1)
+            .telefono2(DEFAULT_TELEFONO_2)
             .fechaNacimiento(DEFAULT_FECHA_NACIMIENTO)
             .sexo(DEFAULT_SEXO)
             .estadoCivil(DEFAULT_ESTADO_CIVIL)
@@ -138,7 +142,8 @@ class ClienteResourceIT {
             .apellidos(UPDATED_APELLIDOS)
             .nombreComercial(UPDATED_NOMBRE_COMERCIAL)
             .email(UPDATED_EMAIL)
-            .telefono(UPDATED_TELEFONO)
+            .telefono1(UPDATED_TELEFONO_1)
+            .telefono2(UPDATED_TELEFONO_2)
             .fechaNacimiento(UPDATED_FECHA_NACIMIENTO)
             .sexo(UPDATED_SEXO)
             .estadoCivil(UPDATED_ESTADO_CIVIL)
@@ -391,7 +396,8 @@ class ClienteResourceIT {
             .andExpect(jsonPath("$.[*].apellidos").value(hasItem(DEFAULT_APELLIDOS)))
             .andExpect(jsonPath("$.[*].nombreComercial").value(hasItem(DEFAULT_NOMBRE_COMERCIAL)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO)))
+            .andExpect(jsonPath("$.[*].telefono1").value(hasItem(DEFAULT_TELEFONO_1)))
+            .andExpect(jsonPath("$.[*].telefono2").value(hasItem(DEFAULT_TELEFONO_2)))
             .andExpect(jsonPath("$.[*].fechaNacimiento").value(hasItem(DEFAULT_FECHA_NACIMIENTO.toString())))
             .andExpect(jsonPath("$.[*].sexo").value(hasItem(DEFAULT_SEXO)))
             .andExpect(jsonPath("$.[*].estadoCivil").value(hasItem(DEFAULT_ESTADO_CIVIL)))
@@ -417,7 +423,8 @@ class ClienteResourceIT {
             .andExpect(jsonPath("$.apellidos").value(DEFAULT_APELLIDOS))
             .andExpect(jsonPath("$.nombreComercial").value(DEFAULT_NOMBRE_COMERCIAL))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO))
+            .andExpect(jsonPath("$.telefono1").value(DEFAULT_TELEFONO_1))
+            .andExpect(jsonPath("$.telefono2").value(DEFAULT_TELEFONO_2))
             .andExpect(jsonPath("$.fechaNacimiento").value(DEFAULT_FECHA_NACIMIENTO.toString()))
             .andExpect(jsonPath("$.sexo").value(DEFAULT_SEXO))
             .andExpect(jsonPath("$.estadoCivil").value(DEFAULT_ESTADO_CIVIL))
@@ -771,52 +778,102 @@ class ClienteResourceIT {
 
     @Test
     @Transactional
-    void getAllClientesByTelefonoIsEqualToSomething() throws Exception {
+    void getAllClientesByTelefono1IsEqualToSomething() throws Exception {
         // Initialize the database
         insertedCliente = clienteRepository.saveAndFlush(cliente);
 
-        // Get all the clienteList where telefono equals to
-        defaultClienteFiltering("telefono.equals=" + DEFAULT_TELEFONO, "telefono.equals=" + UPDATED_TELEFONO);
+        // Get all the clienteList where telefono1 equals to
+        defaultClienteFiltering("telefono1.equals=" + DEFAULT_TELEFONO_1, "telefono1.equals=" + UPDATED_TELEFONO_1);
     }
 
     @Test
     @Transactional
-    void getAllClientesByTelefonoIsInShouldWork() throws Exception {
+    void getAllClientesByTelefono1IsInShouldWork() throws Exception {
         // Initialize the database
         insertedCliente = clienteRepository.saveAndFlush(cliente);
 
-        // Get all the clienteList where telefono in
-        defaultClienteFiltering("telefono.in=" + DEFAULT_TELEFONO + "," + UPDATED_TELEFONO, "telefono.in=" + UPDATED_TELEFONO);
+        // Get all the clienteList where telefono1 in
+        defaultClienteFiltering("telefono1.in=" + DEFAULT_TELEFONO_1 + "," + UPDATED_TELEFONO_1, "telefono1.in=" + UPDATED_TELEFONO_1);
     }
 
     @Test
     @Transactional
-    void getAllClientesByTelefonoIsNullOrNotNull() throws Exception {
+    void getAllClientesByTelefono1IsNullOrNotNull() throws Exception {
         // Initialize the database
         insertedCliente = clienteRepository.saveAndFlush(cliente);
 
-        // Get all the clienteList where telefono is not null
-        defaultClienteFiltering("telefono.specified=true", "telefono.specified=false");
+        // Get all the clienteList where telefono1 is not null
+        defaultClienteFiltering("telefono1.specified=true", "telefono1.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllClientesByTelefonoContainsSomething() throws Exception {
+    void getAllClientesByTelefono1ContainsSomething() throws Exception {
         // Initialize the database
         insertedCliente = clienteRepository.saveAndFlush(cliente);
 
-        // Get all the clienteList where telefono contains
-        defaultClienteFiltering("telefono.contains=" + DEFAULT_TELEFONO, "telefono.contains=" + UPDATED_TELEFONO);
+        // Get all the clienteList where telefono1 contains
+        defaultClienteFiltering("telefono1.contains=" + DEFAULT_TELEFONO_1, "telefono1.contains=" + UPDATED_TELEFONO_1);
     }
 
     @Test
     @Transactional
-    void getAllClientesByTelefonoNotContainsSomething() throws Exception {
+    void getAllClientesByTelefono1NotContainsSomething() throws Exception {
         // Initialize the database
         insertedCliente = clienteRepository.saveAndFlush(cliente);
 
-        // Get all the clienteList where telefono does not contain
-        defaultClienteFiltering("telefono.doesNotContain=" + UPDATED_TELEFONO, "telefono.doesNotContain=" + DEFAULT_TELEFONO);
+        // Get all the clienteList where telefono1 does not contain
+        defaultClienteFiltering("telefono1.doesNotContain=" + UPDATED_TELEFONO_1, "telefono1.doesNotContain=" + DEFAULT_TELEFONO_1);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientesByTelefono2IsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedCliente = clienteRepository.saveAndFlush(cliente);
+
+        // Get all the clienteList where telefono2 equals to
+        defaultClienteFiltering("telefono2.equals=" + DEFAULT_TELEFONO_2, "telefono2.equals=" + UPDATED_TELEFONO_2);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientesByTelefono2IsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedCliente = clienteRepository.saveAndFlush(cliente);
+
+        // Get all the clienteList where telefono2 in
+        defaultClienteFiltering("telefono2.in=" + DEFAULT_TELEFONO_2 + "," + UPDATED_TELEFONO_2, "telefono2.in=" + UPDATED_TELEFONO_2);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientesByTelefono2IsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedCliente = clienteRepository.saveAndFlush(cliente);
+
+        // Get all the clienteList where telefono2 is not null
+        defaultClienteFiltering("telefono2.specified=true", "telefono2.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllClientesByTelefono2ContainsSomething() throws Exception {
+        // Initialize the database
+        insertedCliente = clienteRepository.saveAndFlush(cliente);
+
+        // Get all the clienteList where telefono2 contains
+        defaultClienteFiltering("telefono2.contains=" + DEFAULT_TELEFONO_2, "telefono2.contains=" + UPDATED_TELEFONO_2);
+    }
+
+    @Test
+    @Transactional
+    void getAllClientesByTelefono2NotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedCliente = clienteRepository.saveAndFlush(cliente);
+
+        // Get all the clienteList where telefono2 does not contain
+        defaultClienteFiltering("telefono2.doesNotContain=" + UPDATED_TELEFONO_2, "telefono2.doesNotContain=" + DEFAULT_TELEFONO_2);
     }
 
     @Test
@@ -1171,7 +1228,8 @@ class ClienteResourceIT {
             .andExpect(jsonPath("$.[*].apellidos").value(hasItem(DEFAULT_APELLIDOS)))
             .andExpect(jsonPath("$.[*].nombreComercial").value(hasItem(DEFAULT_NOMBRE_COMERCIAL)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO)))
+            .andExpect(jsonPath("$.[*].telefono1").value(hasItem(DEFAULT_TELEFONO_1)))
+            .andExpect(jsonPath("$.[*].telefono2").value(hasItem(DEFAULT_TELEFONO_2)))
             .andExpect(jsonPath("$.[*].fechaNacimiento").value(hasItem(DEFAULT_FECHA_NACIMIENTO.toString())))
             .andExpect(jsonPath("$.[*].sexo").value(hasItem(DEFAULT_SEXO)))
             .andExpect(jsonPath("$.[*].estadoCivil").value(hasItem(DEFAULT_ESTADO_CIVIL)))
@@ -1231,7 +1289,8 @@ class ClienteResourceIT {
             .apellidos(UPDATED_APELLIDOS)
             .nombreComercial(UPDATED_NOMBRE_COMERCIAL)
             .email(UPDATED_EMAIL)
-            .telefono(UPDATED_TELEFONO)
+            .telefono1(UPDATED_TELEFONO_1)
+            .telefono2(UPDATED_TELEFONO_2)
             .fechaNacimiento(UPDATED_FECHA_NACIMIENTO)
             .sexo(UPDATED_SEXO)
             .estadoCivil(UPDATED_ESTADO_CIVIL)
@@ -1330,10 +1389,12 @@ class ClienteResourceIT {
         partialUpdatedCliente.setId(cliente.getId());
 
         partialUpdatedCliente
+            .dni(UPDATED_DNI)
             .nombres(UPDATED_NOMBRES)
-            .nombreComercial(UPDATED_NOMBRE_COMERCIAL)
-            .sexo(UPDATED_SEXO)
-            .pathImagen(UPDATED_PATH_IMAGEN);
+            .email(UPDATED_EMAIL)
+            .telefono1(UPDATED_TELEFONO_1)
+            .telefono2(UPDATED_TELEFONO_2)
+            .estadoCivil(UPDATED_ESTADO_CIVIL);
 
         restClienteMockMvc
             .perform(
@@ -1369,7 +1430,8 @@ class ClienteResourceIT {
             .apellidos(UPDATED_APELLIDOS)
             .nombreComercial(UPDATED_NOMBRE_COMERCIAL)
             .email(UPDATED_EMAIL)
-            .telefono(UPDATED_TELEFONO)
+            .telefono1(UPDATED_TELEFONO_1)
+            .telefono2(UPDATED_TELEFONO_2)
             .fechaNacimiento(UPDATED_FECHA_NACIMIENTO)
             .sexo(UPDATED_SEXO)
             .estadoCivil(UPDATED_ESTADO_CIVIL)

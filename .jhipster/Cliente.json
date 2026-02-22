@@ -13,7 +13,7 @@
     {
       "fieldName": "dni",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "nombres",
@@ -32,11 +32,15 @@
     {
       "fieldName": "email",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique", "pattern"],
+      "fieldValidateRules": ["required", "pattern"],
       "fieldValidateRulesPattern": "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
     },
     {
-      "fieldName": "telefono",
+      "fieldName": "telefono1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "telefono2",
       "fieldType": "String"
     },
     {

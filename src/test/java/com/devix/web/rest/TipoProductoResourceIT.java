@@ -509,7 +509,7 @@ class TipoProductoResourceIT {
         TipoProducto partialUpdatedTipoProducto = new TipoProducto();
         partialUpdatedTipoProducto.setId(tipoProducto.getId());
 
-        partialUpdatedTipoProducto.nombre(UPDATED_NOMBRE);
+        partialUpdatedTipoProducto.noCia(UPDATED_NO_CIA).nombre(UPDATED_NOMBRE);
 
         restTipoProductoMockMvc
             .perform(

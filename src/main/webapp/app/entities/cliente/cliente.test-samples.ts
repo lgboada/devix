@@ -17,18 +17,19 @@ export const sampleWithRequiredData: ICliente = {
 };
 
 export const sampleWithPartialData: ICliente = {
-  id: 10652,
-  noCia: 28503,
-  dni: 'boo bob',
-  nombres: 'veg whoa',
-  apellidos: 'ugh nearly',
-  email: 'z2zsm-@f0ptx.na',
-  telefono: 'times',
+  id: 28503,
+  noCia: 19216,
+  dni: 'battle',
+  nombres: 'painfully probe gut',
+  apellidos: 'made-up whoever where',
+  email: '2@txg.aeq',
+  telefono1: 'fairly woefully astonishing',
+  telefono2: 'next since yahoo',
   fechaNacimiento: dayjs('2026-02-05'),
-  sexo: 'woefully',
-  estadoCivil: 'unethically next since',
-  tipoSangre: 'huzzah',
-  pathImagen: 'slip',
+  sexo: 'slip',
+  estadoCivil: 'amongst allocation snuggle',
+  tipoSangre: 'bend',
+  pathImagen: 'furthermore like whether',
 };
 
 export const sampleWithFullData: ICliente = {
@@ -39,12 +40,13 @@ export const sampleWithFullData: ICliente = {
   apellidos: 'arcade',
   nombreComercial: 'cinema garrote phooey',
   email: 'fd@kffc.be',
-  telefono: 'obtrude wee why',
-  fechaNacimiento: dayjs('2026-02-05'),
-  sexo: 'assail since',
-  estadoCivil: 'cash yuck embody',
-  tipoSangre: 'defendant gaseous',
-  pathImagen: 'fooey',
+  telefono1: 'obtrude wee why',
+  telefono2: 'until',
+  fechaNacimiento: dayjs('2026-02-04'),
+  sexo: 'stuff cash',
+  estadoCivil: 'kowtow joyfully defendant',
+  tipoSangre: 'aboard fooey',
+  pathImagen: 'glow',
 };
 
 export const sampleWithNewData: NewCliente = {

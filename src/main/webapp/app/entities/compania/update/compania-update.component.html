@@ -104,64 +104,25 @@
         @let pathImageRef = editForm.get('pathImage')!;
         <div class="mb-3">
           <label class="form-label" for="field_pathImage" jhiTranslate="devixApp.compania.pathImage">Path Image</label>
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              name="pathImage"
-              id="field_pathImage"
-              data-cy="pathImage"
-              formControlName="pathImage"
-              [readonly]="isUploading || isSaving"
-              placeholder="Selecciona un archivo para subir..."
-            />
-            <input
-              #fileInput
-              type="file"
-              class="d-none"
-              id="file_input_pathImage"
-              data-cy="fileInputPathImage"
-              (change)="onFileSelected($event)"
-              [disabled]="isUploading"
-              accept="image/*"
-            />
-            <button type="button" class="btn btn-outline-primary" (click)="triggerFileSelect()" [disabled]="isSaving || isUploading">
-              @if (isUploading) {
-                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                <span>Subiendo...</span>
-              } @else {
-                <fa-icon icon="upload"></fa-icon>
-                <span class="ms-1">Seleccionar archivo</span>
+          <input type="text" class="form-control" name="pathImage" id="field_pathImage" data-cy="pathImage" formControlName="pathImage" />
+          @if (pathImageRef.invalid && (pathImageRef.dirty || pathImageRef.touched)) {
+            <div>
+              @if (editForm.get('pathImage')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
               }
-            </button>
-          </div>
-          @if (selectedFile) {
-            <div class="mt-1">
-              <small class="form-text text-info">
-                <fa-icon icon="file"></fa-icon>
-                Archivo seleccionado: {{ selectedFile.name }} (se subirá al guardar)
-              </small>
             </div>
           }
-          @if (imagePreviewUrl) {
-            <div class="mt-3">
-              <label class="form-label">Vista previa:</label>
-              <div class="border rounded p-2" style="max-width: 400px">
-                <img
-                  [src]="imagePreviewUrl"
-                  [alt]="selectedFile?.name || 'Imagen'"
-                  class="img-fluid"
-                  style="max-height: 300px; width: auto; display: block; margin: 0 auto"
-                />
-              </div>
-            </div>
-          }
-          @if (uploadError) {
-            <div class="mt-1">
-              <small class="form-text text-danger">
-                <fa-icon icon="exclamation-circle"></fa-icon>
-                {{ uploadError }}
-              </small>
+        </div>
+
+        @let activaRef = editForm.get('activa')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_activa" jhiTranslate="devixApp.compania.activa">Activa</label>
+          <input type="checkbox" class="form-check" name="activa" id="field_activa" data-cy="activa" formControlName="activa" />
+          @if (activaRef.invalid && (activaRef.dirty || activaRef.touched)) {
+            <div>
+              @if (editForm.get('activa')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
             </div>
           }
         </div>

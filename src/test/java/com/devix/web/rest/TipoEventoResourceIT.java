@@ -501,7 +501,7 @@ class TipoEventoResourceIT {
         TipoEvento partialUpdatedTipoEvento = new TipoEvento();
         partialUpdatedTipoEvento.setId(tipoEvento.getId());
 
-        partialUpdatedTipoEvento.noCia(UPDATED_NO_CIA).nombre(UPDATED_NOMBRE);
+        partialUpdatedTipoEvento.nombre(UPDATED_NOMBRE);
 
         restTipoEventoMockMvc
             .perform(

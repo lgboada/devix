@@ -29,7 +29,7 @@ public class Cliente implements Serializable {
     private Long noCia;
 
     @NotNull
-    @Column(name = "dni", nullable = false, unique = true)
+    @Column(name = "dni", nullable = false)
     private String dni;
 
     @NotNull
@@ -45,11 +45,14 @@ public class Cliente implements Serializable {
 
     @NotNull
     @Pattern(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}")
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "telefono")
-    private String telefono;
+    @Column(name = "telefono_1")
+    private String telefono1;
+
+    @Column(name = "telefono_2")
+    private String telefono2;
 
     @NotNull
     @Column(name = "fecha_nacimiento", nullable = false)
@@ -188,17 +191,30 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
-    public String getTelefono() {
-        return this.telefono;
+    public String getTelefono1() {
+        return this.telefono1;
     }
 
-    public Cliente telefono(String telefono) {
-        this.setTelefono(telefono);
+    public Cliente telefono1(String telefono1) {
+        this.setTelefono1(telefono1);
         return this;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setTelefono1(String telefono1) {
+        this.telefono1 = telefono1;
+    }
+
+    public String getTelefono2() {
+        return this.telefono2;
+    }
+
+    public Cliente telefono2(String telefono2) {
+        this.setTelefono2(telefono2);
+        return this;
+    }
+
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
     }
 
     public LocalDate getFechaNacimiento() {
@@ -446,7 +462,8 @@ public class Cliente implements Serializable {
             ", apellidos='" + getApellidos() + "'" +
             ", nombreComercial='" + getNombreComercial() + "'" +
             ", email='" + getEmail() + "'" +
-            ", telefono='" + getTelefono() + "'" +
+            ", telefono1='" + getTelefono1() + "'" +
+            ", telefono2='" + getTelefono2() + "'" +
             ", fechaNacimiento='" + getFechaNacimiento() + "'" +
             ", sexo='" + getSexo() + "'" +
             ", estadoCivil='" + getEstadoCivil() + "'" +

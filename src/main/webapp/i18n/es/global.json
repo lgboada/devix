@@ -29,7 +29,8 @@
         "proveedor": "Proveedor",
         "tipoEvento": "Tipo Evento",
         "evento": "Evento",
-        "documento": "Documento"
+        "documento": "Documento",
+        "usuarioCentro": "Usuario Centro"
       },
       "account": {
         "main": "Cuenta",

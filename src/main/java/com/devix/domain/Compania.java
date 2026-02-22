@@ -28,7 +28,7 @@ public class Compania implements Serializable {
     private Long noCia;
 
     @NotNull
-    @Column(name = "dni", nullable = false, unique = true)
+    @Column(name = "dni", nullable = false)
     private String dni;
 
     @NotNull
@@ -48,8 +48,13 @@ public class Compania implements Serializable {
     @Column(name = "telefono", nullable = false)
     private String telefono;
 
-    @Column(name = "path_image", nullable = true)
+    @NotNull
+    @Column(name = "path_image", nullable = false)
     private String pathImage;
+
+    @NotNull
+    @Column(name = "activa", nullable = false)
+    private Boolean activa;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "compania")
     @JsonIgnoreProperties(value = { "facturas", "eventos", "compania" }, allowSetters = true)
@@ -161,6 +166,19 @@ public class Compania implements Serializable {
         this.pathImage = pathImage;
     }
 
+    public Boolean getActiva() {
+        return this.activa;
+    }
+
+    public Compania activa(Boolean activa) {
+        this.setActiva(activa);
+        return this;
+    }
+
+    public void setActiva(Boolean activa) {
+        this.activa = activa;
+    }
+
     public Set<Centro> getCentros() {
         return this.centros;
     }
@@ -223,6 +241,7 @@ public class Compania implements Serializable {
             ", email='" + getEmail() + "'" +
             ", telefono='" + getTelefono() + "'" +
             ", pathImage='" + getPathImage() + "'" +
+            ", activa='" + getActiva() + "'" +
             "}";
     }
 }

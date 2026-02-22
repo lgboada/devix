@@ -48,8 +48,8 @@ class EmpleadoResourceIT {
     private static final String DEFAULT_CONTACTO = "AAAAAAAAAA";
     private static final String UPDATED_CONTACTO = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "fr@esx7b.lrsy";
-    private static final String UPDATED_EMAIL = "lyadbq@rrdm.wokw";
+    private static final String DEFAULT_EMAIL = "7+r4%@pf.uo";
+    private static final String UPDATED_EMAIL = "aouo@n9tr.vqa";
 
     private static final String DEFAULT_PATH_IMAGEN = "AAAAAAAAAA";
     private static final String UPDATED_PATH_IMAGEN = "BBBBBBBBBB";
@@ -873,7 +873,7 @@ class EmpleadoResourceIT {
         Empleado partialUpdatedEmpleado = new Empleado();
         partialUpdatedEmpleado.setId(empleado.getId());
 
-        partialUpdatedEmpleado.dni(UPDATED_DNI);
+        partialUpdatedEmpleado.dni(UPDATED_DNI).nombre(UPDATED_NOMBRE).email(UPDATED_EMAIL);
 
         restEmpleadoMockMvc
             .perform(

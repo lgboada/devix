@@ -83,6 +83,7 @@ class CompaniaCriteriaTest {
         companiaCriteria.email();
         companiaCriteria.telefono();
         companiaCriteria.pathImage();
+        companiaCriteria.activa();
         companiaCriteria.centrosId();
         companiaCriteria.distinct();
     }
@@ -98,6 +99,7 @@ class CompaniaCriteriaTest {
                 condition.apply(criteria.getEmail()) &&
                 condition.apply(criteria.getTelefono()) &&
                 condition.apply(criteria.getPathImage()) &&
+                condition.apply(criteria.getActiva()) &&
                 condition.apply(criteria.getCentrosId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
@@ -115,6 +117,7 @@ class CompaniaCriteriaTest {
                 condition.apply(criteria.getEmail(), copy.getEmail()) &&
                 condition.apply(criteria.getTelefono(), copy.getTelefono()) &&
                 condition.apply(criteria.getPathImage(), copy.getPathImage()) &&
+                condition.apply(criteria.getActiva(), copy.getActiva()) &&
                 condition.apply(criteria.getCentrosId(), copy.getCentrosId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"

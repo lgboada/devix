@@ -79,6 +79,7 @@ public class CompaniaQueryService extends QueryService<Compania> {
                 buildStringSpecification(criteria.getEmail(), Compania_.email),
                 buildStringSpecification(criteria.getTelefono(), Compania_.telefono),
                 buildStringSpecification(criteria.getPathImage(), Compania_.pathImage),
+                buildSpecification(criteria.getActiva(), Compania_.activa),
                 buildSpecification(criteria.getCentrosId(), root -> root.join(Compania_.centros, JoinType.LEFT).get(Centro_.id))
             );
         }

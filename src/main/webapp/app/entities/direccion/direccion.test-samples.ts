@@ -7,19 +7,21 @@ export const sampleWithRequiredData: IDireccion = {
 };
 
 export const sampleWithPartialData: IDireccion = {
-  id: 5517,
-  noCia: 12950,
-  descripcion: 'husband unabashedly',
-  pais: 'aboard',
-  provincia: 'er aha miserable',
+  id: 12950,
+  noCia: 17628,
+  descripcion: 'but',
+  telefono: 'pasta hmph er',
+  latitud: 25868.05,
+  longitud: 10585.31,
 };
 
 export const sampleWithFullData: IDireccion = {
   id: 12937,
   noCia: 11103,
   descripcion: 'despite shrilly',
-  pais: 'handle',
-  provincia: 'modulo',
+  telefono: 'handle',
+  latitud: 4317.77,
+  longitud: 16877.06,
 };
 
 export const sampleWithNewData: NewDireccion = {

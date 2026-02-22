@@ -525,7 +525,7 @@ class CentroResourceIT {
         Centro partialUpdatedCentro = new Centro();
         partialUpdatedCentro.setId(centro.getId());
 
-        partialUpdatedCentro.descripcion(UPDATED_DESCRIPCION);
+        partialUpdatedCentro.noCia(UPDATED_NO_CIA);
 
         restCentroMockMvc
             .perform(

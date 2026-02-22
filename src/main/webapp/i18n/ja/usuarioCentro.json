@@ -1,0 +1,27 @@
+{
+  "devixApp": {
+    "usuarioCentro": {
+      "home": {
+        "title": "UsuarioCentros",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Usuario Centro の作成",
+        "createOrEditLabel": "Usuario Centroの作成または編集",
+        "notFound": "Usuario Centros が見つかりません。"
+      },
+      "created": "新しい Usuario Centro がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Usuario Centro が更新されました。",
+      "deleted": "ID {{ param }} の Usuario Centro が削除されました。",
+      "delete": {
+        "question": "Usuario Centro {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Usuario Centro"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "principal": "Principal",
+      "centro": "Centro",
+      "user": "User"
+    }
+  }
+}

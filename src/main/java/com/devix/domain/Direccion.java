@@ -29,11 +29,14 @@ public class Direccion implements Serializable {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
-    @Column(name = "pais")
-    private String pais;
+    @Column(name = "telefono")
+    private String telefono;
 
-    @Column(name = "provincia")
-    private String provincia;
+    @Column(name = "latitud")
+    private Double latitud;
+
+    @Column(name = "longitud")
+    private Double longitud;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "direccions" }, allowSetters = true)
@@ -84,30 +87,43 @@ public class Direccion implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getPais() {
-        return this.pais;
+    public String getTelefono() {
+        return this.telefono;
     }
 
-    public Direccion pais(String pais) {
-        this.setPais(pais);
+    public Direccion telefono(String telefono) {
+        this.setTelefono(telefono);
         return this;
     }
 
-    public void setPais(String pais) {
-        this.pais = pais;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public String getProvincia() {
-        return this.provincia;
+    public Double getLatitud() {
+        return this.latitud;
     }
 
-    public Direccion provincia(String provincia) {
-        this.setProvincia(provincia);
+    public Direccion latitud(Double latitud) {
+        this.setLatitud(latitud);
         return this;
     }
 
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return this.longitud;
+    }
+
+    public Direccion longitud(Double longitud) {
+        this.setLongitud(longitud);
+        return this;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 
     public TipoDireccion getTipoDireccion() {
@@ -162,8 +178,9 @@ public class Direccion implements Serializable {
             "id=" + getId() +
             ", noCia=" + getNoCia() +
             ", descripcion='" + getDescripcion() + "'" +
-            ", pais='" + getPais() + "'" +
-            ", provincia='" + getProvincia() + "'" +
+            ", telefono='" + getTelefono() + "'" +
+            ", latitud=" + getLatitud() +
+            ", longitud=" + getLongitud() +
             "}";
     }
 }

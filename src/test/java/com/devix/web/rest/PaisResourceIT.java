@@ -499,7 +499,7 @@ class PaisResourceIT {
         Pais partialUpdatedPais = new Pais();
         partialUpdatedPais.setId(pais.getId());
 
-        partialUpdatedPais.noCia(UPDATED_NO_CIA).descripcion(UPDATED_DESCRIPCION);
+        partialUpdatedPais.descripcion(UPDATED_DESCRIPCION);
 
         restPaisMockMvc
             .perform(

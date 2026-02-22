@@ -74,8 +74,9 @@ public class DireccionQueryService extends QueryService<Direccion> {
                 buildRangeSpecification(criteria.getId(), Direccion_.id),
                 buildRangeSpecification(criteria.getNoCia(), Direccion_.noCia),
                 buildStringSpecification(criteria.getDescripcion(), Direccion_.descripcion),
-                buildStringSpecification(criteria.getPais(), Direccion_.pais),
-                buildStringSpecification(criteria.getProvincia(), Direccion_.provincia),
+                buildStringSpecification(criteria.getTelefono(), Direccion_.telefono),
+                buildRangeSpecification(criteria.getLatitud(), Direccion_.latitud),
+                buildRangeSpecification(criteria.getLongitud(), Direccion_.longitud),
                 buildSpecification(criteria.getTipoDireccionId(), root ->
                     root.join(Direccion_.tipoDireccion, JoinType.LEFT).get(TipoDireccion_.id)
                 ),

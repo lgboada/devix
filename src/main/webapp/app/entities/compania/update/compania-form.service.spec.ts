@@ -27,6 +27,7 @@ describe('Compania Form Service', () => {
             email: expect.any(Object),
             telefono: expect.any(Object),
             pathImage: expect.any(Object),
+            activa: expect.any(Object),
           }),
         );
       });
@@ -44,6 +45,7 @@ describe('Compania Form Service', () => {
             email: expect.any(Object),
             telefono: expect.any(Object),
             pathImage: expect.any(Object),
+            activa: expect.any(Object),
           }),
         );
       });

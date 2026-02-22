@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type CompaniaFormGroupInput = ICompania | PartialWithRequiredKeyOf<NewCompania>;
 
-type CompaniaFormDefaults = Pick<NewCompania, 'id'>;
+type CompaniaFormDefaults = Pick<NewCompania, 'id' | 'activa'>;
 
 type CompaniaFormGroupContent = {
   id: FormControl<ICompania['id'] | NewCompania['id']>;
@@ -25,6 +25,7 @@ type CompaniaFormGroupContent = {
   email: FormControl<ICompania['email']>;
   telefono: FormControl<ICompania['telefono']>;
   pathImage: FormControl<ICompania['pathImage']>;
+  activa: FormControl<ICompania['activa']>;
 };
 
 export type CompaniaFormGroup = FormGroup<CompaniaFormGroupContent>;
@@ -63,7 +64,10 @@ export class CompaniaFormService {
         validators: [Validators.required],
       }),
       pathImage: new FormControl(companiaRawValue.pathImage, {
-        validators: [], // pathImage no es obligatorio
+        validators: [Validators.required],
+      }),
+      activa: new FormControl(companiaRawValue.activa, {
+        validators: [Validators.required],
       }),
     });
   }
@@ -85,6 +89,7 @@ export class CompaniaFormService {
   private getFormDefaults(): CompaniaFormDefaults {
     return {
       id: null,
+      activa: false,
     };
   }
 }

@@ -20,8 +20,9 @@ type DireccionFormGroupContent = {
   id: FormControl<IDireccion['id'] | NewDireccion['id']>;
   noCia: FormControl<IDireccion['noCia']>;
   descripcion: FormControl<IDireccion['descripcion']>;
-  pais: FormControl<IDireccion['pais']>;
-  provincia: FormControl<IDireccion['provincia']>;
+  telefono: FormControl<IDireccion['telefono']>;
+  latitud: FormControl<IDireccion['latitud']>;
+  longitud: FormControl<IDireccion['longitud']>;
   tipoDireccion: FormControl<IDireccion['tipoDireccion']>;
   cliente: FormControl<IDireccion['cliente']>;
 };
@@ -49,8 +50,9 @@ export class DireccionFormService {
       descripcion: new FormControl(direccionRawValue.descripcion, {
         validators: [Validators.required],
       }),
-      pais: new FormControl(direccionRawValue.pais),
-      provincia: new FormControl(direccionRawValue.provincia),
+      telefono: new FormControl(direccionRawValue.telefono),
+      latitud: new FormControl(direccionRawValue.latitud),
+      longitud: new FormControl(direccionRawValue.longitud),
       tipoDireccion: new FormControl(direccionRawValue.tipoDireccion),
       cliente: new FormControl(direccionRawValue.cliente),
     });

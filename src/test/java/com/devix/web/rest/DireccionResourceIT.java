@@ -44,11 +44,16 @@ class DireccionResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PAIS = "AAAAAAAAAA";
-    private static final String UPDATED_PAIS = "BBBBBBBBBB";
+    private static final String DEFAULT_TELEFONO = "AAAAAAAAAA";
+    private static final String UPDATED_TELEFONO = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PROVINCIA = "AAAAAAAAAA";
-    private static final String UPDATED_PROVINCIA = "BBBBBBBBBB";
+    private static final Double DEFAULT_LATITUD = 1D;
+    private static final Double UPDATED_LATITUD = 2D;
+    private static final Double SMALLER_LATITUD = 1D - 1D;
+
+    private static final Double DEFAULT_LONGITUD = 1D;
+    private static final Double UPDATED_LONGITUD = 2D;
+    private static final Double SMALLER_LONGITUD = 1D - 1D;
 
     private static final String ENTITY_API_URL = "/api/direccions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -82,7 +87,12 @@ class DireccionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Direccion createEntity() {
-        return new Direccion().noCia(DEFAULT_NO_CIA).descripcion(DEFAULT_DESCRIPCION).pais(DEFAULT_PAIS).provincia(DEFAULT_PROVINCIA);
+        return new Direccion()
+            .noCia(DEFAULT_NO_CIA)
+            .descripcion(DEFAULT_DESCRIPCION)
+            .telefono(DEFAULT_TELEFONO)
+            .latitud(DEFAULT_LATITUD)
+            .longitud(DEFAULT_LONGITUD);
     }
 
     /**
@@ -92,7 +102,12 @@ class DireccionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Direccion createUpdatedEntity() {
-        return new Direccion().noCia(UPDATED_NO_CIA).descripcion(UPDATED_DESCRIPCION).pais(UPDATED_PAIS).provincia(UPDATED_PROVINCIA);
+        return new Direccion()
+            .noCia(UPDATED_NO_CIA)
+            .descripcion(UPDATED_DESCRIPCION)
+            .telefono(UPDATED_TELEFONO)
+            .latitud(UPDATED_LATITUD)
+            .longitud(UPDATED_LONGITUD);
     }
 
     @BeforeEach
@@ -200,8 +215,9 @@ class DireccionResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(direccion.getId().intValue())))
             .andExpect(jsonPath("$.[*].noCia").value(hasItem(DEFAULT_NO_CIA.intValue())))
             .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].pais").value(hasItem(DEFAULT_PAIS)))
-            .andExpect(jsonPath("$.[*].provincia").value(hasItem(DEFAULT_PROVINCIA)));
+            .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO)))
+            .andExpect(jsonPath("$.[*].latitud").value(hasItem(DEFAULT_LATITUD)))
+            .andExpect(jsonPath("$.[*].longitud").value(hasItem(DEFAULT_LONGITUD)));
     }
 
     @Test
@@ -218,8 +234,9 @@ class DireccionResourceIT {
             .andExpect(jsonPath("$.id").value(direccion.getId().intValue()))
             .andExpect(jsonPath("$.noCia").value(DEFAULT_NO_CIA.intValue()))
             .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
-            .andExpect(jsonPath("$.pais").value(DEFAULT_PAIS))
-            .andExpect(jsonPath("$.provincia").value(DEFAULT_PROVINCIA));
+            .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO))
+            .andExpect(jsonPath("$.latitud").value(DEFAULT_LATITUD))
+            .andExpect(jsonPath("$.longitud").value(DEFAULT_LONGITUD));
     }
 
     @Test
@@ -362,102 +379,192 @@ class DireccionResourceIT {
 
     @Test
     @Transactional
-    void getAllDireccionsByPaisIsEqualToSomething() throws Exception {
+    void getAllDireccionsByTelefonoIsEqualToSomething() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where pais equals to
-        defaultDireccionFiltering("pais.equals=" + DEFAULT_PAIS, "pais.equals=" + UPDATED_PAIS);
+        // Get all the direccionList where telefono equals to
+        defaultDireccionFiltering("telefono.equals=" + DEFAULT_TELEFONO, "telefono.equals=" + UPDATED_TELEFONO);
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByPaisIsInShouldWork() throws Exception {
+    void getAllDireccionsByTelefonoIsInShouldWork() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where pais in
-        defaultDireccionFiltering("pais.in=" + DEFAULT_PAIS + "," + UPDATED_PAIS, "pais.in=" + UPDATED_PAIS);
+        // Get all the direccionList where telefono in
+        defaultDireccionFiltering("telefono.in=" + DEFAULT_TELEFONO + "," + UPDATED_TELEFONO, "telefono.in=" + UPDATED_TELEFONO);
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByPaisIsNullOrNotNull() throws Exception {
+    void getAllDireccionsByTelefonoIsNullOrNotNull() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where pais is not null
-        defaultDireccionFiltering("pais.specified=true", "pais.specified=false");
+        // Get all the direccionList where telefono is not null
+        defaultDireccionFiltering("telefono.specified=true", "telefono.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByPaisContainsSomething() throws Exception {
+    void getAllDireccionsByTelefonoContainsSomething() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where pais contains
-        defaultDireccionFiltering("pais.contains=" + DEFAULT_PAIS, "pais.contains=" + UPDATED_PAIS);
+        // Get all the direccionList where telefono contains
+        defaultDireccionFiltering("telefono.contains=" + DEFAULT_TELEFONO, "telefono.contains=" + UPDATED_TELEFONO);
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByPaisNotContainsSomething() throws Exception {
+    void getAllDireccionsByTelefonoNotContainsSomething() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where pais does not contain
-        defaultDireccionFiltering("pais.doesNotContain=" + UPDATED_PAIS, "pais.doesNotContain=" + DEFAULT_PAIS);
+        // Get all the direccionList where telefono does not contain
+        defaultDireccionFiltering("telefono.doesNotContain=" + UPDATED_TELEFONO, "telefono.doesNotContain=" + DEFAULT_TELEFONO);
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByProvinciaIsEqualToSomething() throws Exception {
+    void getAllDireccionsByLatitudIsEqualToSomething() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where provincia equals to
-        defaultDireccionFiltering("provincia.equals=" + DEFAULT_PROVINCIA, "provincia.equals=" + UPDATED_PROVINCIA);
+        // Get all the direccionList where latitud equals to
+        defaultDireccionFiltering("latitud.equals=" + DEFAULT_LATITUD, "latitud.equals=" + UPDATED_LATITUD);
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByProvinciaIsInShouldWork() throws Exception {
+    void getAllDireccionsByLatitudIsInShouldWork() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where provincia in
-        defaultDireccionFiltering("provincia.in=" + DEFAULT_PROVINCIA + "," + UPDATED_PROVINCIA, "provincia.in=" + UPDATED_PROVINCIA);
+        // Get all the direccionList where latitud in
+        defaultDireccionFiltering("latitud.in=" + DEFAULT_LATITUD + "," + UPDATED_LATITUD, "latitud.in=" + UPDATED_LATITUD);
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByProvinciaIsNullOrNotNull() throws Exception {
+    void getAllDireccionsByLatitudIsNullOrNotNull() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where provincia is not null
-        defaultDireccionFiltering("provincia.specified=true", "provincia.specified=false");
+        // Get all the direccionList where latitud is not null
+        defaultDireccionFiltering("latitud.specified=true", "latitud.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByProvinciaContainsSomething() throws Exception {
+    void getAllDireccionsByLatitudIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where provincia contains
-        defaultDireccionFiltering("provincia.contains=" + DEFAULT_PROVINCIA, "provincia.contains=" + UPDATED_PROVINCIA);
+        // Get all the direccionList where latitud is greater than or equal to
+        defaultDireccionFiltering("latitud.greaterThanOrEqual=" + DEFAULT_LATITUD, "latitud.greaterThanOrEqual=" + UPDATED_LATITUD);
     }
 
     @Test
     @Transactional
-    void getAllDireccionsByProvinciaNotContainsSomething() throws Exception {
+    void getAllDireccionsByLatitudIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         insertedDireccion = direccionRepository.saveAndFlush(direccion);
 
-        // Get all the direccionList where provincia does not contain
-        defaultDireccionFiltering("provincia.doesNotContain=" + UPDATED_PROVINCIA, "provincia.doesNotContain=" + DEFAULT_PROVINCIA);
+        // Get all the direccionList where latitud is less than or equal to
+        defaultDireccionFiltering("latitud.lessThanOrEqual=" + DEFAULT_LATITUD, "latitud.lessThanOrEqual=" + SMALLER_LATITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLatitudIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where latitud is less than
+        defaultDireccionFiltering("latitud.lessThan=" + UPDATED_LATITUD, "latitud.lessThan=" + DEFAULT_LATITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLatitudIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where latitud is greater than
+        defaultDireccionFiltering("latitud.greaterThan=" + SMALLER_LATITUD, "latitud.greaterThan=" + DEFAULT_LATITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLongitudIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where longitud equals to
+        defaultDireccionFiltering("longitud.equals=" + DEFAULT_LONGITUD, "longitud.equals=" + UPDATED_LONGITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLongitudIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where longitud in
+        defaultDireccionFiltering("longitud.in=" + DEFAULT_LONGITUD + "," + UPDATED_LONGITUD, "longitud.in=" + UPDATED_LONGITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLongitudIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where longitud is not null
+        defaultDireccionFiltering("longitud.specified=true", "longitud.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLongitudIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where longitud is greater than or equal to
+        defaultDireccionFiltering("longitud.greaterThanOrEqual=" + DEFAULT_LONGITUD, "longitud.greaterThanOrEqual=" + UPDATED_LONGITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLongitudIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where longitud is less than or equal to
+        defaultDireccionFiltering("longitud.lessThanOrEqual=" + DEFAULT_LONGITUD, "longitud.lessThanOrEqual=" + SMALLER_LONGITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLongitudIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where longitud is less than
+        defaultDireccionFiltering("longitud.lessThan=" + UPDATED_LONGITUD, "longitud.lessThan=" + DEFAULT_LONGITUD);
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByLongitudIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedDireccion = direccionRepository.saveAndFlush(direccion);
+
+        // Get all the direccionList where longitud is greater than
+        defaultDireccionFiltering("longitud.greaterThan=" + SMALLER_LONGITUD, "longitud.greaterThan=" + DEFAULT_LONGITUD);
     }
 
     @Test
@@ -520,8 +627,9 @@ class DireccionResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(direccion.getId().intValue())))
             .andExpect(jsonPath("$.[*].noCia").value(hasItem(DEFAULT_NO_CIA.intValue())))
             .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].pais").value(hasItem(DEFAULT_PAIS)))
-            .andExpect(jsonPath("$.[*].provincia").value(hasItem(DEFAULT_PROVINCIA)));
+            .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO)))
+            .andExpect(jsonPath("$.[*].latitud").value(hasItem(DEFAULT_LATITUD)))
+            .andExpect(jsonPath("$.[*].longitud").value(hasItem(DEFAULT_LONGITUD)));
 
         // Check, that the count call also returns 1
         restDireccionMockMvc
@@ -569,7 +677,12 @@ class DireccionResourceIT {
         Direccion updatedDireccion = direccionRepository.findById(direccion.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedDireccion are not directly saved in db
         em.detach(updatedDireccion);
-        updatedDireccion.noCia(UPDATED_NO_CIA).descripcion(UPDATED_DESCRIPCION).pais(UPDATED_PAIS).provincia(UPDATED_PROVINCIA);
+        updatedDireccion
+            .noCia(UPDATED_NO_CIA)
+            .descripcion(UPDATED_DESCRIPCION)
+            .telefono(UPDATED_TELEFONO)
+            .latitud(UPDATED_LATITUD)
+            .longitud(UPDATED_LONGITUD);
         DireccionDTO direccionDTO = direccionMapper.toDto(updatedDireccion);
 
         restDireccionMockMvc
@@ -662,7 +775,7 @@ class DireccionResourceIT {
         Direccion partialUpdatedDireccion = new Direccion();
         partialUpdatedDireccion.setId(direccion.getId());
 
-        partialUpdatedDireccion.noCia(UPDATED_NO_CIA).pais(UPDATED_PAIS).provincia(UPDATED_PROVINCIA);
+        partialUpdatedDireccion.noCia(UPDATED_NO_CIA).descripcion(UPDATED_DESCRIPCION).longitud(UPDATED_LONGITUD);
 
         restDireccionMockMvc
             .perform(
@@ -694,7 +807,12 @@ class DireccionResourceIT {
         Direccion partialUpdatedDireccion = new Direccion();
         partialUpdatedDireccion.setId(direccion.getId());
 
-        partialUpdatedDireccion.noCia(UPDATED_NO_CIA).descripcion(UPDATED_DESCRIPCION).pais(UPDATED_PAIS).provincia(UPDATED_PROVINCIA);
+        partialUpdatedDireccion
+            .noCia(UPDATED_NO_CIA)
+            .descripcion(UPDATED_DESCRIPCION)
+            .telefono(UPDATED_TELEFONO)
+            .latitud(UPDATED_LATITUD)
+            .longitud(UPDATED_LONGITUD);
 
         restDireccionMockMvc
             .perform(

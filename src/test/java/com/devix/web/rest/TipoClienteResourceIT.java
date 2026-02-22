@@ -513,6 +513,8 @@ class TipoClienteResourceIT {
         TipoCliente partialUpdatedTipoCliente = new TipoCliente();
         partialUpdatedTipoCliente.setId(tipoCliente.getId());
 
+        partialUpdatedTipoCliente.noCia(UPDATED_NO_CIA).descripcion(UPDATED_DESCRIPCION);
+
         restTipoClienteMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTipoCliente.getId())

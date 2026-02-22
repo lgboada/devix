@@ -13,7 +13,7 @@
     {
       "fieldName": "dni",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "nombre",
@@ -39,6 +39,11 @@
     {
       "fieldName": "pathImage",
       "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "activa",
+      "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
     }
   ],

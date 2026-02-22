@@ -111,6 +111,11 @@ const routes: Routes = [
     data: { pageTitle: 'devixApp.documento.home.title' },
     loadChildren: () => import('./documento/documento.routes'),
   },
+  {
+    path: 'usuario-centro',
+    data: { pageTitle: 'devixApp.usuarioCentro.home.title' },
+    loadChildren: () => import('./usuario-centro/usuario-centro.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

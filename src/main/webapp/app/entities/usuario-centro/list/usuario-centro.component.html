@@ -1,0 +1,114 @@
+<div>
+  <h2 id="page-heading" data-cy="UsuarioCentroHeading">
+    <span jhiTranslate="devixApp.usuarioCentro.home.title">Usuario Centros</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.usuarioCentro.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-usuario-centro"
+        [routerLink]="['/usuario-centro/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.usuarioCentro.home.createLabel">Crear nuevo Usuario Centro</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (usuarioCentros().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.usuarioCentro.home.notFound">Ningún Usuario Centros encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noCia">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.usuarioCentro.noCia">No Cia</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="principal">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.usuarioCentro.principal">Principal</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="centro.descripcion">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.usuarioCentro.centro">Centro</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.usuarioCentro.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (usuarioCentro of usuarioCentros(); track trackId(usuarioCentro)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/usuario-centro', usuarioCentro.id, 'view']">{{ usuarioCentro.id }}</a>
+              </td>
+              <td>{{ usuarioCentro.noCia }}</td>
+              <td>{{ usuarioCentro.principal }}</td>
+              <td>
+                @if (usuarioCentro.centro) {
+                  <div>
+                    <a [routerLink]="['/centro', usuarioCentro.centro.id, 'view']">{{ usuarioCentro.centro.descripcion }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                {{ usuarioCentro.user?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/usuario-centro', usuarioCentro.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/usuario-centro', usuarioCentro.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(usuarioCentro)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

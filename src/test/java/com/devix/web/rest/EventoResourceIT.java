@@ -1404,13 +1404,9 @@ class EventoResourceIT {
         partialUpdatedEvento.setId(evento.getId());
 
         partialUpdatedEvento
-            .descripcion(UPDATED_DESCRIPCION)
-            .estado(UPDATED_ESTADO)
-            .motivoConsulta(UPDATED_MOTIVO_CONSULTA)
-            .tratamiento(UPDATED_TRATAMIENTO)
             .indicaciones(UPDATED_INDICACIONES)
-            .diagnostico2(UPDATED_DIAGNOSTICO_2)
             .diagnostico5(UPDATED_DIAGNOSTICO_5)
+            .diagnostico6(UPDATED_DIAGNOSTICO_6)
             .diagnostico7(UPDATED_DIAGNOSTICO_7);
 
         restEventoMockMvc

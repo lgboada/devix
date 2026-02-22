@@ -34,6 +34,9 @@ public class CompaniaDTO implements Serializable {
     @NotNull
     private String pathImage;
 
+    @NotNull
+    private Boolean activa;
+
     public Long getId() {
         return id;
     }
@@ -98,6 +101,14 @@ public class CompaniaDTO implements Serializable {
         this.pathImage = pathImage;
     }
 
+    public Boolean getActiva() {
+        return activa;
+    }
+
+    public void setActiva(Boolean activa) {
+        this.activa = activa;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -131,6 +142,7 @@ public class CompaniaDTO implements Serializable {
             ", email='" + getEmail() + "'" +
             ", telefono='" + getTelefono() + "'" +
             ", pathImage='" + getPathImage() + "'" +
+            ", activa='" + getActiva() + "'" +
             "}";
     }
 }

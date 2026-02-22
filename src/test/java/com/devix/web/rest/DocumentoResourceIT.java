@@ -763,11 +763,7 @@ class DocumentoResourceIT {
         Documento partialUpdatedDocumento = new Documento();
         partialUpdatedDocumento.setId(documento.getId());
 
-        partialUpdatedDocumento
-            .tipo(UPDATED_TIPO)
-            .fechaCreacion(UPDATED_FECHA_CREACION)
-            .fechaVencimiento(UPDATED_FECHA_VENCIMIENTO)
-            .path(UPDATED_PATH);
+        partialUpdatedDocumento.noCia(UPDATED_NO_CIA).fechaVencimiento(UPDATED_FECHA_VENCIMIENTO);
 
         restDocumentoMockMvc
             .perform(

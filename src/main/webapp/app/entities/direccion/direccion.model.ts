@@ -5,8 +5,9 @@ export interface IDireccion {
   id: number;
   noCia?: number | null;
   descripcion?: string | null;
-  pais?: string | null;
-  provincia?: string | null;
+  telefono?: string | null;
+  latitud?: number | null;
+  longitud?: number | null;
   tipoDireccion?: Pick<ITipoDireccion, 'id'> | null;
   cliente?: Pick<ICliente, 'id'> | null;
 }

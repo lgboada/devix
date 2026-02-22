@@ -31,7 +31,9 @@ public class ClienteDTO implements Serializable {
     @Pattern(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}")
     private String email;
 
-    private String telefono;
+    private String telefono1;
+
+    private String telefono2;
 
     @NotNull
     private LocalDate fechaNacimiento;
@@ -108,12 +110,20 @@ public class ClienteDTO implements Serializable {
         this.email = email;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getTelefono1() {
+        return telefono1;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setTelefono1(String telefono1) {
+        this.telefono1 = telefono1;
+    }
+
+    public String getTelefono2() {
+        return telefono2;
+    }
+
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
     }
 
     public LocalDate getFechaNacimiento() {
@@ -204,7 +214,8 @@ public class ClienteDTO implements Serializable {
             ", apellidos='" + getApellidos() + "'" +
             ", nombreComercial='" + getNombreComercial() + "'" +
             ", email='" + getEmail() + "'" +
-            ", telefono='" + getTelefono() + "'" +
+            ", telefono1='" + getTelefono1() + "'" +
+            ", telefono2='" + getTelefono2() + "'" +
             ", fechaNacimiento='" + getFechaNacimiento() + "'" +
             ", sexo='" + getSexo() + "'" +
             ", estadoCivil='" + getEstadoCivil() + "'" +

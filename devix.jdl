@@ -17,18 +17,25 @@ entity Ciudad {
 
 entity Compania {
     noCia Long required,
-    dni String required unique,
+    dni String required,
     nombre String required,
     direccion String required,
     email String required unique pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/),
     telefono String required,
-    pathImage String required
+    pathImage String required,
+	activa Boolean required
 }
 
 entity Centro {
 	noCia Long required,
     descripcion String required
 }
+
+entity UsuarioCentro {
+  noCia Long required,
+  principal Boolean required
+}
+
 
 entity TipoCliente {
 	noCia Long required,
@@ -65,12 +72,13 @@ entity DetalleFactura {
 
 entity Cliente {
     noCia Long required,
-    dni String required unique,
+    dni String required,
     nombres String required,
     apellidos String required,
     nombreComercial String,
-    email String required unique pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/),
-    telefono String ,
+    email String required pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/),
+    telefono1 String ,
+	telefono2 String ,
     fechaNacimiento LocalDate required,
     sexo String required,
     estadoCivil String required,
@@ -87,8 +95,9 @@ entity TipoDireccion {
 entity Direccion {
 	noCia Long required,
     descripcion String required,
-    pais String,
-    provincia String 
+	telefono String,
+    latitud Double,
+    longitud Double
 }
 
 entity TipoCatalogo {
@@ -212,6 +221,11 @@ relationship OneToMany {
     Cliente to Evento{cliente},
     Cliente to Documento{cliente},
     Evento to Documento{evento}
+}
+
+relationship ManyToOne {
+  UsuarioCentro{centro(descripcion)} to Centro,
+  UsuarioCentro{user(login)} to User with builtInEntity
 }
 
 // ==========================

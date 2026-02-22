@@ -590,7 +590,7 @@ class TipoCatalogoResourceIT {
         TipoCatalogo partialUpdatedTipoCatalogo = new TipoCatalogo();
         partialUpdatedTipoCatalogo.setId(tipoCatalogo.getId());
 
-        partialUpdatedTipoCatalogo.noCia(UPDATED_NO_CIA).categoria(UPDATED_CATEGORIA);
+        partialUpdatedTipoCatalogo.descripcion(UPDATED_DESCRIPCION);
 
         restTipoCatalogoMockMvc
             .perform(

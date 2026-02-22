@@ -1114,9 +1114,7 @@ class DetalleFacturaResourceIT {
             .noCia(UPDATED_NO_CIA)
             .cantidad(UPDATED_CANTIDAD)
             .precioUnitario(UPDATED_PRECIO_UNITARIO)
-            .descuento(UPDATED_DESCUENTO)
-            .impuesto(UPDATED_IMPUESTO)
-            .total(UPDATED_TOTAL);
+            .impuesto(UPDATED_IMPUESTO);
 
         restDetalleFacturaMockMvc
             .perform(

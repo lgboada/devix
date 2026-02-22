@@ -49,8 +49,9 @@ public class DireccionAsserts {
             .as("Verify Direccion relevant properties")
             .satisfies(a -> assertThat(a.getNoCia()).as("check noCia").isEqualTo(expected.getNoCia()))
             .satisfies(a -> assertThat(a.getDescripcion()).as("check descripcion").isEqualTo(expected.getDescripcion()))
-            .satisfies(a -> assertThat(a.getPais()).as("check pais").isEqualTo(expected.getPais()))
-            .satisfies(a -> assertThat(a.getProvincia()).as("check provincia").isEqualTo(expected.getProvincia()));
+            .satisfies(a -> assertThat(a.getTelefono()).as("check telefono").isEqualTo(expected.getTelefono()))
+            .satisfies(a -> assertThat(a.getLatitud()).as("check latitud").isEqualTo(expected.getLatitud()))
+            .satisfies(a -> assertThat(a.getLongitud()).as("check longitud").isEqualTo(expected.getLongitud()));
     }
 
     /**

@@ -24,7 +24,8 @@ type ClienteFormGroupContent = {
   apellidos: FormControl<ICliente['apellidos']>;
   nombreComercial: FormControl<ICliente['nombreComercial']>;
   email: FormControl<ICliente['email']>;
-  telefono: FormControl<ICliente['telefono']>;
+  telefono1: FormControl<ICliente['telefono1']>;
+  telefono2: FormControl<ICliente['telefono2']>;
   fechaNacimiento: FormControl<ICliente['fechaNacimiento']>;
   sexo: FormControl<ICliente['sexo']>;
   estadoCivil: FormControl<ICliente['estadoCivil']>;
@@ -67,7 +68,8 @@ export class ClienteFormService {
       email: new FormControl(clienteRawValue.email, {
         validators: [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}')],
       }),
-      telefono: new FormControl(clienteRawValue.telefono),
+      telefono1: new FormControl(clienteRawValue.telefono1),
+      telefono2: new FormControl(clienteRawValue.telefono2),
       fechaNacimiento: new FormControl(clienteRawValue.fechaNacimiento, {
         validators: [Validators.required],
       }),

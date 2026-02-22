@@ -9,6 +9,7 @@ export const sampleWithRequiredData: ICompania = {
   email: 'iv7+@gu25o.ej',
   telefono: 'jubilantly',
   pathImage: 'firm',
+  activa: false,
 };
 
 export const sampleWithPartialData: ICompania = {
@@ -20,6 +21,7 @@ export const sampleWithPartialData: ICompania = {
   email: 'zue-k@jocq.cy',
   telefono: 'clueless',
   pathImage: 'woot oof pepper',
+  activa: false,
 };
 
 export const sampleWithFullData: ICompania = {
@@ -31,6 +33,7 @@ export const sampleWithFullData: ICompania = {
   email: 'yd_16p@0.sn',
   telefono: 'nasalise pertain solace',
   pathImage: 'writ outside',
+  activa: false,
 };
 
 export const sampleWithNewData: NewCompania = {
@@ -41,6 +44,7 @@ export const sampleWithNewData: NewCompania = {
   email: '+a@y..idvj',
   telefono: 'plus gracefully',
   pathImage: 'worth definitive',
+  activa: true,
   id: null,
 };
 
