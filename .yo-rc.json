@@ -51,7 +51,7 @@
     "reactive": false,
     "serverPort": null,
     "serviceDiscoveryType": null,
-    "skipUserManagement": true,
+    "skipUserManagement": false,
     "syncUserWithIdp": true,
     "testFrameworks": [],
     "withAdminUi": true

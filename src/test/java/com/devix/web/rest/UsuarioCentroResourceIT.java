@@ -401,7 +401,10 @@ class UsuarioCentroResourceIT {
         User user;
         if (TestUtil.findAll(em, User.class).isEmpty()) {
             usuarioCentroRepository.saveAndFlush(usuarioCentro);
-            user = UserResourceIT.createEntity();
+            user = new User();
+            user.setId(java.util.UUID.randomUUID().toString());
+            user.setLogin("test-user-" + java.util.UUID.randomUUID().toString().substring(0, 8));
+            user.setActivated(true);
         } else {
             user = TestUtil.findAll(em, User.class).get(0);
         }
@@ -413,7 +416,7 @@ class UsuarioCentroResourceIT {
         // Get all the usuarioCentroList where user equals to userId
         defaultUsuarioCentroShouldBeFound("userId.equals=" + userId);
 
-        // Get all the usuarioCentroList where user equals to "invalid-id"
+        // Get all the usuarioCentroList where user equals to a non-existing id
         defaultUsuarioCentroShouldNotBeFound("userId.equals=" + "invalid-id");
     }
 
