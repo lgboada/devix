@@ -26,6 +26,11 @@ function accountWithAuthorities(authorities: string[]): Account {
   };
 }
 
+function flushIdentityRequests(httpMock: HttpTestingController, accountPayload: Partial<Account> = {}): void {
+  httpMock.expectOne({ method: 'GET', url: 'api/account' }).flush({ ...accountWithAuthorities([]), ...accountPayload });
+  httpMock.expectOne({ method: 'GET', url: 'api/account/companies' }).flush([]);
+}
+
 const mockFn = (value: string | null): jest.Mock<string | null> => jest.fn(() => value);
 
 describe('Account Service', () => {
@@ -91,13 +96,13 @@ describe('Account Service', () => {
       // Once more
       service.identity().subscribe();
       // Then there is only request
-      httpMock.expectOne({ method: 'GET' });
+      httpMock.expectOne({ method: 'GET', url: 'api/account' });
     });
 
     it('should call /account only once if not logged out after first authentication and should call /account again if user has logged out', () => {
       // Given the user is authenticated
       service.identity().subscribe();
-      httpMock.expectOne({ method: 'GET' }).flush({});
+      flushIdentityRequests(httpMock);
 
       // When I call
       service.identity().subscribe();
@@ -111,7 +116,7 @@ describe('Account Service', () => {
       service.identity().subscribe();
 
       // Then there is a new request
-      httpMock.expectOne({ method: 'GET' });
+      httpMock.expectOne({ method: 'GET', url: 'api/account' });
     });
 
     describe('should change the language on authentication if necessary', () => {
@@ -121,7 +126,7 @@ describe('Account Service', () => {
 
         // WHEN
         service.identity().subscribe();
-        httpMock.expectOne({ method: 'GET' }).flush({ ...accountWithAuthorities([]), langKey: 'accountLang' });
+        flushIdentityRequests(httpMock, { langKey: 'accountLang' });
 
         // THEN
         expect(mockTranslateService.use).toHaveBeenCalledWith('accountLang');
@@ -133,7 +138,7 @@ describe('Account Service', () => {
 
         // WHEN
         service.identity().subscribe();
-        httpMock.expectOne({ method: 'GET' }).flush({ ...accountWithAuthorities([]), langKey: 'accountLang' });
+        flushIdentityRequests(httpMock, { langKey: 'accountLang' });
 
         // THEN
         expect(mockTranslateService.use).not.toHaveBeenCalled();
@@ -147,7 +152,7 @@ describe('Account Service', () => {
 
         // WHEN
         service.identity().subscribe();
-        httpMock.expectOne({ method: 'GET' }).flush({});
+        flushIdentityRequests(httpMock);
 
         // THEN
         expect(mockStorageService.getUrl).toHaveBeenCalledTimes(1);
@@ -158,7 +163,7 @@ describe('Account Service', () => {
       it('should not navigate to the previous stored url when authentication fails', () => {
         // WHEN
         service.identity().subscribe();
-        httpMock.expectOne({ method: 'GET' }).error(new ProgressEvent(''));
+        httpMock.expectOne({ method: 'GET', url: 'api/account' }).error(new ProgressEvent(''));
 
         // THEN
         expect(mockStorageService.getUrl).not.toHaveBeenCalled();
@@ -172,7 +177,7 @@ describe('Account Service', () => {
 
         // WHEN
         service.identity().subscribe();
-        httpMock.expectOne({ method: 'GET' }).flush({});
+        flushIdentityRequests(httpMock);
 
         // THEN
         expect(mockStorageService.getUrl).toHaveBeenCalledTimes(1);

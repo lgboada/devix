@@ -20,6 +20,9 @@ public class ClienteDTO implements Serializable {
     private String dni;
 
     @NotNull
+    private String tipoDocumento;
+
+    @NotNull
     private String nombres;
 
     @NotNull
@@ -47,10 +50,10 @@ public class ClienteDTO implements Serializable {
     @NotNull
     private String tipoSangre;
 
-    @NotNull
     private String pathImagen;
 
-    private TipoClienteDTO tipoCliente;
+    @NotNull
+    private String tipoCliente;
 
     private CiudadDTO ciudad;
 
@@ -76,6 +79,14 @@ public class ClienteDTO implements Serializable {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     public String getNombres() {
@@ -166,11 +177,11 @@ public class ClienteDTO implements Serializable {
         this.pathImagen = pathImagen;
     }
 
-    public TipoClienteDTO getTipoCliente() {
+    public String getTipoCliente() {
         return tipoCliente;
     }
 
-    public void setTipoCliente(TipoClienteDTO tipoCliente) {
+    public void setTipoCliente(String tipoCliente) {
         this.tipoCliente = tipoCliente;
     }
 
@@ -210,6 +221,7 @@ public class ClienteDTO implements Serializable {
             "id=" + getId() +
             ", noCia=" + getNoCia() +
             ", dni='" + getDni() + "'" +
+            ", tipoDocumento='" + getTipoDocumento() + "'" +
             ", nombres='" + getNombres() + "'" +
             ", apellidos='" + getApellidos() + "'" +
             ", nombreComercial='" + getNombreComercial() + "'" +

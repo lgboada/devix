@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260227100000-1" author="assistant">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="centro" columnName="compania_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="centro" constraintName="fk_centro__compania_id"/>
+        <dropColumn tableName="centro" columnName="compania_id"/>
+    </changeSet>
+
+</databaseChangeLog>

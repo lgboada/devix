@@ -33,6 +33,10 @@ public class Cliente implements Serializable {
     private String dni;
 
     @NotNull
+    @Column(name = "tipo_documento", nullable = false, length = 1)
+    private String tipoDocumento;
+
+    @NotNull
     @Column(name = "nombres", nullable = false)
     private String nombres;
 
@@ -70,8 +74,7 @@ public class Cliente implements Serializable {
     @Column(name = "tipo_sangre", nullable = false)
     private String tipoSangre;
 
-    @NotNull
-    @Column(name = "path_imagen", nullable = false)
+    @Column(name = "path_imagen")
     private String pathImagen;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
@@ -90,9 +93,9 @@ public class Cliente implements Serializable {
     @JsonIgnoreProperties(value = { "cliente", "evento" }, allowSetters = true)
     private Set<Documento> documentos = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "clientes" }, allowSetters = true)
-    private TipoCliente tipoCliente;
+    @NotNull
+    @Column(name = "tipo_cliente", nullable = false)
+    private String tipoCliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "clientes", "provincia" }, allowSetters = true)
@@ -137,6 +140,19 @@ public class Cliente implements Serializable {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getTipoDocumento() {
+        return this.tipoDocumento;
+    }
+
+    public Cliente tipoDocumento(String tipoDocumento) {
+        this.setTipoDocumento(tipoDocumento);
+        return this;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     public String getNombres() {
@@ -406,15 +422,15 @@ public class Cliente implements Serializable {
         return this;
     }
 
-    public TipoCliente getTipoCliente() {
+    public String getTipoCliente() {
         return this.tipoCliente;
     }
 
-    public void setTipoCliente(TipoCliente tipoCliente) {
+    public void setTipoCliente(String tipoCliente) {
         this.tipoCliente = tipoCliente;
     }
 
-    public Cliente tipoCliente(TipoCliente tipoCliente) {
+    public Cliente tipoCliente(String tipoCliente) {
         this.setTipoCliente(tipoCliente);
         return this;
     }
@@ -458,6 +474,7 @@ public class Cliente implements Serializable {
             "id=" + getId() +
             ", noCia=" + getNoCia() +
             ", dni='" + getDni() + "'" +
+            ", tipoDocumento='" + getTipoDocumento() + "'" +
             ", nombres='" + getNombres() + "'" +
             ", apellidos='" + getApellidos() + "'" +
             ", nombreComercial='" + getNombreComercial() + "'" +
@@ -468,6 +485,7 @@ public class Cliente implements Serializable {
             ", sexo='" + getSexo() + "'" +
             ", estadoCivil='" + getEstadoCivil() + "'" +
             ", tipoSangre='" + getTipoSangre() + "'" +
+            ", tipoCliente='" + getTipoCliente() + "'" +
             ", pathImagen='" + getPathImagen() + "'" +
             "}";
     }

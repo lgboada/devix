@@ -1,0 +1,54 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { ActiveCompanyService } from 'app/core/auth/active-company.service';
+
+@Injectable()
+export class ActiveCompanyInterceptor implements HttpInterceptor {
+  private readonly activeCompanyService = inject(ActiveCompanyService);
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const activeCompany = this.activeCompanyService.trackActiveCompany()();
+    if (!activeCompany || !this.isApiRequest(request.url)) {
+      return next.handle(request);
+    }
+
+    let requestToSend = request;
+    if (!requestToSend.headers.has('X-Company-Id')) {
+      requestToSend = requestToSend.clone({
+        setHeaders: {
+          'X-Company-Id': `${activeCompany.noCia}`,
+        },
+      });
+    }
+
+    if (this.shouldAttachNoCiaInBody(requestToSend)) {
+      requestToSend = requestToSend.clone({
+        body: {
+          ...(requestToSend.body as Record<string, unknown>),
+          noCia: activeCompany.noCia,
+        },
+      });
+    }
+
+    return next.handle(requestToSend);
+  }
+
+  private isApiRequest(url: string): boolean {
+    return url.includes('/api/');
+  }
+
+  private shouldAttachNoCiaInBody(request: HttpRequest<any>): boolean {
+    if (!['POST', 'PUT', 'PATCH'].includes(request.method)) {
+      return false;
+    }
+    if (!request.body || request.body instanceof FormData || typeof request.body !== 'object') {
+      return false;
+    }
+    if (request.url.includes('/api/account') || request.url.includes('/api/authenticate')) {
+      return false;
+    }
+    return true;
+  }
+}

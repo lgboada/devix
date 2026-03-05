@@ -4,6 +4,7 @@ import com.devix.domain.Compania;
 import com.devix.repository.CompaniaRepository;
 import com.devix.service.dto.CompaniaDTO;
 import com.devix.service.mapper.CompaniaMapper;
+import com.devix.web.rest.errors.BadRequestAlertException;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CompaniaService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CompaniaService.class);
+    private static final String ENTITY_NAME = "compania";
 
     private final CompaniaRepository companiaRepository;
 
@@ -36,6 +38,7 @@ public class CompaniaService {
      */
     public CompaniaDTO save(CompaniaDTO companiaDTO) {
         LOG.debug("Request to save Compania : {}", companiaDTO);
+        validateUniqueDni(companiaDTO);
         Compania compania = companiaMapper.toEntity(companiaDTO);
         compania = companiaRepository.save(compania);
         return companiaMapper.toDto(compania);
@@ -49,6 +52,7 @@ public class CompaniaService {
      */
     public CompaniaDTO update(CompaniaDTO companiaDTO) {
         LOG.debug("Request to update Compania : {}", companiaDTO);
+        validateUniqueDni(companiaDTO);
         Compania compania = companiaMapper.toEntity(companiaDTO);
         compania = companiaRepository.save(compania);
         return companiaMapper.toDto(compania);
@@ -67,6 +71,7 @@ public class CompaniaService {
             .findById(companiaDTO.getId())
             .map(existingCompania -> {
                 companiaMapper.partialUpdate(existingCompania, companiaDTO);
+                validateUniqueDni(existingCompania);
 
                 return existingCompania;
             })
@@ -94,5 +99,29 @@ public class CompaniaService {
     public void delete(Long id) {
         LOG.debug("Request to delete Compania : {}", id);
         companiaRepository.deleteById(id);
+    }
+
+    private void validateUniqueDni(CompaniaDTO companiaDTO) {
+        if (companiaDTO.getDni() == null) {
+            return;
+        }
+        boolean exists = companiaDTO.getId() == null
+            ? companiaRepository.existsByDni(companiaDTO.getDni())
+            : companiaRepository.existsByDniAndIdNot(companiaDTO.getDni(), companiaDTO.getId());
+        if (exists) {
+            throw new BadRequestAlertException("El DNI ya existe para esta compania", ENTITY_NAME, "dniexists");
+        }
+    }
+
+    private void validateUniqueDni(Compania compania) {
+        if (compania.getDni() == null) {
+            return;
+        }
+        boolean exists = compania.getId() == null
+            ? companiaRepository.existsByDni(compania.getDni())
+            : companiaRepository.existsByDniAndIdNot(compania.getDni(), compania.getId());
+        if (exists) {
+            throw new BadRequestAlertException("El DNI ya existe para esta compania", ENTITY_NAME, "dniexists");
+        }
     }
 }

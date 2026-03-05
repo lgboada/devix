@@ -67,6 +67,11 @@ const routes: Routes = [
     loadChildren: () => import('./catalogo/catalogo.routes'),
   },
   {
+    path: 'catalogos-panel',
+    data: { pageTitle: 'Panel de Catalogos' },
+    loadComponent: () => import('./catalogo/panel/catalogos-panel.component').then(m => m.CatalogosPanelComponent),
+  },
+  {
     path: 'tipo-producto',
     data: { pageTitle: 'devixApp.tipoProducto.home.title' },
     loadChildren: () => import('./tipo-producto/tipo-producto.routes'),

@@ -17,6 +17,17 @@ public interface UsuarioCentroRepository extends JpaRepository<UsuarioCentro, Lo
     @Query("select usuarioCentro from UsuarioCentro usuarioCentro where usuarioCentro.user.login = ?#{authentication.name}")
     List<UsuarioCentro> findByUserIsCurrentUser();
 
+    @Query(
+        "select usuarioCentro from UsuarioCentro usuarioCentro left join fetch usuarioCentro.centro where usuarioCentro.user.login = :login order by usuarioCentro.principal desc, usuarioCentro.noCia asc"
+    )
+    List<UsuarioCentro> findAllByUserLoginOrderByPrincipalDescNoCiaAsc(@Param("login") String login);
+
+    Optional<UsuarioCentro> findFirstByUser_LoginAndPrincipalTrue(String login);
+
+    Optional<UsuarioCentro> findFirstByUser_LoginOrderByNoCiaAsc(String login);
+
+    boolean existsByUser_LoginAndNoCia(String login, Long noCia);
+
     default Optional<UsuarioCentro> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }

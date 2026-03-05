@@ -29,6 +29,28 @@
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         @if (account() !== null) {
+          @if (availableCompanies().length > 1) {
+            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
+              <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="company-menu">
+                <span>
+                  <fa-icon icon="list"></fa-icon>
+                  <span>Compania: {{ activeCompany()?.noCia ?? '-' }}</span>
+                </span>
+              </a>
+              <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="company-menu">
+                @for (company of availableCompanies(); track company.noCia) {
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);" (click)="changeActiveCompany(company.noCia)">
+                      {{ company.noCia }}
+                      @if (company.principal) {
+                        (Principal)
+                      }
+                    </a>
+                  </li>
+                }
+              </ul>
+            </li>
+          }
           <li
             ngbDropdown
             class="nav-item dropdown pointer"
@@ -197,6 +219,18 @@
                 >
                   <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
                   <span jhiTranslate="global.menu.entities.catalogo">Catalogo</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/catalogos-panel"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span>Panel Catalogos</span>
                 </a>
               </li>
               <li>

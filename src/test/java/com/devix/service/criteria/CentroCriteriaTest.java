@@ -80,7 +80,6 @@ class CentroCriteriaTest {
         centroCriteria.descripcion();
         centroCriteria.facturaId();
         centroCriteria.eventoId();
-        centroCriteria.companiaId();
         centroCriteria.distinct();
     }
 
@@ -92,7 +91,6 @@ class CentroCriteriaTest {
                 condition.apply(criteria.getDescripcion()) &&
                 condition.apply(criteria.getFacturaId()) &&
                 condition.apply(criteria.getEventoId()) &&
-                condition.apply(criteria.getCompaniaId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
         );
@@ -106,7 +104,6 @@ class CentroCriteriaTest {
                 condition.apply(criteria.getDescripcion(), copy.getDescripcion()) &&
                 condition.apply(criteria.getFacturaId(), copy.getFacturaId()) &&
                 condition.apply(criteria.getEventoId(), copy.getEventoId()) &&
-                condition.apply(criteria.getCompaniaId(), copy.getCompaniaId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"
         );

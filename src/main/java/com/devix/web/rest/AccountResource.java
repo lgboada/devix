@@ -1,8 +1,12 @@
 package com.devix.web.rest;
 
+import com.devix.domain.UsuarioCentro;
+import com.devix.repository.UsuarioCentroRepository;
 import com.devix.security.SecurityUtils;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import java.security.Principal;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,6 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccountResource.class);
+    private final UsuarioCentroRepository usuarioCentroRepository;
+
+    public AccountResource(UsuarioCentroRepository usuarioCentroRepository) {
+        this.usuarioCentroRepository = usuarioCentroRepository;
+    }
 
     private static class AccountResourceException extends RuntimeException {
 
@@ -61,6 +70,32 @@ public class AccountResource {
         return ResponseEntity.status(principal == null ? HttpStatus.UNAUTHORIZED : HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping("/account/companies")
+    public List<CompanyVM> getAccountCompanies(Principal principal) {
+        if (!(principal instanceof AbstractAuthenticationToken authenticationToken)) {
+            throw new AccountResourceException("User could not be found");
+        }
+
+        List<UsuarioCentro> companyRows = usuarioCentroRepository.findAllByUserLoginOrderByPrincipalDescNoCiaAsc(
+            authenticationToken.getName()
+        );
+        Map<Long, CompanyVM> companies = new LinkedHashMap<>();
+
+        for (UsuarioCentro companyRow : companyRows) {
+            CompanyVM current = companies.get(companyRow.getNoCia());
+            boolean principalCompany = Boolean.TRUE.equals(companyRow.getPrincipal());
+            if (current == null) {
+                companies.put(companyRow.getNoCia(), new CompanyVM(companyRow.getNoCia(), principalCompany));
+                continue;
+            }
+            if (!current.principal() && principalCompany) {
+                companies.put(companyRow.getNoCia(), new CompanyVM(companyRow.getNoCia(), true));
+            }
+        }
+
+        return companies.values().stream().toList();
+    }
+
     private static class UserVM {
 
         private String login;
@@ -90,6 +125,8 @@ public class AccountResource {
             return details;
         }
     }
+
+    private record CompanyVM(Long noCia, boolean principal) {}
 
     private static UserVM getUserFromAuthentication(AbstractAuthenticationToken authToken) {
         Map<String, Object> attributes;

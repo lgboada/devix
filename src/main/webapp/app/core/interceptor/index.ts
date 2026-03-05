@@ -1,10 +1,16 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { ActiveCompanyInterceptor } from 'app/core/interceptor/active-company.interceptor';
 import { AuthExpiredInterceptor } from 'app/core/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from 'app/core/interceptor/error-handler.interceptor';
 import { NotificationInterceptor } from 'app/core/interceptor/notification.interceptor';
 
 export const httpInterceptorProviders = [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ActiveCompanyInterceptor,
+    multi: true,
+  },
   {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthExpiredInterceptor,

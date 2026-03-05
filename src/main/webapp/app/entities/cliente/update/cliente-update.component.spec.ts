@@ -4,10 +4,9 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
-import { ITipoCliente } from 'app/entities/tipo-cliente/tipo-cliente.model';
-import { TipoClienteService } from 'app/entities/tipo-cliente/service/tipo-cliente.service';
 import { ICiudad } from 'app/entities/ciudad/ciudad.model';
 import { CiudadService } from 'app/entities/ciudad/service/ciudad.service';
+import { ProvinciaService } from 'app/entities/provincia/service/provincia.service';
 import { ICliente } from '../cliente.model';
 import { ClienteService } from '../service/cliente.service';
 import { ClienteFormService } from './cliente-form.service';
@@ -20,8 +19,8 @@ describe('Cliente Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let clienteFormService: ClienteFormService;
   let clienteService: ClienteService;
-  let tipoClienteService: TipoClienteService;
   let ciudadService: CiudadService;
+  let provinciaService: ProvinciaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -44,69 +43,39 @@ describe('Cliente Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     clienteFormService = TestBed.inject(ClienteFormService);
     clienteService = TestBed.inject(ClienteService);
-    tipoClienteService = TestBed.inject(TipoClienteService);
     ciudadService = TestBed.inject(CiudadService);
+    provinciaService = TestBed.inject(ProvinciaService);
+    jest.spyOn(provinciaService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+    jest.spyOn(ciudadService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+    jest.spyOn(ciudadService, 'find').mockReturnValue(of(new HttpResponse({ body: null })));
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('should call TipoCliente query and add missing value', () => {
-      const cliente: ICliente = { id: 20795 };
-      const tipoCliente: ITipoCliente = { id: 28838 };
-      cliente.tipoCliente = tipoCliente;
-
-      const tipoClienteCollection: ITipoCliente[] = [{ id: 28838 }];
-      jest.spyOn(tipoClienteService, 'query').mockReturnValue(of(new HttpResponse({ body: tipoClienteCollection })));
-      const additionalTipoClientes = [tipoCliente];
-      const expectedCollection: ITipoCliente[] = [...additionalTipoClientes, ...tipoClienteCollection];
-      jest.spyOn(tipoClienteService, 'addTipoClienteToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ cliente });
-      comp.ngOnInit();
-
-      expect(tipoClienteService.query).toHaveBeenCalled();
-      expect(tipoClienteService.addTipoClienteToCollectionIfMissing).toHaveBeenCalledWith(
-        tipoClienteCollection,
-        ...additionalTipoClientes.map(expect.objectContaining),
-      );
-      expect(comp.tipoClientesSharedCollection).toEqual(expectedCollection);
-    });
-
-    it('should call Ciudad query and add missing value', () => {
+    it('should call Ciudad find when cliente has ciudad selected', () => {
       const cliente: ICliente = { id: 20795 };
       const ciudad: ICiudad = { id: 13640 };
       cliente.ciudad = ciudad;
 
-      const ciudadCollection: ICiudad[] = [{ id: 13640 }];
-      jest.spyOn(ciudadService, 'query').mockReturnValue(of(new HttpResponse({ body: ciudadCollection })));
-      const additionalCiudads = [ciudad];
-      const expectedCollection: ICiudad[] = [...additionalCiudads, ...ciudadCollection];
-      jest.spyOn(ciudadService, 'addCiudadToCollectionIfMissing').mockReturnValue(expectedCollection);
+      jest.spyOn(ciudadService, 'find').mockReturnValue(of(new HttpResponse({ body: ciudad })));
+      jest.spyOn(ciudadService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
 
       activatedRoute.data = of({ cliente });
       comp.ngOnInit();
 
-      expect(ciudadService.query).toHaveBeenCalled();
-      expect(ciudadService.addCiudadToCollectionIfMissing).toHaveBeenCalledWith(
-        ciudadCollection,
-        ...additionalCiudads.map(expect.objectContaining),
-      );
-      expect(comp.ciudadsSharedCollection).toEqual(expectedCollection);
+      expect(ciudadService.find).toHaveBeenCalledWith(ciudad.id);
     });
 
     it('should update editForm', () => {
       const cliente: ICliente = { id: 20795 };
-      const tipoCliente: ITipoCliente = { id: 28838 };
-      cliente.tipoCliente = tipoCliente;
+      cliente.tipoCliente = 'VIP';
       const ciudad: ICiudad = { id: 13640 };
       cliente.ciudad = ciudad;
 
       activatedRoute.data = of({ cliente });
       comp.ngOnInit();
 
-      expect(comp.tipoClientesSharedCollection).toContainEqual(tipoCliente);
-      expect(comp.ciudadsSharedCollection).toContainEqual(ciudad);
       expect(comp.cliente).toEqual(cliente);
     });
   });
@@ -180,16 +149,6 @@ describe('Cliente Management Update Component', () => {
   });
 
   describe('Compare relationships', () => {
-    describe('compareTipoCliente', () => {
-      it('should forward to tipoClienteService', () => {
-        const entity = { id: 28838 };
-        const entity2 = { id: 25421 };
-        jest.spyOn(tipoClienteService, 'compareTipoCliente');
-        comp.compareTipoCliente(entity, entity2);
-        expect(tipoClienteService.compareTipoCliente).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
     describe('compareCiudad', () => {
       it('should forward to ciudadService', () => {
         const entity = { id: 13640 };

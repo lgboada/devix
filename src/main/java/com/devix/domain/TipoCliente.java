@@ -1,11 +1,8 @@
 package com.devix.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A TipoCliente.
@@ -30,10 +27,6 @@ public class TipoCliente implements Serializable {
     @NotNull
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoCliente")
-    @JsonIgnoreProperties(value = { "direcciones", "facturas", "eventos", "documentos", "tipoCliente", "ciudad" }, allowSetters = true)
-    private Set<Cliente> clientes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -74,37 +67,6 @@ public class TipoCliente implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public Set<Cliente> getClientes() {
-        return this.clientes;
-    }
-
-    public void setClientes(Set<Cliente> clientes) {
-        if (this.clientes != null) {
-            this.clientes.forEach(i -> i.setTipoCliente(null));
-        }
-        if (clientes != null) {
-            clientes.forEach(i -> i.setTipoCliente(this));
-        }
-        this.clientes = clientes;
-    }
-
-    public TipoCliente clientes(Set<Cliente> clientes) {
-        this.setClientes(clientes);
-        return this;
-    }
-
-    public TipoCliente addCliente(Cliente cliente) {
-        this.clientes.add(cliente);
-        cliente.setTipoCliente(this);
-        return this;
-    }
-
-    public TipoCliente removeCliente(Cliente cliente) {
-        this.clientes.remove(cliente);
-        cliente.setTipoCliente(null);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -28,6 +28,8 @@ public class ClienteCriteria implements Serializable, Criteria {
 
     private StringFilter dni;
 
+    private StringFilter tipoDocumento;
+
     private StringFilter nombres;
 
     private StringFilter apellidos;
@@ -58,7 +60,7 @@ public class ClienteCriteria implements Serializable, Criteria {
 
     private LongFilter documentoId;
 
-    private LongFilter tipoClienteId;
+    private StringFilter tipoCliente;
 
     private LongFilter ciudadId;
 
@@ -70,6 +72,7 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.id = other.optionalId().map(LongFilter::copy).orElse(null);
         this.noCia = other.optionalNoCia().map(LongFilter::copy).orElse(null);
         this.dni = other.optionalDni().map(StringFilter::copy).orElse(null);
+        this.tipoDocumento = other.optionalTipoDocumento().map(StringFilter::copy).orElse(null);
         this.nombres = other.optionalNombres().map(StringFilter::copy).orElse(null);
         this.apellidos = other.optionalApellidos().map(StringFilter::copy).orElse(null);
         this.nombreComercial = other.optionalNombreComercial().map(StringFilter::copy).orElse(null);
@@ -85,7 +88,7 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.facturasId = other.optionalFacturasId().map(LongFilter::copy).orElse(null);
         this.eventoId = other.optionalEventoId().map(LongFilter::copy).orElse(null);
         this.documentoId = other.optionalDocumentoId().map(LongFilter::copy).orElse(null);
-        this.tipoClienteId = other.optionalTipoClienteId().map(LongFilter::copy).orElse(null);
+        this.tipoCliente = other.optionalTipoCliente().map(StringFilter::copy).orElse(null);
         this.ciudadId = other.optionalCiudadId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
@@ -150,6 +153,25 @@ public class ClienteCriteria implements Serializable, Criteria {
 
     public void setDni(StringFilter dni) {
         this.dni = dni;
+    }
+
+    public StringFilter getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public Optional<StringFilter> optionalTipoDocumento() {
+        return Optional.ofNullable(tipoDocumento);
+    }
+
+    public StringFilter tipoDocumento() {
+        if (tipoDocumento == null) {
+            setTipoDocumento(new StringFilter());
+        }
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(StringFilter tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     public StringFilter getNombres() {
@@ -437,23 +459,23 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.documentoId = documentoId;
     }
 
-    public LongFilter getTipoClienteId() {
-        return tipoClienteId;
+    public StringFilter getTipoCliente() {
+        return tipoCliente;
     }
 
-    public Optional<LongFilter> optionalTipoClienteId() {
-        return Optional.ofNullable(tipoClienteId);
+    public Optional<StringFilter> optionalTipoCliente() {
+        return Optional.ofNullable(tipoCliente);
     }
 
-    public LongFilter tipoClienteId() {
-        if (tipoClienteId == null) {
-            setTipoClienteId(new LongFilter());
+    public StringFilter tipoCliente() {
+        if (tipoCliente == null) {
+            setTipoCliente(new StringFilter());
         }
-        return tipoClienteId;
+        return tipoCliente;
     }
 
-    public void setTipoClienteId(LongFilter tipoClienteId) {
-        this.tipoClienteId = tipoClienteId;
+    public void setTipoCliente(StringFilter tipoCliente) {
+        this.tipoCliente = tipoCliente;
     }
 
     public LongFilter getCiudadId() {
@@ -507,6 +529,7 @@ public class ClienteCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(noCia, that.noCia) &&
             Objects.equals(dni, that.dni) &&
+            Objects.equals(tipoDocumento, that.tipoDocumento) &&
             Objects.equals(nombres, that.nombres) &&
             Objects.equals(apellidos, that.apellidos) &&
             Objects.equals(nombreComercial, that.nombreComercial) &&
@@ -522,7 +545,7 @@ public class ClienteCriteria implements Serializable, Criteria {
             Objects.equals(facturasId, that.facturasId) &&
             Objects.equals(eventoId, that.eventoId) &&
             Objects.equals(documentoId, that.documentoId) &&
-            Objects.equals(tipoClienteId, that.tipoClienteId) &&
+            Objects.equals(tipoCliente, that.tipoCliente) &&
             Objects.equals(ciudadId, that.ciudadId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -534,6 +557,7 @@ public class ClienteCriteria implements Serializable, Criteria {
             id,
             noCia,
             dni,
+            tipoDocumento,
             nombres,
             apellidos,
             nombreComercial,
@@ -549,7 +573,7 @@ public class ClienteCriteria implements Serializable, Criteria {
             facturasId,
             eventoId,
             documentoId,
-            tipoClienteId,
+            tipoCliente,
             ciudadId,
             distinct
         );
@@ -562,6 +586,7 @@ public class ClienteCriteria implements Serializable, Criteria {
             optionalId().map(f -> "id=" + f + ", ").orElse("") +
             optionalNoCia().map(f -> "noCia=" + f + ", ").orElse("") +
             optionalDni().map(f -> "dni=" + f + ", ").orElse("") +
+            optionalTipoDocumento().map(f -> "tipoDocumento=" + f + ", ").orElse("") +
             optionalNombres().map(f -> "nombres=" + f + ", ").orElse("") +
             optionalApellidos().map(f -> "apellidos=" + f + ", ").orElse("") +
             optionalNombreComercial().map(f -> "nombreComercial=" + f + ", ").orElse("") +
@@ -577,7 +602,7 @@ public class ClienteCriteria implements Serializable, Criteria {
             optionalFacturasId().map(f -> "facturasId=" + f + ", ").orElse("") +
             optionalEventoId().map(f -> "eventoId=" + f + ", ").orElse("") +
             optionalDocumentoId().map(f -> "documentoId=" + f + ", ").orElse("") +
-            optionalTipoClienteId().map(f -> "tipoClienteId=" + f + ", ").orElse("") +
+            optionalTipoCliente().map(f -> "tipoCliente=" + f + ", ").orElse("") +
             optionalCiudadId().map(f -> "ciudadId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";

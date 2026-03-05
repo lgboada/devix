@@ -69,11 +69,7 @@
           </dd>
           <dt><span jhiTranslate="devixApp.cliente.tipoCliente">Tipo Cliente</span></dt>
           <dd>
-            @if (cliente()!.tipoCliente) {
-              <div>
-                <a [routerLink]="['/tipo-cliente', cliente()!.tipoCliente?.id, 'view']">{{ clienteRef.tipoCliente?.id }}</a>
-              </div>
-            }
+            <span>{{ clienteRef.tipoCliente }}</span>
           </dd>
           <dt><span jhiTranslate="devixApp.cliente.ciudad">Ciudad</span></dt>
           <dd>

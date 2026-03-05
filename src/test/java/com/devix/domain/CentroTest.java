@@ -1,7 +1,6 @@
 package com.devix.domain;
 
 import static com.devix.domain.CentroTestSamples.*;
-import static com.devix.domain.CompaniaTestSamples.*;
 import static com.devix.domain.EventoTestSamples.*;
 import static com.devix.domain.FacturaTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,17 +68,5 @@ class CentroTest {
         centro.setEventos(new HashSet<>());
         assertThat(centro.getEventos()).doesNotContain(eventoBack);
         assertThat(eventoBack.getCentro()).isNull();
-    }
-
-    @Test
-    void companiaTest() {
-        Centro centro = getCentroRandomSampleGenerator();
-        Compania companiaBack = getCompaniaRandomSampleGenerator();
-
-        centro.setCompania(companiaBack);
-        assertThat(centro.getCompania()).isEqualTo(companiaBack);
-
-        centro.compania(null);
-        assertThat(centro.getCompania()).isNull();
     }
 }

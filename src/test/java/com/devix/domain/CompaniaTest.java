@@ -32,18 +32,14 @@ class CompaniaTest {
 
         compania.addCentros(centroBack);
         assertThat(compania.getCentros()).containsOnly(centroBack);
-        assertThat(centroBack.getCompania()).isEqualTo(compania);
 
         compania.removeCentros(centroBack);
         assertThat(compania.getCentros()).doesNotContain(centroBack);
-        assertThat(centroBack.getCompania()).isNull();
 
         compania.centros(new HashSet<>(Set.of(centroBack)));
         assertThat(compania.getCentros()).containsOnly(centroBack);
-        assertThat(centroBack.getCompania()).isEqualTo(compania);
 
         compania.setCentros(new HashSet<>());
         assertThat(compania.getCentros()).doesNotContain(centroBack);
-        assertThat(centroBack.getCompania()).isNull();
     }
 }

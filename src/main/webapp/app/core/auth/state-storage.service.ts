@@ -5,6 +5,7 @@ export class StateStorageService {
   private readonly previousUrlKey = 'previousUrl';
   private readonly authenticationKey = 'jhi-authenticationToken';
   private readonly localeKey = 'locale';
+  private readonly activeCompanyNoCiaKey = 'activeCompanyNoCia';
 
   storeUrl(url: string): void {
     sessionStorage.setItem(this.previousUrlKey, JSON.stringify(url));
@@ -49,5 +50,18 @@ export class StateStorageService {
 
   clearLocale(): void {
     sessionStorage.removeItem(this.localeKey);
+  }
+
+  storeActiveCompanyNoCia(noCia: number): void {
+    sessionStorage.setItem(this.activeCompanyNoCiaKey, JSON.stringify(noCia));
+  }
+
+  getActiveCompanyNoCia(): number | null {
+    const rawNoCia = sessionStorage.getItem(this.activeCompanyNoCiaKey);
+    return rawNoCia ? (JSON.parse(rawNoCia) as number) : null;
+  }
+
+  clearActiveCompanyNoCia(): void {
+    sessionStorage.removeItem(this.activeCompanyNoCiaKey);
   }
 }

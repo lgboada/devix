@@ -93,7 +93,7 @@ class ClienteCriteriaTest {
         clienteCriteria.facturasId();
         clienteCriteria.eventoId();
         clienteCriteria.documentoId();
-        clienteCriteria.tipoClienteId();
+        clienteCriteria.tipoCliente();
         clienteCriteria.ciudadId();
         clienteCriteria.distinct();
     }
@@ -119,7 +119,7 @@ class ClienteCriteriaTest {
                 condition.apply(criteria.getFacturasId()) &&
                 condition.apply(criteria.getEventoId()) &&
                 condition.apply(criteria.getDocumentoId()) &&
-                condition.apply(criteria.getTipoClienteId()) &&
+                condition.apply(criteria.getTipoCliente()) &&
                 condition.apply(criteria.getCiudadId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
@@ -147,7 +147,7 @@ class ClienteCriteriaTest {
                 condition.apply(criteria.getFacturasId(), copy.getFacturasId()) &&
                 condition.apply(criteria.getEventoId(), copy.getEventoId()) &&
                 condition.apply(criteria.getDocumentoId(), copy.getDocumentoId()) &&
-                condition.apply(criteria.getTipoClienteId(), copy.getTipoClienteId()) &&
+                condition.apply(criteria.getTipoCliente(), copy.getTipoCliente()) &&
                 condition.apply(criteria.getCiudadId(), copy.getCiudadId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"

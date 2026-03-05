@@ -18,8 +18,6 @@ public class CentroDTO implements Serializable {
     @NotNull
     private String descripcion;
 
-    private CompaniaDTO compania;
-
     public Long getId() {
         return id;
     }
@@ -42,14 +40,6 @@ public class CentroDTO implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public CompaniaDTO getCompania() {
-        return compania;
-    }
-
-    public void setCompania(CompaniaDTO compania) {
-        this.compania = compania;
     }
 
     @Override
@@ -80,7 +70,6 @@ public class CentroDTO implements Serializable {
             "id=" + getId() +
             ", noCia=" + getNoCia() +
             ", descripcion='" + getDescripcion() + "'" +
-            ", compania=" + getCompania() +
             "}";
     }
 }

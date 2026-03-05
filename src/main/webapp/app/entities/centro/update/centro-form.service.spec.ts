@@ -22,7 +22,6 @@ describe('Centro Form Service', () => {
             id: expect.any(Object),
             noCia: expect.any(Object),
             descripcion: expect.any(Object),
-            compania: expect.any(Object),
           }),
         );
       });
@@ -35,7 +34,6 @@ describe('Centro Form Service', () => {
             id: expect.any(Object),
             noCia: expect.any(Object),
             descripcion: expect.any(Object),
-            compania: expect.any(Object),
           }),
         );
       });

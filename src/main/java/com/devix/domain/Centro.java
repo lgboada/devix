@@ -39,10 +39,6 @@ public class Centro implements Serializable {
     @JsonIgnoreProperties(value = { "documentos", "tipoEvento", "centro", "cliente" }, allowSetters = true)
     private Set<Evento> eventos = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "centros" }, allowSetters = true)
-    private Compania compania;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -143,19 +139,6 @@ public class Centro implements Serializable {
     public Centro removeEvento(Evento evento) {
         this.eventos.remove(evento);
         evento.setCentro(null);
-        return this;
-    }
-
-    public Compania getCompania() {
-        return this.compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
-    public Centro compania(Compania compania) {
-        this.setCompania(compania);
         return this;
     }
 

@@ -78,7 +78,6 @@ class TipoClienteCriteriaTest {
         tipoClienteCriteria.id();
         tipoClienteCriteria.noCia();
         tipoClienteCriteria.descripcion();
-        tipoClienteCriteria.clienteId();
         tipoClienteCriteria.distinct();
     }
 
@@ -88,7 +87,6 @@ class TipoClienteCriteriaTest {
                 condition.apply(criteria.getId()) &&
                 condition.apply(criteria.getNoCia()) &&
                 condition.apply(criteria.getDescripcion()) &&
-                condition.apply(criteria.getClienteId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
         );
@@ -100,7 +98,6 @@ class TipoClienteCriteriaTest {
                 condition.apply(criteria.getId(), copy.getId()) &&
                 condition.apply(criteria.getNoCia(), copy.getNoCia()) &&
                 condition.apply(criteria.getDescripcion(), copy.getDescripcion()) &&
-                condition.apply(criteria.getClienteId(), copy.getClienteId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"
         );

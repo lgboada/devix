@@ -16,6 +16,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "tipoDocumento",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "nombres",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
@@ -67,6 +72,11 @@
       "fieldName": "pathImagen",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tipoCliente",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     }
   ],
   "jpaMetamodelFiltering": true,
@@ -100,12 +110,6 @@
       "relationshipName": "documento",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "tipoCliente",
-      "relationshipName": "tipoCliente",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "ciudad",

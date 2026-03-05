@@ -75,8 +75,7 @@ public class CentroQueryService extends QueryService<Centro> {
                 buildRangeSpecification(criteria.getNoCia(), Centro_.noCia),
                 buildStringSpecification(criteria.getDescripcion(), Centro_.descripcion),
                 buildSpecification(criteria.getFacturaId(), root -> root.join(Centro_.facturas, JoinType.LEFT).get(Factura_.id)),
-                buildSpecification(criteria.getEventoId(), root -> root.join(Centro_.eventos, JoinType.LEFT).get(Evento_.id)),
-                buildSpecification(criteria.getCompaniaId(), root -> root.join(Centro_.compania, JoinType.LEFT).get(Compania_.id))
+                buildSpecification(criteria.getEventoId(), root -> root.join(Centro_.eventos, JoinType.LEFT).get(Evento_.id))
             );
         }
         return specification;

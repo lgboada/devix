@@ -28,8 +28,6 @@ public class TipoClienteCriteria implements Serializable, Criteria {
 
     private StringFilter descripcion;
 
-    private LongFilter clienteId;
-
     private Boolean distinct;
 
     public TipoClienteCriteria() {}
@@ -38,7 +36,6 @@ public class TipoClienteCriteria implements Serializable, Criteria {
         this.id = other.optionalId().map(LongFilter::copy).orElse(null);
         this.noCia = other.optionalNoCia().map(LongFilter::copy).orElse(null);
         this.descripcion = other.optionalDescripcion().map(StringFilter::copy).orElse(null);
-        this.clienteId = other.optionalClienteId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
 
@@ -104,25 +101,6 @@ public class TipoClienteCriteria implements Serializable, Criteria {
         this.descripcion = descripcion;
     }
 
-    public LongFilter getClienteId() {
-        return clienteId;
-    }
-
-    public Optional<LongFilter> optionalClienteId() {
-        return Optional.ofNullable(clienteId);
-    }
-
-    public LongFilter clienteId() {
-        if (clienteId == null) {
-            setClienteId(new LongFilter());
-        }
-        return clienteId;
-    }
-
-    public void setClienteId(LongFilter clienteId) {
-        this.clienteId = clienteId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -155,14 +133,13 @@ public class TipoClienteCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(noCia, that.noCia) &&
             Objects.equals(descripcion, that.descripcion) &&
-            Objects.equals(clienteId, that.clienteId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, noCia, descripcion, clienteId, distinct);
+        return Objects.hash(id, noCia, descripcion, distinct);
     }
 
     // prettier-ignore
@@ -172,7 +149,6 @@ public class TipoClienteCriteria implements Serializable, Criteria {
             optionalId().map(f -> "id=" + f + ", ").orElse("") +
             optionalNoCia().map(f -> "noCia=" + f + ", ").orElse("") +
             optionalDescripcion().map(f -> "descripcion=" + f + ", ").orElse("") +
-            optionalClienteId().map(f -> "clienteId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";
     }

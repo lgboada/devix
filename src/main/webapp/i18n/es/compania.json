@@ -11,6 +11,7 @@
       "created": "Un nuevo Compania ha sido creado con el identificador {{ param }}",
       "updated": "Un Compania ha sido actualizado con el identificador {{ param }}",
       "deleted": "Un Compania ha sido eliminado con el identificador {{ param }}",
+      "dniexists": "El DNI ya existe para esta compañia",
       "delete": {
         "question": "¿Seguro que quiere eliminar Compania {{ id }}?"
       },

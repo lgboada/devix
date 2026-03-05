@@ -5,8 +5,10 @@ import static org.springframework.security.oauth2.core.oidc.StandardClaimNames.P
 
 import com.devix.security.*;
 import com.devix.security.SecurityUtils;
+import com.devix.security.company.CompanyContextService;
 import com.devix.security.oauth2.AudienceValidator;
 import com.devix.security.oauth2.CustomClaimConverter;
+import com.devix.web.filter.CompanyContextFilter;
 import com.devix.web.filter.SpaWebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,6 +37,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.*;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
@@ -48,12 +51,14 @@ import tech.jhipster.config.JHipsterProperties;
 public class SecurityConfiguration {
 
     private final JHipsterProperties jHipsterProperties;
+    private final CompanyContextService companyContextService;
 
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
-    public SecurityConfiguration(JHipsterProperties jHipsterProperties) {
+    public SecurityConfiguration(JHipsterProperties jHipsterProperties, CompanyContextService companyContextService) {
         this.jHipsterProperties = jHipsterProperties;
+        this.companyContextService = companyContextService;
     }
 
     @Bean
@@ -66,6 +71,7 @@ public class SecurityConfiguration {
                     .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
             )
             .addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
+            .addFilterAfter(new CompanyContextFilter(companyContextService), AuthorizationFilter.class)
             .headers(headers ->
                 headers
                     .contentSecurityPolicy(csp -> csp.policyDirectives(jHipsterProperties.getSecurity().getContentSecurityPolicy()))

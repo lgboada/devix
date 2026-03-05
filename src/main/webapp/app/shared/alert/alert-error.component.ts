@@ -101,7 +101,7 @@ export class AlertErrorComponent implements OnDestroy {
         httpErrorResponse.error.params,
       );
     } else {
-      this.addErrorAlert(httpErrorResponse.error, httpErrorResponse.error);
+      this.addErrorAlert(this.extractReadableMessage(httpErrorResponse.error), this.extractTranslationKey(httpErrorResponse.error));
     }
   }
 
@@ -113,8 +113,38 @@ export class AlertErrorComponent implements OnDestroy {
         httpErrorResponse.error.params,
       );
     } else {
-      this.addErrorAlert(httpErrorResponse.error, httpErrorResponse.error);
+      this.addErrorAlert(this.extractReadableMessage(httpErrorResponse.error), this.extractTranslationKey(httpErrorResponse.error));
     }
+  }
+
+  private extractTranslationKey(errorPayload: unknown): string | undefined {
+    if (typeof errorPayload === 'string') {
+      const messageMatch = errorPayload.match(/message=([^,\s}]+)/);
+      if (messageMatch?.[1]) {
+        return messageMatch[1];
+      }
+    }
+    return typeof errorPayload === 'string' ? errorPayload : undefined;
+  }
+
+  private extractReadableMessage(errorPayload: unknown): string {
+    if (typeof errorPayload === 'string') {
+      const messageMatch = errorPayload.match(/message=([^,\s}]+)/);
+      if (messageMatch?.[1]) {
+        return messageMatch[1];
+      }
+      return errorPayload;
+    }
+    if (errorPayload && typeof errorPayload === 'object') {
+      const payload = errorPayload as { detail?: string; message?: string };
+      if (payload.detail) {
+        return payload.detail;
+      }
+      if (payload.message) {
+        return payload.message;
+      }
+    }
+    return 'error.http.500';
   }
 
   private handleFieldsError(httpErrorResponse: HttpErrorResponse): void {

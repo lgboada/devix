@@ -32,8 +32,6 @@ public class CentroCriteria implements Serializable, Criteria {
 
     private LongFilter eventoId;
 
-    private LongFilter companiaId;
-
     private Boolean distinct;
 
     public CentroCriteria() {}
@@ -44,7 +42,6 @@ public class CentroCriteria implements Serializable, Criteria {
         this.descripcion = other.optionalDescripcion().map(StringFilter::copy).orElse(null);
         this.facturaId = other.optionalFacturaId().map(LongFilter::copy).orElse(null);
         this.eventoId = other.optionalEventoId().map(LongFilter::copy).orElse(null);
-        this.companiaId = other.optionalCompaniaId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
 
@@ -148,25 +145,6 @@ public class CentroCriteria implements Serializable, Criteria {
         this.eventoId = eventoId;
     }
 
-    public LongFilter getCompaniaId() {
-        return companiaId;
-    }
-
-    public Optional<LongFilter> optionalCompaniaId() {
-        return Optional.ofNullable(companiaId);
-    }
-
-    public LongFilter companiaId() {
-        if (companiaId == null) {
-            setCompaniaId(new LongFilter());
-        }
-        return companiaId;
-    }
-
-    public void setCompaniaId(LongFilter companiaId) {
-        this.companiaId = companiaId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -201,14 +179,13 @@ public class CentroCriteria implements Serializable, Criteria {
             Objects.equals(descripcion, that.descripcion) &&
             Objects.equals(facturaId, that.facturaId) &&
             Objects.equals(eventoId, that.eventoId) &&
-            Objects.equals(companiaId, that.companiaId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, noCia, descripcion, facturaId, eventoId, companiaId, distinct);
+        return Objects.hash(id, noCia, descripcion, facturaId, eventoId, distinct);
     }
 
     // prettier-ignore
@@ -220,7 +197,6 @@ public class CentroCriteria implements Serializable, Criteria {
             optionalDescripcion().map(f -> "descripcion=" + f + ", ").orElse("") +
             optionalFacturaId().map(f -> "facturaId=" + f + ", ").orElse("") +
             optionalEventoId().map(f -> "eventoId=" + f + ", ").orElse("") +
-            optionalCompaniaId().map(f -> "companiaId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";
     }

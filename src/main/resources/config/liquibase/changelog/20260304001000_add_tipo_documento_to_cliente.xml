@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260304001000-1" author="cursor">
+        <addColumn tableName="cliente">
+            <column name="tipo_documento" type="varchar(1)" defaultValue="C"/>
+        </addColumn>
+        <sql>UPDATE cliente SET tipo_documento = 'C' WHERE tipo_documento IS NULL;</sql>
+        <addNotNullConstraint tableName="cliente" columnName="tipo_documento" columnDataType="varchar(1)"/>
+        <dropDefaultValue tableName="cliente" columnName="tipo_documento" columnDataType="varchar(1)"/>
+    </changeSet>
+</databaseChangeLog>

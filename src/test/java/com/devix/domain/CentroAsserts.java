@@ -23,7 +23,6 @@ public class CentroAsserts {
      */
     public static void assertCentroAllUpdatablePropertiesEquals(Centro expected, Centro actual) {
         assertCentroUpdatableFieldsEquals(expected, actual);
-        assertCentroUpdatableRelationshipsEquals(expected, actual);
     }
 
     /**
@@ -49,17 +48,5 @@ public class CentroAsserts {
             .as("Verify Centro relevant properties")
             .satisfies(a -> assertThat(a.getNoCia()).as("check noCia").isEqualTo(expected.getNoCia()))
             .satisfies(a -> assertThat(a.getDescripcion()).as("check descripcion").isEqualTo(expected.getDescripcion()));
-    }
-
-    /**
-     * Asserts that the entity has all the updatable relationships set.
-     *
-     * @param expected the expected entity
-     * @param actual the actual entity
-     */
-    public static void assertCentroUpdatableRelationshipsEquals(Centro expected, Centro actual) {
-        assertThat(actual)
-            .as("Verify Centro relationships")
-            .satisfies(a -> assertThat(a.getCompania()).as("check compania").isEqualTo(expected.getCompania()));
     }
 }

@@ -20,7 +20,6 @@ type CentroFormGroupContent = {
   id: FormControl<ICentro['id'] | NewCentro['id']>;
   noCia: FormControl<ICentro['noCia']>;
   descripcion: FormControl<ICentro['descripcion']>;
-  compania: FormControl<ICentro['compania']>;
 };
 
 export type CentroFormGroup = FormGroup<CentroFormGroupContent>;
@@ -46,7 +45,6 @@ export class CentroFormService {
       descripcion: new FormControl(centroRawValue.descripcion, {
         validators: [Validators.required],
       }),
-      compania: new FormControl(centroRawValue.compania),
     });
   }
 

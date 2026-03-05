@@ -1,11 +1,11 @@
 import dayjs from 'dayjs/esm';
-import { ITipoCliente } from 'app/entities/tipo-cliente/tipo-cliente.model';
 import { ICiudad } from 'app/entities/ciudad/ciudad.model';
 
 export interface ICliente {
   id: number;
   noCia?: number | null;
   dni?: string | null;
+  tipoDocumento?: string | null;
   nombres?: string | null;
   apellidos?: string | null;
   nombreComercial?: string | null;
@@ -17,7 +17,7 @@ export interface ICliente {
   estadoCivil?: string | null;
   tipoSangre?: string | null;
   pathImagen?: string | null;
-  tipoCliente?: Pick<ITipoCliente, 'id'> | null;
+  tipoCliente?: string | null;
   ciudad?: Pick<ICiudad, 'id'> | null;
 }
 

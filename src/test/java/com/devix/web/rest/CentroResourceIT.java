@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.devix.IntegrationTest;
 import com.devix.domain.Centro;
-import com.devix.domain.Compania;
 import com.devix.repository.CentroRepository;
 import com.devix.service.dto.CentroDTO;
 import com.devix.service.mapper.CentroMapper;
@@ -345,28 +344,6 @@ class CentroResourceIT {
 
         // Get all the centroList where descripcion does not contain
         defaultCentroFiltering("descripcion.doesNotContain=" + UPDATED_DESCRIPCION, "descripcion.doesNotContain=" + DEFAULT_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    void getAllCentrosByCompaniaIsEqualToSomething() throws Exception {
-        Compania compania;
-        if (TestUtil.findAll(em, Compania.class).isEmpty()) {
-            centroRepository.saveAndFlush(centro);
-            compania = CompaniaResourceIT.createEntity();
-        } else {
-            compania = TestUtil.findAll(em, Compania.class).get(0);
-        }
-        em.persist(compania);
-        em.flush();
-        centro.setCompania(compania);
-        centroRepository.saveAndFlush(centro);
-        Long companiaId = compania.getId();
-        // Get all the centroList where compania equals to companiaId
-        defaultCentroShouldBeFound("companiaId.equals=" + companiaId);
-
-        // Get all the centroList where compania equals to (companiaId + 1)
-        defaultCentroShouldNotBeFound("companiaId.equals=" + (companiaId + 1));
     }
 
     private void defaultCentroFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {

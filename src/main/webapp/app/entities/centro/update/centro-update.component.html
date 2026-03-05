@@ -50,23 +50,6 @@
             </div>
           }
         </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_compania" jhiTranslate="devixApp.centro.compania">Compania</label>
-          <select
-            class="form-control"
-            id="field_compania"
-            data-cy="compania"
-            name="compania"
-            formControlName="compania"
-            [compareWith]="compareCompania"
-          >
-            <option [ngValue]="null"></option>
-            @for (companiaOption of companiasSharedCollection; track $index) {
-              <option [ngValue]="companiaOption">{{ companiaOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

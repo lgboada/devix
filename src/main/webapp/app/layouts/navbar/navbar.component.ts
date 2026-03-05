@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
+import { ActiveCompanyService } from 'app/core/auth/active-company.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
@@ -27,12 +28,15 @@ export default class NavbarComponent implements OnInit {
   openAPIEnabled?: boolean;
   version = '';
   account = inject(AccountService).trackCurrentAccount();
+  activeCompany = inject(ActiveCompanyService).trackActiveCompany();
+  availableCompanies = inject(ActiveCompanyService).trackAvailableCompanies();
   entitiesNavbarItems: NavbarItem[] = [];
 
   private readonly loginService = inject(LoginService);
   private readonly translateService = inject(TranslateService);
   private readonly stateStorageService = inject(StateStorageService);
   private readonly profileService = inject(ProfileService);
+  private readonly activeCompanyService = inject(ActiveCompanyService);
   private readonly router = inject(Router);
 
   constructor() {
@@ -65,8 +69,14 @@ export default class NavbarComponent implements OnInit {
 
   logout(): void {
     this.collapseNavbar();
+    this.activeCompanyService.clear();
     this.loginService.logout();
     this.router.navigate(['']);
+  }
+
+  changeActiveCompany(noCia: number): void {
+    this.activeCompanyService.selectCompany(noCia);
+    this.collapseNavbar();
   }
 
   toggleNavbar(): void {

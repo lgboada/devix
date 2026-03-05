@@ -76,6 +76,7 @@ public class ClienteQueryService extends QueryService<Cliente> {
                 buildRangeSpecification(criteria.getId(), Cliente_.id),
                 buildRangeSpecification(criteria.getNoCia(), Cliente_.noCia),
                 buildStringSpecification(criteria.getDni(), Cliente_.dni),
+                buildStringSpecification(criteria.getTipoDocumento(), Cliente_.tipoDocumento),
                 buildStringSpecification(criteria.getNombres(), Cliente_.nombres),
                 buildStringSpecification(criteria.getApellidos(), Cliente_.apellidos),
                 buildStringSpecification(criteria.getNombreComercial(), Cliente_.nombreComercial),
@@ -91,8 +92,7 @@ public class ClienteQueryService extends QueryService<Cliente> {
                 buildSpecification(criteria.getFacturasId(), root -> root.join(Cliente_.facturas, JoinType.LEFT).get(Factura_.id)),
                 buildSpecification(criteria.getEventoId(), root -> root.join(Cliente_.eventos, JoinType.LEFT).get(Evento_.id)),
                 buildSpecification(criteria.getDocumentoId(), root -> root.join(Cliente_.documentos, JoinType.LEFT).get(Documento_.id)),
-                buildSpecification(criteria.getTipoClienteId(), root -> root.join(Cliente_.tipoCliente, JoinType.LEFT).get(TipoCliente_.id)
-                ),
+                buildStringSpecification(criteria.getTipoCliente(), Cliente_.tipoCliente),
                 buildSpecification(criteria.getCiudadId(), root -> root.join(Cliente_.ciudad, JoinType.LEFT).get(Ciudad_.id))
             );
         }

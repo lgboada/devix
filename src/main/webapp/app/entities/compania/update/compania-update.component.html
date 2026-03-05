@@ -15,22 +15,6 @@
           </div>
         }
 
-        @let noCiaRef = editForm.get('noCia')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_noCia" jhiTranslate="devixApp.compania.noCia">No Cia</label>
-          <input type="number" class="form-control" name="noCia" id="field_noCia" data-cy="noCia" formControlName="noCia" />
-          @if (noCiaRef.invalid && (noCiaRef.dirty || noCiaRef.touched)) {
-            <div>
-              @if (editForm.get('noCia')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('noCia')?.errors?.number" jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
         @let dniRef = editForm.get('dni')!;
         <div class="mb-3">
           <label class="form-label" for="field_dni" jhiTranslate="devixApp.compania.dni">Dni</label>
@@ -103,12 +87,40 @@
 
         @let pathImageRef = editForm.get('pathImage')!;
         <div class="mb-3">
-          <label class="form-label" for="field_pathImage" jhiTranslate="devixApp.compania.pathImage">Path Image</label>
-          <input type="text" class="form-control" name="pathImage" id="field_pathImage" data-cy="pathImage" formControlName="pathImage" />
+          <label class="form-label" for="field_pathImage_file" jhiTranslate="devixApp.compania.pathImage">Path Image</label>
+          <input
+            type="file"
+            class="form-control"
+            name="pathImageFile"
+            id="field_pathImage_file"
+            data-cy="pathImageFile"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+          />
+          @if (isUploading) {
+            <small class="form-text text-info">Subiendo imagen...</small>
+          }
+          @if (uploadError) {
+            <small class="form-text text-danger">{{ uploadError }}</small>
+          }
+          @if (editForm.get('pathImage')?.value) {
+            <div class="mt-2">
+              <small class="form-text text-muted">Archivo: {{ editForm.get('pathImage')?.value }}</small>
+              @if (getCurrentImageUrl(); as imageUrl) {
+                <div class="mt-2">
+                  <img
+                    [src]="imageUrl"
+                    alt="Vista previa"
+                    style="max-width: 220px; max-height: 140px; border: 1px solid #ddd; padding: 2px"
+                  />
+                </div>
+              }
+            </div>
+          }
           @if (pathImageRef.invalid && (pathImageRef.dirty || pathImageRef.touched)) {
             <div>
               @if (editForm.get('pathImage')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+                <small class="form-text text-danger">Debe subir una imagen.</small>
               }
             </div>
           }

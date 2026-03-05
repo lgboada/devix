@@ -23,14 +23,6 @@
           <dd>
             <span>{{ centroRef.descripcion }}</span>
           </dd>
-          <dt><span jhiTranslate="devixApp.centro.compania">Compania</span></dt>
-          <dd>
-            @if (centro()!.compania) {
-              <div>
-                <a [routerLink]="['/compania', centro()!.compania?.id, 'view']">{{ centroRef.compania?.id }}</a>
-              </div>
-            }
-          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

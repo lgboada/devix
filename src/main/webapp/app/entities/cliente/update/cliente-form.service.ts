@@ -20,6 +20,7 @@ type ClienteFormGroupContent = {
   id: FormControl<ICliente['id'] | NewCliente['id']>;
   noCia: FormControl<ICliente['noCia']>;
   dni: FormControl<ICliente['dni']>;
+  tipoDocumento: FormControl<ICliente['tipoDocumento']>;
   nombres: FormControl<ICliente['nombres']>;
   apellidos: FormControl<ICliente['apellidos']>;
   nombreComercial: FormControl<ICliente['nombreComercial']>;
@@ -58,6 +59,9 @@ export class ClienteFormService {
       dni: new FormControl(clienteRawValue.dni, {
         validators: [Validators.required],
       }),
+      tipoDocumento: new FormControl(clienteRawValue.tipoDocumento, {
+        validators: [Validators.required],
+      }),
       nombres: new FormControl(clienteRawValue.nombres, {
         validators: [Validators.required],
       }),
@@ -82,10 +86,10 @@ export class ClienteFormService {
       tipoSangre: new FormControl(clienteRawValue.tipoSangre, {
         validators: [Validators.required],
       }),
-      pathImagen: new FormControl(clienteRawValue.pathImagen, {
+      pathImagen: new FormControl(clienteRawValue.pathImagen),
+      tipoCliente: new FormControl(clienteRawValue.tipoCliente, {
         validators: [Validators.required],
       }),
-      tipoCliente: new FormControl(clienteRawValue.tipoCliente),
       ciudad: new FormControl(clienteRawValue.ciudad),
     });
   }

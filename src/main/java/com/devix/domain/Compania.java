@@ -56,8 +56,9 @@ public class Compania implements Serializable {
     @Column(name = "activa", nullable = false)
     private Boolean activa;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "compania")
-    @JsonIgnoreProperties(value = { "facturas", "eventos", "compania" }, allowSetters = true)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "no_cia", referencedColumnName = "no_cia", insertable = false, updatable = false)
+    @JsonIgnoreProperties(value = { "facturas", "eventos" }, allowSetters = true)
     private Set<Centro> centros = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -184,12 +185,6 @@ public class Compania implements Serializable {
     }
 
     public void setCentros(Set<Centro> centros) {
-        if (this.centros != null) {
-            this.centros.forEach(i -> i.setCompania(null));
-        }
-        if (centros != null) {
-            centros.forEach(i -> i.setCompania(this));
-        }
         this.centros = centros;
     }
 
@@ -200,13 +195,11 @@ public class Compania implements Serializable {
 
     public Compania addCentros(Centro centro) {
         this.centros.add(centro);
-        centro.setCompania(this);
         return this;
     }
 
     public Compania removeCentros(Centro centro) {
         this.centros.remove(centro);
-        centro.setCompania(null);
         return this;
     }
 

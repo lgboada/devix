@@ -49,6 +49,7 @@ public class ClienteAsserts {
             .as("Verify Cliente relevant properties")
             .satisfies(a -> assertThat(a.getNoCia()).as("check noCia").isEqualTo(expected.getNoCia()))
             .satisfies(a -> assertThat(a.getDni()).as("check dni").isEqualTo(expected.getDni()))
+            .satisfies(a -> assertThat(a.getTipoDocumento()).as("check tipoDocumento").isEqualTo(expected.getTipoDocumento()))
             .satisfies(a -> assertThat(a.getNombres()).as("check nombres").isEqualTo(expected.getNombres()))
             .satisfies(a -> assertThat(a.getApellidos()).as("check apellidos").isEqualTo(expected.getApellidos()))
             .satisfies(a -> assertThat(a.getNombreComercial()).as("check nombreComercial").isEqualTo(expected.getNombreComercial()))

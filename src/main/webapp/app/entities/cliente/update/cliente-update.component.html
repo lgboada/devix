@@ -44,6 +44,29 @@
           }
         </div>
 
+        @let tipoDocumentoRef = editForm.get('tipoDocumento')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_tipoDocumento" jhiTranslate="devixApp.cliente.tipoDocumento">Tipo Documento</label>
+          <select
+            class="form-control"
+            name="tipoDocumento"
+            id="field_tipoDocumento"
+            data-cy="tipoDocumento"
+            formControlName="tipoDocumento"
+          >
+            @for (option of documentoTipoOptions; track option.code) {
+              <option [value]="option.code">{{ option.label }}</option>
+            }
+          </select>
+          @if (tipoDocumentoRef.invalid && (tipoDocumentoRef.dirty || tipoDocumentoRef.touched)) {
+            <div>
+              @if (editForm.get('tipoDocumento')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
         @let nombresRef = editForm.get('nombres')!;
         <div class="mb-3">
           <label class="form-label" for="field_nombres" jhiTranslate="devixApp.cliente.nombres">Nombres</label>
@@ -140,7 +163,11 @@
         @let sexoRef = editForm.get('sexo')!;
         <div class="mb-3">
           <label class="form-label" for="field_sexo" jhiTranslate="devixApp.cliente.sexo">Sexo</label>
-          <input type="text" class="form-control" name="sexo" id="field_sexo" data-cy="sexo" formControlName="sexo" />
+          <select class="form-control" name="sexo" id="field_sexo" data-cy="sexo" formControlName="sexo">
+            @for (option of sexoOptions; track option.code) {
+              <option [value]="option.code">{{ option.label }}</option>
+            }
+          </select>
           @if (sexoRef.invalid && (sexoRef.dirty || sexoRef.touched)) {
             <div>
               @if (editForm.get('sexo')?.errors?.required) {
@@ -153,14 +180,11 @@
         @let estadoCivilRef = editForm.get('estadoCivil')!;
         <div class="mb-3">
           <label class="form-label" for="field_estadoCivil" jhiTranslate="devixApp.cliente.estadoCivil">Estado Civil</label>
-          <input
-            type="text"
-            class="form-control"
-            name="estadoCivil"
-            id="field_estadoCivil"
-            data-cy="estadoCivil"
-            formControlName="estadoCivil"
-          />
+          <select class="form-control" name="estadoCivil" id="field_estadoCivil" data-cy="estadoCivil" formControlName="estadoCivil">
+            @for (option of estadoCivilOptions; track option.code) {
+              <option [value]="option.code">{{ option.label }}</option>
+            }
+          </select>
           @if (estadoCivilRef.invalid && (estadoCivilRef.dirty || estadoCivilRef.touched)) {
             <div>
               @if (editForm.get('estadoCivil')?.errors?.required) {
@@ -173,14 +197,11 @@
         @let tipoSangreRef = editForm.get('tipoSangre')!;
         <div class="mb-3">
           <label class="form-label" for="field_tipoSangre" jhiTranslate="devixApp.cliente.tipoSangre">Tipo Sangre</label>
-          <input
-            type="text"
-            class="form-control"
-            name="tipoSangre"
-            id="field_tipoSangre"
-            data-cy="tipoSangre"
-            formControlName="tipoSangre"
-          />
+          <select class="form-control" name="tipoSangre" id="field_tipoSangre" data-cy="tipoSangre" formControlName="tipoSangre">
+            @for (option of tipoSangreOptions; track option.code) {
+              <option [value]="option.code">{{ option.label }}</option>
+            }
+          </select>
           @if (tipoSangreRef.invalid && (tipoSangreRef.dirty || tipoSangreRef.touched)) {
             <div>
               @if (editForm.get('tipoSangre')?.errors?.required) {
@@ -192,15 +213,36 @@
 
         @let pathImagenRef = editForm.get('pathImagen')!;
         <div class="mb-3">
-          <label class="form-label" for="field_pathImagen" jhiTranslate="devixApp.cliente.pathImagen">Path Imagen</label>
+          <label class="form-label" for="field_pathImagen_file" jhiTranslate="devixApp.cliente.pathImagen">Path Imagen</label>
           <input
-            type="text"
+            type="file"
             class="form-control"
-            name="pathImagen"
-            id="field_pathImagen"
-            data-cy="pathImagen"
-            formControlName="pathImagen"
+            name="pathImagenFile"
+            id="field_pathImagen_file"
+            data-cy="pathImagenFile"
+            accept="image/*"
+            (change)="onFileSelected($event)"
           />
+          @if (isUploading) {
+            <small class="form-text text-info">Subiendo imagen...</small>
+          }
+          @if (uploadError) {
+            <small class="form-text text-danger">{{ uploadError }}</small>
+          }
+          @if (editForm.get('pathImagen')?.value) {
+            <div class="mt-2">
+              <small class="form-text text-muted">Archivo: {{ editForm.get('pathImagen')?.value }}</small>
+              @if (getCurrentImageUrl(); as imageUrl) {
+                <div class="mt-2">
+                  <img
+                    [src]="imageUrl"
+                    alt="Vista previa"
+                    style="max-width: 220px; max-height: 140px; border: 1px solid #ddd; padding: 2px"
+                  />
+                </div>
+              }
+            </div>
+          }
           @if (pathImagenRef.invalid && (pathImagenRef.dirty || pathImagenRef.touched)) {
             <div>
               @if (editForm.get('pathImagen')?.errors?.required) {
@@ -212,17 +254,27 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_tipoCliente" jhiTranslate="devixApp.cliente.tipoCliente">Tipo Cliente</label>
+          <select class="form-control" id="field_tipoCliente" data-cy="tipoCliente" name="tipoCliente" formControlName="tipoCliente">
+            <option value=""></option>
+            @for (tipoClienteOption of tipoClienteCatalogOptions; track tipoClienteOption.code) {
+              <option [value]="tipoClienteOption.code">{{ tipoClienteOption.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_provincia">Provincia</label>
           <select
             class="form-control"
-            id="field_tipoCliente"
-            data-cy="tipoCliente"
-            name="tipoCliente"
-            formControlName="tipoCliente"
-            [compareWith]="compareTipoCliente"
+            id="field_provincia"
+            data-cy="provincia"
+            name="provincia"
+            [value]="selectedProvinciaId ?? ''"
+            (change)="onProvinciaChange($any($event.target).value)"
           >
-            <option [ngValue]="null"></option>
-            @for (tipoClienteOption of tipoClientesSharedCollection; track $index) {
-              <option [ngValue]="tipoClienteOption">{{ tipoClienteOption.id }}</option>
+            <option value=""></option>
+            @for (provinciaOption of provinciasSharedCollection; track provinciaOption.id) {
+              <option [value]="provinciaOption.id">{{ provinciaOption.descripcion || provinciaOption.id }}</option>
             }
           </select>
         </div>
@@ -236,10 +288,11 @@
             name="ciudad"
             formControlName="ciudad"
             [compareWith]="compareCiudad"
+            [disabled]="selectedProvinciaId === null"
           >
             <option [ngValue]="null"></option>
-            @for (ciudadOption of ciudadsSharedCollection; track $index) {
-              <option [ngValue]="ciudadOption">{{ ciudadOption.id }}</option>
+            @for (ciudadOption of filteredCiudadsCollection; track ciudadOption.id) {
+              <option [ngValue]="ciudadOption">{{ ciudadOption.descripcion || ciudadOption.id }}</option>
             }
           </select>
         </div>

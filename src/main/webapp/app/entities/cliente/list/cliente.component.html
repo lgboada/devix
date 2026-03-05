@@ -133,7 +133,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="tipoCliente.id">
+            <th scope="col" jhiSortBy="tipoCliente">
               <div class="d-flex">
                 <span jhiTranslate="devixApp.cliente.tipoCliente">Tipo Cliente</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -167,13 +167,7 @@
               <td>{{ cliente.estadoCivil }}</td>
               <td>{{ cliente.tipoSangre }}</td>
               <td>{{ cliente.pathImagen }}</td>
-              <td>
-                @if (cliente.tipoCliente) {
-                  <div>
-                    <a [routerLink]="['/tipo-cliente', cliente.tipoCliente.id, 'view']">{{ cliente.tipoCliente.id }}</a>
-                  </div>
-                }
-              </td>
+              <td>{{ cliente.tipoCliente }}</td>
               <td>
                 @if (cliente.ciudad) {
                   <div>

@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.devix.IntegrationTest;
 import com.devix.domain.Ciudad;
 import com.devix.domain.Cliente;
-import com.devix.domain.TipoCliente;
 import com.devix.repository.ClienteRepository;
 import com.devix.service.dto.ClienteDTO;
 import com.devix.service.mapper.ClienteMapper;
@@ -350,23 +349,6 @@ class ClienteResourceIT {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
         cliente.setTipoSangre(null);
-
-        // Create the Cliente, which fails.
-        ClienteDTO clienteDTO = clienteMapper.toDto(cliente);
-
-        restClienteMockMvc
-            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(clienteDTO)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkPathImagenIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        cliente.setPathImagen(null);
 
         // Create the Cliente, which fails.
         ClienteDTO clienteDTO = clienteMapper.toDto(cliente);
@@ -1167,23 +1149,13 @@ class ClienteResourceIT {
     @Test
     @Transactional
     void getAllClientesByTipoClienteIsEqualToSomething() throws Exception {
-        TipoCliente tipoCliente;
-        if (TestUtil.findAll(em, TipoCliente.class).isEmpty()) {
-            clienteRepository.saveAndFlush(cliente);
-            tipoCliente = TipoClienteResourceIT.createEntity();
-        } else {
-            tipoCliente = TestUtil.findAll(em, TipoCliente.class).get(0);
-        }
-        em.persist(tipoCliente);
-        em.flush();
-        cliente.setTipoCliente(tipoCliente);
+        cliente.setTipoCliente("VIP");
         clienteRepository.saveAndFlush(cliente);
-        Long tipoClienteId = tipoCliente.getId();
-        // Get all the clienteList where tipoCliente equals to tipoClienteId
-        defaultClienteShouldBeFound("tipoClienteId.equals=" + tipoClienteId);
+        // Get all the clienteList where tipoCliente equals to VIP
+        defaultClienteShouldBeFound("tipoCliente.equals=VIP");
 
-        // Get all the clienteList where tipoCliente equals to (tipoClienteId + 1)
-        defaultClienteShouldNotBeFound("tipoClienteId.equals=" + (tipoClienteId + 1));
+        // Get all the clienteList where tipoCliente is different
+        defaultClienteShouldNotBeFound("tipoCliente.equals=REGULAR");
     }
 
     @Test

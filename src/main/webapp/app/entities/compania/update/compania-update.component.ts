@@ -4,7 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
+import { ActiveCompanyService } from 'app/core/auth/active-company.service';
 import SharedModule from 'app/shared/shared.module';
+import { FileService } from 'app/shared/service/file.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ICompania } from '../compania.model';
@@ -18,10 +20,14 @@ import { CompaniaFormGroup, CompaniaFormService } from './compania-form.service'
 })
 export class CompaniaUpdateComponent implements OnInit {
   isSaving = false;
+  isUploading = false;
   compania: ICompania | null = null;
+  uploadError: string | null = null;
 
   protected companiaService = inject(CompaniaService);
   protected companiaFormService = inject(CompaniaFormService);
+  protected activeCompanyService = inject(ActiveCompanyService);
+  protected fileService = inject(FileService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -32,6 +38,11 @@ export class CompaniaUpdateComponent implements OnInit {
       this.compania = compania;
       if (compania) {
         this.updateForm(compania);
+      } else {
+        const activeCompanyNoCia = this.getActiveCompanyNoCia();
+        if (activeCompanyNoCia !== null) {
+          this.editForm.patchValue({ noCia: activeCompanyNoCia });
+        }
       }
     });
   }
@@ -43,6 +54,10 @@ export class CompaniaUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const compania = this.companiaFormService.getCompania(this.editForm);
+    const activeCompanyNoCia = this.getActiveCompanyNoCia();
+    if (activeCompanyNoCia !== null) {
+      compania.noCia = activeCompanyNoCia;
+    }
     if (compania.id !== null) {
       this.subscribeToSaveResponse(this.companiaService.update(compania));
     } else {
@@ -72,5 +87,44 @@ export class CompaniaUpdateComponent implements OnInit {
   protected updateForm(compania: ICompania): void {
     this.compania = compania;
     this.companiaFormService.resetForm(this.editForm, compania);
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const selectedFile = input.files?.[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    this.uploadError = null;
+    this.isUploading = true;
+
+    this.fileService
+      .upload(selectedFile)
+      .pipe(finalize(() => (this.isUploading = false)))
+      .subscribe({
+        next: response => {
+          const storedFilename = response.body?.filename;
+          if (!storedFilename) {
+            this.uploadError = 'No se pudo obtener el nombre del archivo subido.';
+            return;
+          }
+          this.editForm.patchValue({ pathImage: storedFilename });
+          this.editForm.get('pathImage')?.markAsDirty();
+          this.editForm.get('pathImage')?.markAsTouched();
+        },
+        error: () => {
+          this.uploadError = 'No se pudo subir la imagen. Intenta nuevamente.';
+        },
+      });
+  }
+
+  getCurrentImageUrl(): string | null {
+    const currentPathImage = this.editForm.get('pathImage')?.value;
+    return currentPathImage ? this.fileService.getFileUrl(currentPathImage) : null;
+  }
+
+  private getActiveCompanyNoCia(): number | null {
+    return this.activeCompanyService.trackActiveCompany()()?.noCia ?? null;
   }
 }

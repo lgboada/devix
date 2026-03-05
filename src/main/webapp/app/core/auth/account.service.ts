@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, ReplaySubject, of } from 'rxjs';
-import { catchError, shareReplay, tap } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
+import { ActiveCompany } from 'app/core/auth/active-company.model';
+import { ActiveCompanyService } from 'app/core/auth/active-company.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { Account } from 'app/core/auth/account.model';
 import { ApplicationConfigService } from '../config/application-config.service';
@@ -18,6 +20,7 @@ export class AccountService {
   private readonly translateService = inject(TranslateService);
   private readonly http = inject(HttpClient);
   private readonly stateStorageService = inject(StateStorageService);
+  private readonly activeCompanyService = inject(ActiveCompanyService);
   private readonly router = inject(Router);
   private readonly applicationConfigService = inject(ApplicationConfigService);
 
@@ -26,6 +29,7 @@ export class AccountService {
     this.authenticationState.next(this.userIdentity());
     if (!identity) {
       this.accountCache$ = null;
+      this.activeCompanyService.clear();
     }
   }
 
@@ -47,6 +51,12 @@ export class AccountService {
   identity(force?: boolean): Observable<Account | null> {
     if (!this.accountCache$ || force) {
       this.accountCache$ = this.fetch().pipe(
+        switchMap((account: Account) =>
+          this.fetchAccountCompanies().pipe(
+            tap(companies => this.activeCompanyService.initializeCompanies(companies)),
+            map(() => account),
+          ),
+        ),
         tap((account: Account) => {
           this.authenticate(account);
 
@@ -75,6 +85,12 @@ export class AccountService {
 
   private fetch(): Observable<Account> {
     return this.http.get<Account>(this.applicationConfigService.getEndpointFor('api/account'));
+  }
+
+  private fetchAccountCompanies(): Observable<ActiveCompany[]> {
+    return this.http
+      .get<ActiveCompany[]>(this.applicationConfigService.getEndpointFor('api/account/companies'))
+      .pipe(catchError(() => of([])));
   }
 
   private navigateToStoredUrl(): void {

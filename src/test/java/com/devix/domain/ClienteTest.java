@@ -6,7 +6,6 @@ import static com.devix.domain.DireccionTestSamples.*;
 import static com.devix.domain.DocumentoTestSamples.*;
 import static com.devix.domain.EventoTestSamples.*;
 import static com.devix.domain.FacturaTestSamples.*;
-import static com.devix.domain.TipoClienteTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.devix.web.rest.TestUtil;
@@ -121,7 +120,7 @@ class ClienteTest {
     @Test
     void tipoClienteTest() {
         Cliente cliente = getClienteRandomSampleGenerator();
-        TipoCliente tipoClienteBack = getTipoClienteRandomSampleGenerator();
+        String tipoClienteBack = "VIP";
 
         cliente.setTipoCliente(tipoClienteBack);
         assertThat(cliente.getTipoCliente()).isEqualTo(tipoClienteBack);

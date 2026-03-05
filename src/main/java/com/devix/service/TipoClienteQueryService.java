@@ -6,7 +6,6 @@ import com.devix.repository.TipoClienteRepository;
 import com.devix.service.criteria.TipoClienteCriteria;
 import com.devix.service.dto.TipoClienteDTO;
 import com.devix.service.mapper.TipoClienteMapper;
-import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,8 +72,7 @@ public class TipoClienteQueryService extends QueryService<TipoCliente> {
                 Boolean.TRUE.equals(criteria.getDistinct()) ? distinct(criteria.getDistinct()) : null,
                 buildRangeSpecification(criteria.getId(), TipoCliente_.id),
                 buildRangeSpecification(criteria.getNoCia(), TipoCliente_.noCia),
-                buildStringSpecification(criteria.getDescripcion(), TipoCliente_.descripcion),
-                buildSpecification(criteria.getClienteId(), root -> root.join(TipoCliente_.clientes, JoinType.LEFT).get(Cliente_.id))
+                buildStringSpecification(criteria.getDescripcion(), TipoCliente_.descripcion)
             );
         }
         return specification;

@@ -64,6 +64,9 @@ public class CompaniaResource {
         if (companiaDTO.getId() != null) {
             throw new BadRequestAlertException("A new compania cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (companiaRepository.existsByDni(companiaDTO.getDni())) {
+            throw new BadRequestAlertException("El DNI ya existe para esta compania", ENTITY_NAME, "dniexists");
+        }
         companiaDTO = companiaService.save(companiaDTO);
         return ResponseEntity.created(new URI("/api/companias/" + companiaDTO.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, companiaDTO.getId().toString()))
@@ -95,6 +98,9 @@ public class CompaniaResource {
 
         if (!companiaRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        if (companiaRepository.existsByDniAndIdNot(companiaDTO.getDni(), companiaDTO.getId())) {
+            throw new BadRequestAlertException("El DNI ya existe para esta compania", ENTITY_NAME, "dniexists");
         }
 
         companiaDTO = companiaService.update(companiaDTO);
@@ -129,6 +135,10 @@ public class CompaniaResource {
 
         if (!companiaRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        String dni = companiaDTO.getDni();
+        if (dni != null && companiaRepository.existsByDniAndIdNot(dni, companiaDTO.getId())) {
+            throw new BadRequestAlertException("El DNI ya existe para esta compania", ENTITY_NAME, "dniexists");
         }
 
         Optional<CompaniaDTO> result = companiaService.partialUpdate(companiaDTO);

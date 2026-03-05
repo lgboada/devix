@@ -50,5 +50,9 @@
     <include file="config/liquibase/changelog/20260205214138_added_entity_constraints_Documento.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260222131226_added_entity_constraints_UsuarioCentro.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="config/liquibase/changelog/20260227100000_remove_relationship_centro_compania.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260304001000_add_tipo_documento_to_cliente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260304020000_remove_cliente_tipo_cliente_relationship.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260304110000_make_cliente_path_imagen_nullable.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
