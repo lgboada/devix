@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20260309120000-1" author="assistant">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="direccion" columnName="pais"/>
+        </preConditions>
+        <dropColumn tableName="direccion" columnName="pais"/>
+    </changeSet>
+
+    <changeSet id="20260309120000-2" author="assistant">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="direccion" columnName="provincia"/>
+        </preConditions>
+        <dropColumn tableName="direccion" columnName="provincia"/>
+    </changeSet>
+
+    <changeSet id="20260309120000-3" author="assistant">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="direccion" columnName="ciudad_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="direccion">
+            <column name="ciudad_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260309120000-4" author="assistant">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="direccion" columnName="ciudad_id"/>
+        </preConditions>
+        <addForeignKeyConstraint
+            baseColumnNames="ciudad_id"
+            baseTableName="direccion"
+            constraintName="fk_direccion__ciudad_id"
+            referencedColumnNames="id"
+            referencedTableName="ciudad"
+        />
+    </changeSet>
+</databaseChangeLog>

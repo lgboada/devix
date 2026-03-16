@@ -2,6 +2,7 @@ package com.devix.service;
 
 import com.devix.domain.Direccion;
 import com.devix.repository.DireccionRepository;
+import com.devix.security.company.CompanyContextService;
 import com.devix.service.dto.DireccionDTO;
 import com.devix.service.mapper.DireccionMapper;
 import java.util.Optional;
@@ -23,9 +24,16 @@ public class DireccionService {
 
     private final DireccionMapper direccionMapper;
 
-    public DireccionService(DireccionRepository direccionRepository, DireccionMapper direccionMapper) {
+    private final CompanyContextService companyContextService;
+
+    public DireccionService(
+        DireccionRepository direccionRepository,
+        DireccionMapper direccionMapper,
+        CompanyContextService companyContextService
+    ) {
         this.direccionRepository = direccionRepository;
         this.direccionMapper = direccionMapper;
+        this.companyContextService = companyContextService;
     }
 
     /**
@@ -37,6 +45,7 @@ public class DireccionService {
     public DireccionDTO save(DireccionDTO direccionDTO) {
         LOG.debug("Request to save Direccion : {}", direccionDTO);
         Direccion direccion = direccionMapper.toEntity(direccionDTO);
+        applyCurrentCompany(direccion);
         direccion = direccionRepository.save(direccion);
         return direccionMapper.toDto(direccion);
     }
@@ -50,6 +59,7 @@ public class DireccionService {
     public DireccionDTO update(DireccionDTO direccionDTO) {
         LOG.debug("Request to update Direccion : {}", direccionDTO);
         Direccion direccion = direccionMapper.toEntity(direccionDTO);
+        applyCurrentCompany(direccion);
         direccion = direccionRepository.save(direccion);
         return direccionMapper.toDto(direccion);
     }
@@ -67,6 +77,7 @@ public class DireccionService {
             .findById(direccionDTO.getId())
             .map(existingDireccion -> {
                 direccionMapper.partialUpdate(existingDireccion, direccionDTO);
+                applyCurrentCompany(existingDireccion);
 
                 return existingDireccion;
             })
@@ -94,5 +105,9 @@ public class DireccionService {
     public void delete(Long id) {
         LOG.debug("Request to delete Direccion : {}", id);
         direccionRepository.deleteById(id);
+    }
+
+    private void applyCurrentCompany(Direccion direccion) {
+        companyContextService.getCurrentCompanyId().ifPresent(direccion::setNoCia);
     }
 }

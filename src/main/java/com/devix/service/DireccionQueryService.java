@@ -80,6 +80,7 @@ public class DireccionQueryService extends QueryService<Direccion> {
                 buildSpecification(criteria.getTipoDireccionId(), root ->
                     root.join(Direccion_.tipoDireccion, JoinType.LEFT).get(TipoDireccion_.id)
                 ),
+                buildSpecification(criteria.getCiudadId(), root -> root.join(Direccion_.ciudad, JoinType.LEFT).get(Ciudad_.id)),
                 buildSpecification(criteria.getClienteId(), root -> root.join(Direccion_.cliente, JoinType.LEFT).get(Cliente_.id))
             );
         }

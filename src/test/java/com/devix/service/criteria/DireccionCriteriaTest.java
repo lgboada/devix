@@ -82,6 +82,7 @@ class DireccionCriteriaTest {
         direccionCriteria.latitud();
         direccionCriteria.longitud();
         direccionCriteria.tipoDireccionId();
+        direccionCriteria.ciudadId();
         direccionCriteria.clienteId();
         direccionCriteria.distinct();
     }
@@ -96,6 +97,7 @@ class DireccionCriteriaTest {
                 condition.apply(criteria.getLatitud()) &&
                 condition.apply(criteria.getLongitud()) &&
                 condition.apply(criteria.getTipoDireccionId()) &&
+                condition.apply(criteria.getCiudadId()) &&
                 condition.apply(criteria.getClienteId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
@@ -112,6 +114,7 @@ class DireccionCriteriaTest {
                 condition.apply(criteria.getLatitud(), copy.getLatitud()) &&
                 condition.apply(criteria.getLongitud(), copy.getLongitud()) &&
                 condition.apply(criteria.getTipoDireccionId(), copy.getTipoDireccionId()) &&
+                condition.apply(criteria.getCiudadId(), copy.getCiudadId()) &&
                 condition.apply(criteria.getClienteId(), copy.getClienteId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"

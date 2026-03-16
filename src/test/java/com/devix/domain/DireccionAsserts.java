@@ -64,6 +64,7 @@ public class DireccionAsserts {
         assertThat(actual)
             .as("Verify Direccion relationships")
             .satisfies(a -> assertThat(a.getTipoDireccion()).as("check tipoDireccion").isEqualTo(expected.getTipoDireccion()))
+            .satisfies(a -> assertThat(a.getCiudad()).as("check ciudad").isEqualTo(expected.getCiudad()))
             .satisfies(a -> assertThat(a.getCliente()).as("check cliente").isEqualTo(expected.getCliente()));
     }
 }

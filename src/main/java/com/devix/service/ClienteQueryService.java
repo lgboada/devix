@@ -7,6 +7,7 @@ import com.devix.service.criteria.ClienteCriteria;
 import com.devix.service.dto.ClienteDTO;
 import com.devix.service.mapper.ClienteMapper;
 import jakarta.persistence.criteria.JoinType;
+import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -82,19 +83,28 @@ public class ClienteQueryService extends QueryService<Cliente> {
                 buildStringSpecification(criteria.getNombreComercial(), Cliente_.nombreComercial),
                 buildStringSpecification(criteria.getEmail(), Cliente_.email),
                 buildStringSpecification(criteria.getTelefono1(), Cliente_.telefono1),
-                buildStringSpecification(criteria.getTelefono2(), Cliente_.telefono2),
                 buildRangeSpecification(criteria.getFechaNacimiento(), Cliente_.fechaNacimiento),
                 buildStringSpecification(criteria.getSexo(), Cliente_.sexo),
                 buildStringSpecification(criteria.getEstadoCivil(), Cliente_.estadoCivil),
-                buildStringSpecification(criteria.getTipoSangre(), Cliente_.tipoSangre),
-                buildStringSpecification(criteria.getPathImagen(), Cliente_.pathImagen),
                 buildSpecification(criteria.getDireccionesId(), root -> root.join(Cliente_.direcciones, JoinType.LEFT).get(Direccion_.id)),
                 buildSpecification(criteria.getFacturasId(), root -> root.join(Cliente_.facturas, JoinType.LEFT).get(Factura_.id)),
                 buildSpecification(criteria.getEventoId(), root -> root.join(Cliente_.eventos, JoinType.LEFT).get(Evento_.id)),
-                buildSpecification(criteria.getDocumentoId(), root -> root.join(Cliente_.documentos, JoinType.LEFT).get(Documento_.id)),
-                buildStringSpecification(criteria.getTipoCliente(), Cliente_.tipoCliente),
-                buildSpecification(criteria.getCiudadId(), root -> root.join(Cliente_.ciudad, JoinType.LEFT).get(Ciudad_.id))
+                buildSpecification(criteria.getDocumentoId(), root -> root.join(Cliente_.documentos, JoinType.LEFT).get(Documento_.id))
             );
+
+            if (criteria.getSearch() != null && criteria.getSearch().getContains() != null) {
+                final String normalizedSearch = criteria.getSearch().getContains().trim().toLowerCase(Locale.ROOT);
+                if (!normalizedSearch.isEmpty()) {
+                    final String likePattern = "%" + normalizedSearch + "%";
+                    specification = specification.and((root, query, cb) ->
+                        cb.or(
+                            cb.like(cb.lower(root.get(Cliente_.dni)), likePattern),
+                            cb.like(cb.lower(root.get(Cliente_.nombres)), likePattern),
+                            cb.like(cb.lower(root.get(Cliente_.apellidos)), likePattern)
+                        )
+                    );
+                }
+            }
         }
         return specification;
     }

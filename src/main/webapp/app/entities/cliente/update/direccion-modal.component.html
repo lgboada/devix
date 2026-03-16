@@ -1,0 +1,83 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ editForm.controls.id.value ? 'Editar direccion' : 'Nueva direccion' }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancelar()"></button>
+</div>
+
+<div class="modal-body" [formGroup]="editForm">
+  <div class="mb-3">
+    <label class="form-label" for="modal_tipoDireccion">Tipo Direccion</label>
+    <select
+      class="form-control"
+      id="modal_tipoDireccion"
+      data-cy="modalTipoDireccion"
+      formControlName="tipoDireccion"
+      [compareWith]="compareTipoDireccion"
+    >
+      <option [ngValue]="null"></option>
+      @for (tipo of tipoDireccions; track tipo.id) {
+        <option [ngValue]="tipo">{{ tipo.descripcion || tipo.id }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="modal_descripcion">Direccion / Ubicacion</label>
+    <input class="form-control" id="modal_descripcion" data-cy="modalDescripcion" formControlName="descripcion" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="modal_provincia">Provincia</label>
+    <select class="form-control" id="modal_provincia" data-cy="modalProvincia" formControlName="provinciaId">
+      <option [ngValue]="null"></option>
+      @for (provincia of provincias; track provincia.id) {
+        <option [ngValue]="provincia.id">{{ provincia.descripcion || provincia.id }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="modal_ciudad">Ciudad</label>
+    <select
+      class="form-control"
+      id="modal_ciudad"
+      data-cy="modalCiudad"
+      formControlName="ciudad"
+      [compareWith]="compareCiudad"
+      [disabled]="!editForm.controls.provinciaId.value"
+    >
+      <option [ngValue]="null"></option>
+      @for (ciudad of filteredCiudads; track ciudad.id) {
+        <option [ngValue]="ciudad">{{ ciudad.descripcion || ciudad.id }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="modal_telefono">Telefono</label>
+    <input class="form-control" id="modal_telefono" data-cy="modalTelefono" formControlName="telefono" />
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="mb-3">
+        <label class="form-label" for="modal_latitud">Latitud</label>
+        <input type="number" class="form-control" id="modal_latitud" data-cy="modalLatitud" formControlName="latitud" />
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="mb-3">
+        <label class="form-label" for="modal_longitud">Longitud</label>
+        <input type="number" class="form-control" id="modal_longitud" data-cy="modalLongitud" formControlName="longitud" />
+      </div>
+    </div>
+  </div>
+
+  @if (saveError) {
+    <small class="form-text text-danger">{{ saveError }}</small>
+  }
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+  <button type="button" class="btn btn-primary" [disabled]="editForm.invalid || isSaving" (click)="guardar()">Guardar</button>
+</div>

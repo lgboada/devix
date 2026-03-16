@@ -1,5 +1,6 @@
 package com.devix.domain;
 
+import static com.devix.domain.CiudadTestSamples.*;
 import static com.devix.domain.ClienteTestSamples.*;
 import static com.devix.domain.DireccionTestSamples.*;
 import static com.devix.domain.TipoDireccionTestSamples.*;
@@ -46,5 +47,17 @@ class DireccionTest {
 
         direccion.cliente(null);
         assertThat(direccion.getCliente()).isNull();
+    }
+
+    @Test
+    void ciudadTest() {
+        Direccion direccion = getDireccionRandomSampleGenerator();
+        Ciudad ciudadBack = getCiudadRandomSampleGenerator();
+
+        direccion.setCiudad(ciudadBack);
+        assertThat(direccion.getCiudad()).isEqualTo(ciudadBack);
+
+        direccion.ciudad(null);
+        assertThat(direccion.getCiudad()).isNull();
     }
 }

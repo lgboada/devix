@@ -80,21 +80,17 @@ class ClienteCriteriaTest {
         clienteCriteria.dni();
         clienteCriteria.nombres();
         clienteCriteria.apellidos();
+        clienteCriteria.search();
         clienteCriteria.nombreComercial();
         clienteCriteria.email();
         clienteCriteria.telefono1();
-        clienteCriteria.telefono2();
         clienteCriteria.fechaNacimiento();
         clienteCriteria.sexo();
         clienteCriteria.estadoCivil();
-        clienteCriteria.tipoSangre();
-        clienteCriteria.pathImagen();
         clienteCriteria.direccionesId();
         clienteCriteria.facturasId();
         clienteCriteria.eventoId();
         clienteCriteria.documentoId();
-        clienteCriteria.tipoCliente();
-        clienteCriteria.ciudadId();
         clienteCriteria.distinct();
     }
 
@@ -106,21 +102,17 @@ class ClienteCriteriaTest {
                 condition.apply(criteria.getDni()) &&
                 condition.apply(criteria.getNombres()) &&
                 condition.apply(criteria.getApellidos()) &&
+                condition.apply(criteria.getSearch()) &&
                 condition.apply(criteria.getNombreComercial()) &&
                 condition.apply(criteria.getEmail()) &&
                 condition.apply(criteria.getTelefono1()) &&
-                condition.apply(criteria.getTelefono2()) &&
                 condition.apply(criteria.getFechaNacimiento()) &&
                 condition.apply(criteria.getSexo()) &&
                 condition.apply(criteria.getEstadoCivil()) &&
-                condition.apply(criteria.getTipoSangre()) &&
-                condition.apply(criteria.getPathImagen()) &&
                 condition.apply(criteria.getDireccionesId()) &&
                 condition.apply(criteria.getFacturasId()) &&
                 condition.apply(criteria.getEventoId()) &&
                 condition.apply(criteria.getDocumentoId()) &&
-                condition.apply(criteria.getTipoCliente()) &&
-                condition.apply(criteria.getCiudadId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
         );
@@ -134,21 +126,17 @@ class ClienteCriteriaTest {
                 condition.apply(criteria.getDni(), copy.getDni()) &&
                 condition.apply(criteria.getNombres(), copy.getNombres()) &&
                 condition.apply(criteria.getApellidos(), copy.getApellidos()) &&
+                condition.apply(criteria.getSearch(), copy.getSearch()) &&
                 condition.apply(criteria.getNombreComercial(), copy.getNombreComercial()) &&
                 condition.apply(criteria.getEmail(), copy.getEmail()) &&
                 condition.apply(criteria.getTelefono1(), copy.getTelefono1()) &&
-                condition.apply(criteria.getTelefono2(), copy.getTelefono2()) &&
                 condition.apply(criteria.getFechaNacimiento(), copy.getFechaNacimiento()) &&
                 condition.apply(criteria.getSexo(), copy.getSexo()) &&
                 condition.apply(criteria.getEstadoCivil(), copy.getEstadoCivil()) &&
-                condition.apply(criteria.getTipoSangre(), copy.getTipoSangre()) &&
-                condition.apply(criteria.getPathImagen(), copy.getPathImagen()) &&
                 condition.apply(criteria.getDireccionesId(), copy.getDireccionesId()) &&
                 condition.apply(criteria.getFacturasId(), copy.getFacturasId()) &&
                 condition.apply(criteria.getEventoId(), copy.getEventoId()) &&
                 condition.apply(criteria.getDocumentoId(), copy.getDocumentoId()) &&
-                condition.apply(criteria.getTipoCliente(), copy.getTipoCliente()) &&
-                condition.apply(criteria.getCiudadId(), copy.getCiudadId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"
         );

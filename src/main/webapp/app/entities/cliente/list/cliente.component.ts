@@ -35,6 +35,7 @@ export class ClienteComponent implements OnInit {
   subscription: Subscription | null = null;
   clientes = signal<ICliente[]>([]);
   isLoading = false;
+  searchText = '';
 
   sortState = sortStateSignal({});
   filters: IFilterOptions = new FilterOptions();
@@ -96,6 +97,7 @@ export class ClienteComponent implements OnInit {
     this.page = +(page ?? 1);
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
     this.filters.initializeFromParams(params);
+    this.searchText = params.getAll('filter[search.contains]')[0] ?? '';
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -113,7 +115,7 @@ export class ClienteComponent implements OnInit {
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
-    const { page, filters } = this;
+    const { page } = this;
 
     this.isLoading = true;
     const pageToLoad: number = page;
@@ -122,20 +124,20 @@ export class ClienteComponent implements OnInit {
       size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
-    filters.filterOptions.forEach(filterOption => {
+    this.getFilterOptionsWithSearch().forEach(filterOption => {
       queryObject[filterOption.name] = filterOption.values;
     });
     return this.clienteService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
-  protected handleNavigation(page: number, sortState: SortState, filterOptions?: IFilterOption[]): void {
+  protected handleNavigation(page: number, sortState: SortState, filterOptions: IFilterOption[] = this.filters.filterOptions): void {
     const queryParamsObj: any = {
       page,
       size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(sortState),
     };
 
-    filterOptions?.forEach(filterOption => {
+    this.getFilterOptionsWithSearch(filterOptions).forEach(filterOption => {
       queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
     });
 
@@ -145,5 +147,32 @@ export class ClienteComponent implements OnInit {
         queryParams: queryParamsObj,
       });
     });
+  }
+
+  onSearch(): void {
+    this.handleNavigation(1, this.sortState(), this.filters.filterOptions);
+  }
+
+  clearSearch(): void {
+    this.searchText = '';
+    this.handleNavigation(1, this.sortState(), this.filters.filterOptions);
+  }
+
+  private getFilterOptionsWithSearch(filterOptions: IFilterOption[] = this.filters.filterOptions): IFilterOption[] {
+    const filtersWithoutSearch = filterOptions.filter(option => option.name !== 'search.contains');
+    const searchValue = this.searchText.trim();
+
+    if (!searchValue) {
+      return filtersWithoutSearch;
+    }
+
+    return [
+      ...filtersWithoutSearch,
+      {
+        name: 'search.contains',
+        values: [searchValue],
+        nameAsQueryParam: () => 'filter[search.contains]',
+      },
+    ];
   }
 }

@@ -1,5 +1,6 @@
 import { ITipoDireccion } from 'app/entities/tipo-direccion/tipo-direccion.model';
 import { ICliente } from 'app/entities/cliente/cliente.model';
+import { ICiudad } from 'app/entities/ciudad/ciudad.model';
 
 export interface IDireccion {
   id: number;
@@ -9,6 +10,7 @@ export interface IDireccion {
   latitud?: number | null;
   longitud?: number | null;
   tipoDireccion?: Pick<ITipoDireccion, 'id'> | null;
+  ciudad?: Pick<ICiudad, 'id' | 'descripcion'> | null;
   cliente?: Pick<ICliente, 'id'> | null;
 }
 

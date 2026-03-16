@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.devix.IntegrationTest;
+import com.devix.domain.Ciudad;
 import com.devix.domain.Cliente;
 import com.devix.domain.Direccion;
 import com.devix.domain.TipoDireccion;
@@ -587,6 +588,28 @@ class DireccionResourceIT {
 
         // Get all the direccionList where tipoDireccion equals to (tipoDireccionId + 1)
         defaultDireccionShouldNotBeFound("tipoDireccionId.equals=" + (tipoDireccionId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllDireccionsByCiudadIsEqualToSomething() throws Exception {
+        Ciudad ciudad;
+        if (TestUtil.findAll(em, Ciudad.class).isEmpty()) {
+            direccionRepository.saveAndFlush(direccion);
+            ciudad = CiudadResourceIT.createEntity();
+        } else {
+            ciudad = TestUtil.findAll(em, Ciudad.class).get(0);
+        }
+        em.persist(ciudad);
+        em.flush();
+        direccion.setCiudad(ciudad);
+        direccionRepository.saveAndFlush(direccion);
+        Long ciudadId = ciudad.getId();
+        // Get all the direccionList where ciudad equals to ciudadId
+        defaultDireccionShouldBeFound("ciudadId.equals=" + ciudadId);
+
+        // Get all the direccionList where ciudad equals to (ciudadId + 1)
+        defaultDireccionShouldNotBeFound("ciudadId.equals=" + (ciudadId + 1));
     }
 
     @Test

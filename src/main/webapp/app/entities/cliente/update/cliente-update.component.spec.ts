@@ -7,6 +7,8 @@ import { Subject, from, of } from 'rxjs';
 import { ICiudad } from 'app/entities/ciudad/ciudad.model';
 import { CiudadService } from 'app/entities/ciudad/service/ciudad.service';
 import { ProvinciaService } from 'app/entities/provincia/service/provincia.service';
+import { DireccionService } from 'app/entities/direccion/service/direccion.service';
+import { TipoDireccionService } from 'app/entities/tipo-direccion/service/tipo-direccion.service';
 import { ICliente } from '../cliente.model';
 import { ClienteService } from '../service/cliente.service';
 import { ClienteFormService } from './cliente-form.service';
@@ -21,6 +23,8 @@ describe('Cliente Management Update Component', () => {
   let clienteService: ClienteService;
   let ciudadService: CiudadService;
   let provinciaService: ProvinciaService;
+  let direccionService: DireccionService;
+  let tipoDireccionService: TipoDireccionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,9 +49,13 @@ describe('Cliente Management Update Component', () => {
     clienteService = TestBed.inject(ClienteService);
     ciudadService = TestBed.inject(CiudadService);
     provinciaService = TestBed.inject(ProvinciaService);
+    direccionService = TestBed.inject(DireccionService);
+    tipoDireccionService = TestBed.inject(TipoDireccionService);
     jest.spyOn(provinciaService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
     jest.spyOn(ciudadService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
     jest.spyOn(ciudadService, 'find').mockReturnValue(of(new HttpResponse({ body: null })));
+    jest.spyOn(direccionService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+    jest.spyOn(tipoDireccionService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
 
     comp = fixture.componentInstance;
   });

@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,9 +18,14 @@ import { CatalogoService } from 'app/entities/catalogo/service/catalogo.service'
 import { TipoCatalogoService } from 'app/entities/tipo-catalogo/service/tipo-catalogo.service';
 import { ITipoCatalogo } from 'app/entities/tipo-catalogo/tipo-catalogo.model';
 import { ICatalogo } from 'app/entities/catalogo/catalogo.model';
+import { IDireccion } from 'app/entities/direccion/direccion.model';
+import { DireccionService } from 'app/entities/direccion/service/direccion.service';
+import { ITipoDireccion } from 'app/entities/tipo-direccion/tipo-direccion.model';
+import { TipoDireccionService } from 'app/entities/tipo-direccion/service/tipo-direccion.service';
 import { ClienteService } from '../service/cliente.service';
 import { ICliente } from '../cliente.model';
 import { ClienteFormGroup, ClienteFormService } from './cliente-form.service';
+import { DireccionModalComponent } from './direccion-modal.component';
 
 @Component({
   selector: 'jhi-cliente-update',
@@ -49,6 +55,7 @@ export class ClienteUpdateComponent implements OnInit {
 
   isSaving = false;
   isUploading = false;
+  isLoadingDirecciones = false;
   cliente: ICliente | null = null;
   uploadError: string | null = null;
 
@@ -60,6 +67,8 @@ export class ClienteUpdateComponent implements OnInit {
   estadoCivilOptions: CatalogOption[] = [];
   tipoSangreOptions: CatalogOption[] = [];
   tipoClienteCatalogOptions: CatalogOption[] = [];
+  direcciones: IDireccion[] = [];
+  tipoDireccionLabelById = new Map<number, string>();
 
   protected clienteService = inject(ClienteService);
   protected clienteFormService = inject(ClienteFormService);
@@ -67,9 +76,12 @@ export class ClienteUpdateComponent implements OnInit {
   protected provinciaService = inject(ProvinciaService);
   protected catalogoService = inject(CatalogoService);
   protected tipoCatalogoService = inject(TipoCatalogoService);
+  protected direccionService = inject(DireccionService);
+  protected tipoDireccionService = inject(TipoDireccionService);
   protected activatedRoute = inject(ActivatedRoute);
   protected activeCompanyService = inject(ActiveCompanyService);
   protected fileService = inject(FileService);
+  protected modalService = inject(NgbModal);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ClienteFormGroup = this.clienteFormService.createClienteFormGroup();
@@ -95,10 +107,12 @@ export class ClienteUpdateComponent implements OnInit {
       this.cliente = cliente;
       if (cliente) {
         this.updateForm(cliente);
+        this.loadDireccionesByCliente();
       }
       this.ensureNoCiaFromSession();
 
       this.loadRelationshipsOptions();
+      this.loadTipoDireccionLabels();
       this.loadDocumentTypeOptions();
       this.initializeCatalogDrivenFields();
     });
@@ -193,6 +207,57 @@ export class ClienteUpdateComponent implements OnInit {
   getCurrentImageUrl(): string | null {
     const currentPathImagen = this.editForm.get('pathImagen')?.value;
     return currentPathImagen ? this.fileService.getFileUrl(currentPathImagen) : null;
+  }
+
+  openNuevaDireccion(): void {
+    const clienteId = this.cliente?.id;
+    if (!clienteId) {
+      return;
+    }
+    const modalRef = this.modalService.open(DireccionModalComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.clienteId = clienteId;
+    modalRef.componentInstance.direccion = null;
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'saved') {
+        this.loadDireccionesByCliente();
+      }
+    });
+  }
+
+  openEditarDireccion(direccion: IDireccion): void {
+    const clienteId = this.cliente?.id;
+    if (!clienteId) {
+      return;
+    }
+    const modalRef = this.modalService.open(DireccionModalComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.clienteId = clienteId;
+    modalRef.componentInstance.direccion = direccion;
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'saved') {
+        this.loadDireccionesByCliente();
+      }
+    });
+  }
+
+  deleteDireccion(direccion: IDireccion): void {
+    if (!direccion.id) {
+      return;
+    }
+    const confirmed = window.confirm('Esta seguro que desea eliminar esta direccion?');
+    if (!confirmed) {
+      return;
+    }
+    this.direccionService.delete(direccion.id).subscribe({
+      next: () => this.loadDireccionesByCliente(),
+    });
+  }
+
+  getTipoDireccionLabel(direccion: IDireccion): string {
+    const tipoId = direccion.tipoDireccion?.id;
+    if (!tipoId) {
+      return '';
+    }
+    return this.tipoDireccionLabelById.get(tipoId) ?? `${tipoId}`;
   }
 
   private loadDocumentTypeOptions(): void {
@@ -376,6 +441,38 @@ export class ClienteUpdateComponent implements OnInit {
           return;
         }
         this.editForm.get('ciudad')?.setValue(null);
+      });
+  }
+
+  private loadDireccionesByCliente(): void {
+    const clienteId = this.cliente?.id;
+    if (!clienteId) {
+      this.direcciones = [];
+      return;
+    }
+    this.isLoadingDirecciones = true;
+    this.direccionService
+      .query({
+        'clienteId.equals': clienteId,
+        sort: ['id,asc'],
+      })
+      .pipe(finalize(() => (this.isLoadingDirecciones = false)))
+      .subscribe({
+        next: (res: HttpResponse<IDireccion[]>) => {
+          this.direcciones = res.body ?? [];
+        },
+        error: () => {
+          this.direcciones = [];
+        },
+      });
+  }
+
+  private loadTipoDireccionLabels(): void {
+    this.tipoDireccionService
+      .query({ sort: ['descripcion,asc'] })
+      .pipe(map((res: HttpResponse<ITipoDireccion[]>) => res.body ?? []))
+      .subscribe(tipos => {
+        this.tipoDireccionLabelById = new Map(tipos.map(tipo => [tipo.id, tipo.descripcion ?? `${tipo.id}`]));
       });
   }
 

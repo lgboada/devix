@@ -54,5 +54,6 @@
     <include file="config/liquibase/changelog/20260304001000_add_tipo_documento_to_cliente.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260304020000_remove_cliente_tipo_cliente_relationship.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260304110000_make_cliente_path_imagen_nullable.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260309120000_update_direccion_location_to_ciudad_fk.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

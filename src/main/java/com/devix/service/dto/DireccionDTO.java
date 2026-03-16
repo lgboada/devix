@@ -26,6 +26,8 @@ public class DireccionDTO implements Serializable {
 
     private TipoDireccionDTO tipoDireccion;
 
+    private CiudadDTO ciudad;
+
     private ClienteDTO cliente;
 
     public Long getId() {
@@ -84,6 +86,14 @@ public class DireccionDTO implements Serializable {
         this.tipoDireccion = tipoDireccion;
     }
 
+    public CiudadDTO getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(CiudadDTO ciudad) {
+        this.ciudad = ciudad;
+    }
+
     public ClienteDTO getCliente() {
         return cliente;
     }
@@ -124,6 +134,7 @@ public class DireccionDTO implements Serializable {
             ", latitud=" + getLatitud() +
             ", longitud=" + getLongitud() +
             ", tipoDireccion=" + getTipoDireccion() +
+            ", ciudad=" + getCiudad() +
             ", cliente=" + getCliente() +
             "}";
     }

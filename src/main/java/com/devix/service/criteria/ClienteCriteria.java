@@ -34,23 +34,19 @@ public class ClienteCriteria implements Serializable, Criteria {
 
     private StringFilter apellidos;
 
+    private StringFilter search;
+
     private StringFilter nombreComercial;
 
     private StringFilter email;
 
     private StringFilter telefono1;
 
-    private StringFilter telefono2;
-
     private LocalDateFilter fechaNacimiento;
 
     private StringFilter sexo;
 
     private StringFilter estadoCivil;
-
-    private StringFilter tipoSangre;
-
-    private StringFilter pathImagen;
 
     private LongFilter direccionesId;
 
@@ -59,10 +55,6 @@ public class ClienteCriteria implements Serializable, Criteria {
     private LongFilter eventoId;
 
     private LongFilter documentoId;
-
-    private StringFilter tipoCliente;
-
-    private LongFilter ciudadId;
 
     private Boolean distinct;
 
@@ -75,21 +67,17 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.tipoDocumento = other.optionalTipoDocumento().map(StringFilter::copy).orElse(null);
         this.nombres = other.optionalNombres().map(StringFilter::copy).orElse(null);
         this.apellidos = other.optionalApellidos().map(StringFilter::copy).orElse(null);
+        this.search = other.optionalSearch().map(StringFilter::copy).orElse(null);
         this.nombreComercial = other.optionalNombreComercial().map(StringFilter::copy).orElse(null);
         this.email = other.optionalEmail().map(StringFilter::copy).orElse(null);
         this.telefono1 = other.optionalTelefono1().map(StringFilter::copy).orElse(null);
-        this.telefono2 = other.optionalTelefono2().map(StringFilter::copy).orElse(null);
         this.fechaNacimiento = other.optionalFechaNacimiento().map(LocalDateFilter::copy).orElse(null);
         this.sexo = other.optionalSexo().map(StringFilter::copy).orElse(null);
         this.estadoCivil = other.optionalEstadoCivil().map(StringFilter::copy).orElse(null);
-        this.tipoSangre = other.optionalTipoSangre().map(StringFilter::copy).orElse(null);
-        this.pathImagen = other.optionalPathImagen().map(StringFilter::copy).orElse(null);
         this.direccionesId = other.optionalDireccionesId().map(LongFilter::copy).orElse(null);
         this.facturasId = other.optionalFacturasId().map(LongFilter::copy).orElse(null);
         this.eventoId = other.optionalEventoId().map(LongFilter::copy).orElse(null);
         this.documentoId = other.optionalDocumentoId().map(LongFilter::copy).orElse(null);
-        this.tipoCliente = other.optionalTipoCliente().map(StringFilter::copy).orElse(null);
-        this.ciudadId = other.optionalCiudadId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
 
@@ -212,6 +200,25 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.apellidos = apellidos;
     }
 
+    public StringFilter getSearch() {
+        return search;
+    }
+
+    public Optional<StringFilter> optionalSearch() {
+        return Optional.ofNullable(search);
+    }
+
+    public StringFilter search() {
+        if (search == null) {
+            setSearch(new StringFilter());
+        }
+        return search;
+    }
+
+    public void setSearch(StringFilter search) {
+        this.search = search;
+    }
+
     public StringFilter getNombreComercial() {
         return nombreComercial;
     }
@@ -269,25 +276,6 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.telefono1 = telefono1;
     }
 
-    public StringFilter getTelefono2() {
-        return telefono2;
-    }
-
-    public Optional<StringFilter> optionalTelefono2() {
-        return Optional.ofNullable(telefono2);
-    }
-
-    public StringFilter telefono2() {
-        if (telefono2 == null) {
-            setTelefono2(new StringFilter());
-        }
-        return telefono2;
-    }
-
-    public void setTelefono2(StringFilter telefono2) {
-        this.telefono2 = telefono2;
-    }
-
     public LocalDateFilter getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -343,44 +331,6 @@ public class ClienteCriteria implements Serializable, Criteria {
 
     public void setEstadoCivil(StringFilter estadoCivil) {
         this.estadoCivil = estadoCivil;
-    }
-
-    public StringFilter getTipoSangre() {
-        return tipoSangre;
-    }
-
-    public Optional<StringFilter> optionalTipoSangre() {
-        return Optional.ofNullable(tipoSangre);
-    }
-
-    public StringFilter tipoSangre() {
-        if (tipoSangre == null) {
-            setTipoSangre(new StringFilter());
-        }
-        return tipoSangre;
-    }
-
-    public void setTipoSangre(StringFilter tipoSangre) {
-        this.tipoSangre = tipoSangre;
-    }
-
-    public StringFilter getPathImagen() {
-        return pathImagen;
-    }
-
-    public Optional<StringFilter> optionalPathImagen() {
-        return Optional.ofNullable(pathImagen);
-    }
-
-    public StringFilter pathImagen() {
-        if (pathImagen == null) {
-            setPathImagen(new StringFilter());
-        }
-        return pathImagen;
-    }
-
-    public void setPathImagen(StringFilter pathImagen) {
-        this.pathImagen = pathImagen;
     }
 
     public LongFilter getDireccionesId() {
@@ -459,44 +409,6 @@ public class ClienteCriteria implements Serializable, Criteria {
         this.documentoId = documentoId;
     }
 
-    public StringFilter getTipoCliente() {
-        return tipoCliente;
-    }
-
-    public Optional<StringFilter> optionalTipoCliente() {
-        return Optional.ofNullable(tipoCliente);
-    }
-
-    public StringFilter tipoCliente() {
-        if (tipoCliente == null) {
-            setTipoCliente(new StringFilter());
-        }
-        return tipoCliente;
-    }
-
-    public void setTipoCliente(StringFilter tipoCliente) {
-        this.tipoCliente = tipoCliente;
-    }
-
-    public LongFilter getCiudadId() {
-        return ciudadId;
-    }
-
-    public Optional<LongFilter> optionalCiudadId() {
-        return Optional.ofNullable(ciudadId);
-    }
-
-    public LongFilter ciudadId() {
-        if (ciudadId == null) {
-            setCiudadId(new LongFilter());
-        }
-        return ciudadId;
-    }
-
-    public void setCiudadId(LongFilter ciudadId) {
-        this.ciudadId = ciudadId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -532,21 +444,17 @@ public class ClienteCriteria implements Serializable, Criteria {
             Objects.equals(tipoDocumento, that.tipoDocumento) &&
             Objects.equals(nombres, that.nombres) &&
             Objects.equals(apellidos, that.apellidos) &&
+            Objects.equals(search, that.search) &&
             Objects.equals(nombreComercial, that.nombreComercial) &&
             Objects.equals(email, that.email) &&
             Objects.equals(telefono1, that.telefono1) &&
-            Objects.equals(telefono2, that.telefono2) &&
             Objects.equals(fechaNacimiento, that.fechaNacimiento) &&
             Objects.equals(sexo, that.sexo) &&
             Objects.equals(estadoCivil, that.estadoCivil) &&
-            Objects.equals(tipoSangre, that.tipoSangre) &&
-            Objects.equals(pathImagen, that.pathImagen) &&
             Objects.equals(direccionesId, that.direccionesId) &&
             Objects.equals(facturasId, that.facturasId) &&
             Objects.equals(eventoId, that.eventoId) &&
             Objects.equals(documentoId, that.documentoId) &&
-            Objects.equals(tipoCliente, that.tipoCliente) &&
-            Objects.equals(ciudadId, that.ciudadId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -560,21 +468,17 @@ public class ClienteCriteria implements Serializable, Criteria {
             tipoDocumento,
             nombres,
             apellidos,
+            search,
             nombreComercial,
             email,
             telefono1,
-            telefono2,
             fechaNacimiento,
             sexo,
             estadoCivil,
-            tipoSangre,
-            pathImagen,
             direccionesId,
             facturasId,
             eventoId,
             documentoId,
-            tipoCliente,
-            ciudadId,
             distinct
         );
     }
@@ -589,21 +493,17 @@ public class ClienteCriteria implements Serializable, Criteria {
             optionalTipoDocumento().map(f -> "tipoDocumento=" + f + ", ").orElse("") +
             optionalNombres().map(f -> "nombres=" + f + ", ").orElse("") +
             optionalApellidos().map(f -> "apellidos=" + f + ", ").orElse("") +
+            optionalSearch().map(f -> "search=" + f + ", ").orElse("") +
             optionalNombreComercial().map(f -> "nombreComercial=" + f + ", ").orElse("") +
             optionalEmail().map(f -> "email=" + f + ", ").orElse("") +
             optionalTelefono1().map(f -> "telefono1=" + f + ", ").orElse("") +
-            optionalTelefono2().map(f -> "telefono2=" + f + ", ").orElse("") +
             optionalFechaNacimiento().map(f -> "fechaNacimiento=" + f + ", ").orElse("") +
             optionalSexo().map(f -> "sexo=" + f + ", ").orElse("") +
             optionalEstadoCivil().map(f -> "estadoCivil=" + f + ", ").orElse("") +
-            optionalTipoSangre().map(f -> "tipoSangre=" + f + ", ").orElse("") +
-            optionalPathImagen().map(f -> "pathImagen=" + f + ", ").orElse("") +
             optionalDireccionesId().map(f -> "direccionesId=" + f + ", ").orElse("") +
             optionalFacturasId().map(f -> "facturasId=" + f + ", ").orElse("") +
             optionalEventoId().map(f -> "eventoId=" + f + ", ").orElse("") +
             optionalDocumentoId().map(f -> "documentoId=" + f + ", ").orElse("") +
-            optionalTipoCliente().map(f -> "tipoCliente=" + f + ", ").orElse("") +
-            optionalCiudadId().map(f -> "ciudadId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";
     }

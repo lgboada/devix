@@ -296,6 +296,52 @@
             }
           </select>
         </div>
+
+        @if (cliente?.id) {
+          <hr />
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-0">Direcciones del cliente</h5>
+            <button type="button" class="btn btn-sm btn-primary" (click)="openNuevaDireccion()">Anadir</button>
+          </div>
+
+          @if (isLoadingDirecciones) {
+            <small class="form-text text-info">Cargando direcciones...</small>
+          }
+
+          @if (direcciones.length === 0) {
+            <div class="alert alert-warning py-2 mb-0">No existen direcciones registradas para este cliente.</div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-sm table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Tipo</th>
+                    <th>Direccion / Ubicacion</th>
+                    <th>Telefono</th>
+                    <th class="text-end">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (direccion of direcciones; track direccion.id) {
+                    <tr>
+                      <td>{{ direccion.id }}</td>
+                      <td>{{ getTipoDireccionLabel(direccion) }}</td>
+                      <td>{{ direccion.descripcion }}</td>
+                      <td>{{ direccion.telefono }}</td>
+                      <td class="text-end">
+                        <button type="button" class="btn btn-sm btn-outline-primary me-1" (click)="openEditarDireccion(direccion)">
+                          Editar
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteDireccion(direccion)">Eliminar</button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        }
       </div>
 
       <div>

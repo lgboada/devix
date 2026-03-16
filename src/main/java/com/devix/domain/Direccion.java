@@ -43,6 +43,11 @@ public class Direccion implements Serializable {
     private TipoDireccion tipoDireccion;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ciudad_id")
+    @JsonIgnoreProperties(value = { "clientes", "provincia" }, allowSetters = true)
+    private Ciudad ciudad;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "direcciones", "facturas", "eventos", "documentos", "tipoCliente", "ciudad" }, allowSetters = true)
     private Cliente cliente;
 
@@ -136,6 +141,19 @@ public class Direccion implements Serializable {
 
     public Direccion tipoDireccion(TipoDireccion tipoDireccion) {
         this.setTipoDireccion(tipoDireccion);
+        return this;
+    }
+
+    public Ciudad getCiudad() {
+        return this.ciudad;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public Direccion ciudad(Ciudad ciudad) {
+        this.setCiudad(ciudad);
         return this;
     }
 

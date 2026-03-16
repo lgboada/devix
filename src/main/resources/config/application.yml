@@ -239,3 +239,21 @@ jhipster:
 app:
   files:
     upload-dir: uploads
+
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    starttls.enable: true
+    auth: true
+    user: leningboada@gmail.com
+    password: bzbx bjqq hlla bvkm
+
+whatsapp:
+  enabled: true
+  api-url: https://graph.facebook.com
+  api-version: v21.0
+  default-language-code: es
+  phone-number-id: 1054948374368672
+  access-token: EAAt5jSKIMiUBQ0JvZCrtp9PJFzrb0wo99CyaFpOJqKcl9TLj50A6fLnEZBLagXR1J62O7NTFk2U1AEMCeeum1ITggJQh2AM1wq504Ygkf5mpdVSHj6BAZClwS4JK9ZArdyQhwjUZA1Ebb876mRN4bxHjlM6ZAFtaNvUUhi7ZAROfuHUuKZAVYZBELCKojCRkXZBe4NWmTPu3ilCFD5RGfK4l8pRIwE9ZBQCjbzvlhcXDF3CF7ElWGa1h9cDlvQroZCkMJ6MCqgkV7eUYqmeleY8ygwZDZD
+  timeout-seconds: 10
