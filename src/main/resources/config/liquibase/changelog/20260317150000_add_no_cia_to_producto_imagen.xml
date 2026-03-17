@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260317150000-1" author="cursor">
+        <addColumn tableName="producto_imagen">
+            <column name="no_cia" type="bigint"/>
+        </addColumn>
+
+        <sql>
+            UPDATE producto_imagen pi
+            SET no_cia = p.no_cia
+            FROM producto p
+            WHERE pi.producto_id = p.id
+              AND pi.no_cia IS NULL;
+        </sql>
+
+        <addNotNullConstraint tableName="producto_imagen" columnName="no_cia" columnDataType="bigint"/>
+        <createIndex tableName="producto_imagen" indexName="idx_producto_imagen_no_cia">
+            <column name="no_cia"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

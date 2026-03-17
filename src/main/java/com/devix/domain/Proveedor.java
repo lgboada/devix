@@ -43,8 +43,7 @@ public class Proveedor implements Serializable {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @NotNull
-    @Column(name = "path_imagen", nullable = false)
+    @Column(name = "path_imagen")
     private String pathImagen;
 
     @NotNull

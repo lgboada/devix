@@ -1,0 +1,37 @@
+<div>
+  <h2 id="page-heading" data-cy="CalendarioHeading">
+    <span>Calendario de Citas</span>
+  </h2>
+
+  <jhi-alert-error />
+  <jhi-alert />
+
+  <div class="d-flex gap-2 mb-3 align-items-center flex-wrap">
+    <button type="button" class="btn btn-outline-primary" (click)="conectarGoogle()">
+      <fa-icon icon="link"></fa-icon>
+      <span class="ms-1">Conectar Google Calendar</span>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="sincronizarGoogle()" [disabled]="isLoading()">
+      <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined"></fa-icon>
+      <span class="ms-1">Sincronizar desde Google</span>
+    </button>
+
+    <span class="badge" [ngClass]="googleStatus().connected ? 'text-bg-success' : 'text-bg-secondary'">
+      {{ googleStatus().connected ? 'Google conectado' : 'Google no conectado' }}
+    </span>
+
+    @if (googleStatus().googleEmail) {
+      <small class="text-muted">{{ googleStatus().googleEmail }}</small>
+    }
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
+
+  <div class="mt-3 text-muted small">
+    Click en un bloque para crear cita. Click en evento para cancelar. Arrastra o redimensiona para reagendar.
+  </div>
+</div>

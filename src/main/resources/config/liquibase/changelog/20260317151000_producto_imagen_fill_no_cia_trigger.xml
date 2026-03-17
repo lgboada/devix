@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260317151000-1" author="cursor" dbms="postgresql">
+        <sql>
+            CREATE OR REPLACE FUNCTION fn_producto_imagen_set_no_cia()
+            RETURNS trigger AS $$
+            BEGIN
+                IF NEW.no_cia IS NULL THEN
+                    SELECT p.no_cia INTO NEW.no_cia
+                    FROM producto p
+                    WHERE p.id = NEW.producto_id;
+                END IF;
+                RETURN NEW;
+            END;
+            $$ LANGUAGE plpgsql;
+        </sql>
+
+        <sql>
+            DROP TRIGGER IF EXISTS trg_producto_imagen_set_no_cia ON producto_imagen;
+        </sql>
+
+        <sql>
+            CREATE TRIGGER trg_producto_imagen_set_no_cia
+            BEFORE INSERT OR UPDATE ON producto_imagen
+            FOR EACH ROW
+            EXECUTE FUNCTION fn_producto_imagen_set_no_cia();
+        </sql>
+    </changeSet>
+</databaseChangeLog>

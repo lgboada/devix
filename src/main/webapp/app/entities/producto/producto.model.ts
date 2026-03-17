@@ -12,8 +12,8 @@ export interface IProducto {
   pathImagen?: string | null;
   codigo?: string | null;
   modelo?: Pick<IModelo, 'id'> | null;
-  tipoProducto?: Pick<ITipoProducto, 'id'> | null;
-  proveedor?: Pick<IProveedor, 'id'> | null;
+  tipoProducto?: Pick<ITipoProducto, 'id' | 'nombre'> | null;
+  proveedor?: Pick<IProveedor, 'id' | 'nombre' | 'dni'> | null;
 }
 
 export type NewProducto = Omit<IProducto, 'id'> & { id: null };

@@ -46,9 +46,7 @@ export class MarcaFormService {
       nombre: new FormControl(marcaRawValue.nombre, {
         validators: [Validators.required],
       }),
-      pathImagen: new FormControl(marcaRawValue.pathImagen, {
-        validators: [Validators.required],
-      }),
+      pathImagen: new FormControl(marcaRawValue.pathImagen),
     });
   }
 

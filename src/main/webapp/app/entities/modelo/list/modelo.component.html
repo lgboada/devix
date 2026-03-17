@@ -82,7 +82,7 @@
               <td>
                 @if (modelo.marca) {
                   <div>
-                    <a [routerLink]="['/marca', modelo.marca.id, 'view']">{{ modelo.marca.id }}</a>
+                    <a [routerLink]="['/marca', modelo.marca.id, 'view']">{{ modelo.marca.nombre || modelo.marca.id }}</a>
                   </div>
                 }
               </td>

@@ -29,7 +29,6 @@ public class ProductoDTO implements Serializable {
     @Min(value = 0)
     private Integer stock;
 
-    @NotNull
     private String pathImagen;
 
     @NotNull

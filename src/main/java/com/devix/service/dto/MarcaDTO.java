@@ -18,7 +18,6 @@ public class MarcaDTO implements Serializable {
     @NotNull
     private String nombre;
 
-    @NotNull
     private String pathImagen;
 
     public Long getId() {

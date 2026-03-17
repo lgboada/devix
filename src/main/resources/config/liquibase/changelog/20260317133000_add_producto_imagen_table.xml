@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260317133000-1" author="cursor">
+        <createTable tableName="producto_imagen">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="path_imagen" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="orden" type="integer" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visible" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="producto_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="producto_imagen" indexName="idx_producto_imagen_producto_id">
+            <column name="producto_id"/>
+        </createIndex>
+        <addForeignKeyConstraint
+            baseTableName="producto_imagen"
+            baseColumnNames="producto_id"
+            referencedTableName="producto"
+            referencedColumnNames="id"
+            constraintName="fk_producto_imagen_producto_id"
+            onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

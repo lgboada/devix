@@ -46,15 +46,36 @@
 
         @let pathImagenRef = editForm.get('pathImagen')!;
         <div class="mb-3">
-          <label class="form-label" for="field_pathImagen" jhiTranslate="devixApp.modelo.pathImagen">Path Imagen</label>
+          <label class="form-label" for="field_pathImagen_file" jhiTranslate="devixApp.modelo.pathImagen">Path Imagen</label>
           <input
-            type="text"
+            type="file"
             class="form-control"
-            name="pathImagen"
-            id="field_pathImagen"
-            data-cy="pathImagen"
-            formControlName="pathImagen"
+            name="pathImagenFile"
+            id="field_pathImagen_file"
+            data-cy="pathImagenFile"
+            accept="image/*"
+            (change)="onFileSelected($event)"
           />
+          @if (isUploading) {
+            <small class="form-text text-info">Subiendo imagen...</small>
+          }
+          @if (uploadError) {
+            <small class="form-text text-danger">{{ uploadError }}</small>
+          }
+          @if (editForm.get('pathImagen')?.value) {
+            <div class="mt-2">
+              <small class="form-text text-muted">Archivo: {{ editForm.get('pathImagen')?.value }}</small>
+              @if (getCurrentImageUrl(); as imageUrl) {
+                <div class="mt-2">
+                  <img
+                    [src]="imageUrl"
+                    alt="Vista previa"
+                    style="max-width: 220px; max-height: 140px; border: 1px solid #ddd; padding: 2px"
+                  />
+                </div>
+              }
+            </div>
+          }
           @if (pathImagenRef.invalid && (pathImagenRef.dirty || pathImagenRef.touched)) {
             <div>
               @if (editForm.get('pathImagen')?.errors?.required) {
@@ -69,7 +90,7 @@
           <select class="form-control" id="field_marca" data-cy="marca" name="marca" formControlName="marca" [compareWith]="compareMarca">
             <option [ngValue]="null"></option>
             @for (marcaOption of marcasSharedCollection; track $index) {
-              <option [ngValue]="marcaOption">{{ marcaOption.id }}</option>
+              <option [ngValue]="marcaOption">{{ marcaOption.nombre || marcaOption.id }}</option>
             }
           </select>
         </div>

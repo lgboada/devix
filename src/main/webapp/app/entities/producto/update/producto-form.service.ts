@@ -60,9 +60,7 @@ export class ProductoFormService {
       stock: new FormControl(productoRawValue.stock, {
         validators: [Validators.required, Validators.min(0)],
       }),
-      pathImagen: new FormControl(productoRawValue.pathImagen, {
-        validators: [Validators.required],
-      }),
+      pathImagen: new FormControl(productoRawValue.pathImagen),
       codigo: new FormControl(productoRawValue.codigo, {
         validators: [Validators.required],
       }),

@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancelar()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="input-group mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar por nombre de proveedor"
+      [(ngModel)]="searchText"
+      (keyup.enter)="buscar()"
+    />
+    <button type="button" class="btn btn-outline-primary" (click)="buscar()">Buscar</button>
+  </div>
+
+  @if (isLoading) {
+    <small class="form-text text-info">Cargando proveedores...</small>
+  }
+  @if (errorMsg) {
+    <small class="form-text text-danger">{{ errorMsg }}</small>
+  }
+
+  <div class="table-responsive">
+    <table class="table table-sm table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Email</th>
+          <th class="text-end">Accion</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (proveedor of proveedores; track proveedor.id) {
+          <tr [class.table-active]="proveedor.id === selectedProveedorId">
+            <td>{{ proveedor.nombre }}</td>
+            <td>{{ proveedor.dni }}</td>
+            <td>{{ proveedor.email }}</td>
+            <td class="text-end">
+              <button type="button" class="btn btn-sm btn-primary" (click)="seleccionar(proveedor)">Seleccionar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+</div>

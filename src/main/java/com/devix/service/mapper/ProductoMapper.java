@@ -16,8 +16,8 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface ProductoMapper extends EntityMapper<ProductoDTO, Producto> {
     @Mapping(target = "modelo", source = "modelo", qualifiedByName = "modeloId")
-    @Mapping(target = "tipoProducto", source = "tipoProducto", qualifiedByName = "tipoProductoId")
-    @Mapping(target = "proveedor", source = "proveedor", qualifiedByName = "proveedorId")
+    @Mapping(target = "tipoProducto", source = "tipoProducto", qualifiedByName = "tipoProductoResumen")
+    @Mapping(target = "proveedor", source = "proveedor", qualifiedByName = "proveedorResumen")
     ProductoDTO toDto(Producto s);
 
     @Named("modeloId")
@@ -25,13 +25,16 @@ public interface ProductoMapper extends EntityMapper<ProductoDTO, Producto> {
     @Mapping(target = "id", source = "id")
     ModeloDTO toDtoModeloId(Modelo modelo);
 
-    @Named("tipoProductoId")
+    @Named("tipoProductoResumen")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    TipoProductoDTO toDtoTipoProductoId(TipoProducto tipoProducto);
+    @Mapping(target = "nombre", source = "nombre")
+    TipoProductoDTO toDtoTipoProductoResumen(TipoProducto tipoProducto);
 
-    @Named("proveedorId")
+    @Named("proveedorResumen")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    ProveedorDTO toDtoProveedorId(Proveedor proveedor);
+    @Mapping(target = "nombre", source = "nombre")
+    @Mapping(target = "dni", source = "dni")
+    ProveedorDTO toDtoProveedorResumen(Proveedor proveedor);
 }

@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ imagen?.id ? 'Editar imagen' : 'Nueva imagen' }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancelar()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="mb-3">
+    <label class="form-label" for="modal_producto_imagen_file">Imagen</label>
+    <input id="modal_producto_imagen_file" type="file" class="form-control" accept="image/*" (change)="onFileSelected($event)" />
+    @if (isUploading) {
+      <small class="form-text text-info">Subiendo imagen...</small>
+    }
+  </div>
+
+  @if (pathImagen) {
+    <div class="mb-3">
+      <small class="form-text text-muted">Archivo: {{ pathImagen }}</small>
+      @if (getCurrentImageUrl(); as imageUrl) {
+        <div class="mt-2">
+          <img [src]="imageUrl" alt="Vista previa" style="max-width: 220px; max-height: 140px; border: 1px solid #ddd; padding: 2px" />
+        </div>
+      }
+    </div>
+  }
+
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label class="form-label" for="modal_producto_imagen_orden">Orden</label>
+      <input id="modal_producto_imagen_orden" type="number" class="form-control" [(ngModel)]="orden" />
+    </div>
+    <div class="col-md-4 mb-3 d-flex align-items-end">
+      <div class="form-check">
+        <input id="modal_producto_imagen_principal" type="checkbox" class="form-check-input" [(ngModel)]="principal" />
+        <label class="form-check-label" for="modal_producto_imagen_principal">Principal</label>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3 d-flex align-items-end">
+      <div class="form-check">
+        <input id="modal_producto_imagen_visible" type="checkbox" class="form-check-input" [(ngModel)]="visible" />
+        <label class="form-check-label" for="modal_producto_imagen_visible">Visible</label>
+      </div>
+    </div>
+  </div>
+
+  @if (errorMsg) {
+    <small class="form-text text-danger">{{ errorMsg }}</small>
+  }
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+  <button type="button" class="btn btn-primary" [disabled]="isUploading" (click)="guardar()">Guardar</button>
+</div>

@@ -68,6 +68,18 @@
               <li>
                 <a
                   class="dropdown-item"
+                  routerLink="/calendario"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span>Calendario Citas</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
                   routerLink="/pais"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"

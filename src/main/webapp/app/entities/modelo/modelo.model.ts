@@ -5,7 +5,7 @@ export interface IModelo {
   noCia?: number | null;
   nombre?: string | null;
   pathImagen?: string | null;
-  marca?: Pick<IMarca, 'id'> | null;
+  marca?: Pick<IMarca, 'id' | 'nombre'> | null;
 }
 
 export type NewModelo = Omit<IModelo, 'id'> & { id: null };

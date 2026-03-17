@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20260316170000-1" author="cursor">
+        <createTable tableName="calendario_cita">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="no_cia" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="titulo" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descripcion" type="varchar(1024)"/>
+            <column name="inicio" type="${datetimeType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fin" type="${datetimeType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="estado" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="google_synced" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="google_event_id" type="varchar(255)"/>
+            <column name="google_calendar_id" type="varchar(255)"/>
+            <column name="usuario_id" type="varchar(50)"/>
+            <column name="cliente_id" type="bigint"/>
+        </createTable>
+        <dropDefaultValue tableName="calendario_cita" columnName="inicio" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="calendario_cita" columnName="fin" columnDataType="${datetimeType}"/>
+
+        <createIndex indexName="idx_calendario_cita_no_cia_inicio" tableName="calendario_cita">
+            <column name="no_cia"/>
+            <column name="inicio"/>
+        </createIndex>
+        <createIndex indexName="idx_calendario_cita_google_event_id" tableName="calendario_cita">
+            <column name="google_event_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="20260316170000-2" author="cursor">
+        <addForeignKeyConstraint
+            baseTableName="calendario_cita"
+            baseColumnNames="usuario_id"
+            referencedTableName="jhi_user"
+            referencedColumnNames="id"
+            constraintName="fk_calendario_cita__usuario_id"
+        />
+        <addForeignKeyConstraint
+            baseTableName="calendario_cita"
+            baseColumnNames="cliente_id"
+            referencedTableName="cliente"
+            referencedColumnNames="id"
+            constraintName="fk_calendario_cita__cliente_id"
+        />
+    </changeSet>
+
+    <changeSet id="20260316170000-3" author="cursor">
+        <createTable tableName="calendario_google_cuenta">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="no_cia" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="google_email" type="varchar(255)"/>
+            <column name="access_token" type="varchar(4096)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refresh_token" type="varchar(4096)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_expiry" type="${datetimeType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="calendar_id" type="varchar(255)" defaultValue="primary">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activo" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="usuario_id" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="calendario_google_cuenta" columnName="token_expiry" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="calendario_google_cuenta" columnName="calendar_id" columnDataType="varchar(255)"/>
+        <dropDefaultValue tableName="calendario_google_cuenta" columnName="activo" columnDataType="boolean"/>
+
+        <createIndex indexName="idx_cal_google_cuenta_no_cia_usuario" tableName="calendario_google_cuenta" unique="true">
+            <column name="no_cia"/>
+            <column name="usuario_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="20260316170000-4" author="cursor">
+        <addForeignKeyConstraint
+            baseTableName="calendario_google_cuenta"
+            baseColumnNames="usuario_id"
+            referencedTableName="jhi_user"
+            referencedColumnNames="id"
+            constraintName="fk_cal_google_cuenta__usuario_id"
+        />
+    </changeSet>
+</databaseChangeLog>

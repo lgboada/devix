@@ -101,21 +101,34 @@
           }
         </div>
 
-        @let pathImagenRef = editForm.get('pathImagen')!;
         <div class="mb-3">
-          <label class="form-label" for="field_pathImagen" jhiTranslate="devixApp.producto.pathImagen">Path Imagen</label>
+          <label class="form-label" for="field_pathImagen_file" jhiTranslate="devixApp.producto.pathImagen">Path Imagen</label>
           <input
-            type="text"
+            type="file"
             class="form-control"
-            name="pathImagen"
-            id="field_pathImagen"
-            data-cy="pathImagen"
-            formControlName="pathImagen"
+            name="pathImagenFile"
+            id="field_pathImagen_file"
+            data-cy="pathImagenFile"
+            accept="image/*"
+            (change)="onFileSelected($event)"
           />
-          @if (pathImagenRef.invalid && (pathImagenRef.dirty || pathImagenRef.touched)) {
-            <div>
-              @if (editForm.get('pathImagen')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+          @if (isUploading) {
+            <small class="form-text text-info">Subiendo imagen...</small>
+          }
+          @if (uploadError) {
+            <small class="form-text text-danger">{{ uploadError }}</small>
+          }
+          @if (editForm.get('pathImagen')?.value) {
+            <div class="mt-2">
+              <small class="form-text text-muted">Archivo: {{ editForm.get('pathImagen')?.value }}</small>
+              @if (getCurrentImageUrl(); as imageUrl) {
+                <div class="mt-2">
+                  <img
+                    [src]="imageUrl"
+                    alt="Vista previa"
+                    style="max-width: 220px; max-height: 140px; border: 1px solid #ddd; padding: 2px"
+                  />
+                </div>
               }
             </div>
           }
@@ -135,6 +148,23 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_marca">Marca</label>
+          <select
+            class="form-control"
+            id="field_marca"
+            data-cy="marca"
+            name="marca"
+            [value]="selectedMarcaId ?? ''"
+            (change)="onMarcaChange($event)"
+          >
+            <option value="">Seleccione una marca</option>
+            @for (marcaOption of marcasSharedCollection; track $index) {
+              <option [value]="marcaOption.id">{{ marcaOption.nombre || marcaOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_modelo" jhiTranslate="devixApp.producto.modelo">Modelo</label>
           <select
             class="form-control"
@@ -143,10 +173,11 @@
             name="modelo"
             formControlName="modelo"
             [compareWith]="compareModelo"
+            [disabled]="!selectedMarcaId"
           >
             <option [ngValue]="null"></option>
             @for (modeloOption of modelosSharedCollection; track $index) {
-              <option [ngValue]="modeloOption">{{ modeloOption.id }}</option>
+              <option [ngValue]="modeloOption">{{ modeloOption.nombre || modeloOption.id }}</option>
             }
           </select>
         </div>
@@ -163,27 +194,87 @@
           >
             <option [ngValue]="null"></option>
             @for (tipoProductoOption of tipoProductosSharedCollection; track $index) {
-              <option [ngValue]="tipoProductoOption">{{ tipoProductoOption.id }}</option>
+              <option [ngValue]="tipoProductoOption">{{ tipoProductoOption.nombre || tipoProductoOption.id }}</option>
             }
           </select>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_proveedor" jhiTranslate="devixApp.producto.proveedor">Proveedor</label>
-          <select
-            class="form-control"
-            id="field_proveedor"
-            data-cy="proveedor"
-            name="proveedor"
-            formControlName="proveedor"
-            [compareWith]="compareProveedor"
-          >
-            <option [ngValue]="null"></option>
-            @for (proveedorOption of proveedorsSharedCollection; track $index) {
-              <option [ngValue]="proveedorOption">{{ proveedorOption.id }}</option>
-            }
-          </select>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-primary" data-cy="openProveedorModal" (click)="abrirModalProveedor()">
+              Buscar proveedor
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-cy="clearProveedorButton"
+              [disabled]="!editForm.get('proveedor')?.value"
+              (click)="limpiarProveedorSeleccionado()"
+            >
+              Limpiar
+            </button>
+          </div>
+          @if (editForm.get('proveedor')?.value; as proveedorSeleccionado) {
+            <div class="mt-2 small text-muted">
+              Proveedor seleccionado: {{ proveedorSeleccionado.nombre || proveedorSeleccionado.id }}
+              @if (proveedorSeleccionado.dni) {
+                <span> - {{ proveedorSeleccionado.dni }}</span>
+              }
+            </div>
+          } @else {
+            <div class="mt-2 small text-muted">No hay proveedor seleccionado.</div>
+          }
         </div>
+
+        <hr />
+
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h5 class="mb-0">Imagenes del producto</h5>
+          <button type="button" class="btn btn-primary btn-sm" [disabled]="!producto?.id" (click)="abrirModalImagen()">Anadir</button>
+        </div>
+
+        @if (!producto?.id) {
+          <small class="form-text text-muted">Guarda el producto primero para poder administrar imagenes.</small>
+        } @else {
+          @if (isLoadingImagenes) {
+            <small class="form-text text-info">Cargando imagenes...</small>
+          }
+          <div class="table-responsive">
+            <table class="table table-sm table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Imagen</th>
+                  <th>Orden</th>
+                  <th>Principal</th>
+                  <th>Visible</th>
+                  <th class="text-end">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (imagen of imagenesProducto; track imagen.id; let idx = $index) {
+                  <tr>
+                    <td>{{ idx + 1 }}</td>
+                    <td>{{ imagen.pathImagen }}</td>
+                    <td>{{ imagen.orden }}</td>
+                    <td>{{ imagen.principal ? 'Si' : 'No' }}</td>
+                    <td>{{ imagen.visible ? 'Si' : 'No' }}</td>
+                    <td class="text-end">
+                      <button type="button" class="btn btn-outline-primary btn-sm me-2" (click)="abrirModalImagen(imagen)">Editar</button>
+                      <button type="button" class="btn btn-outline-danger btn-sm" (click)="eliminarImagen(imagen)">Eliminar</button>
+                    </td>
+                  </tr>
+                }
+                @if (imagenesProducto.length === 0) {
+                  <tr>
+                    <td colspan="6" class="text-muted">No hay imagenes registradas.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
       </div>
 
       <div>

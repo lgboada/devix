@@ -6,6 +6,7 @@ import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FileService } from 'app/shared/service/file.service';
 
 import { IMarca } from 'app/entities/marca/marca.model';
 import { MarcaService } from 'app/entities/marca/service/marca.service';
@@ -20,7 +21,9 @@ import { ModeloFormGroup, ModeloFormService } from './modelo-form.service';
 })
 export class ModeloUpdateComponent implements OnInit {
   isSaving = false;
+  isUploading = false;
   modelo: IModelo | null = null;
+  uploadError: string | null = null;
 
   marcasSharedCollection: IMarca[] = [];
 
@@ -28,6 +31,7 @@ export class ModeloUpdateComponent implements OnInit {
   protected modeloFormService = inject(ModeloFormService);
   protected marcaService = inject(MarcaService);
   protected activatedRoute = inject(ActivatedRoute);
+  protected fileService = inject(FileService);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ModeloFormGroup = this.modeloFormService.createModeloFormGroup();
@@ -57,6 +61,41 @@ export class ModeloUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.modeloService.create(modelo));
     }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const selectedFile = input.files?.[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    this.uploadError = null;
+    this.isUploading = true;
+
+    this.fileService
+      .upload(selectedFile)
+      .pipe(finalize(() => (this.isUploading = false)))
+      .subscribe({
+        next: response => {
+          const storedFilename = response.body?.filename;
+          if (!storedFilename) {
+            this.uploadError = 'No se pudo obtener el nombre del archivo subido.';
+            return;
+          }
+          this.editForm.patchValue({ pathImagen: storedFilename });
+          this.editForm.get('pathImagen')?.markAsDirty();
+          this.editForm.get('pathImagen')?.markAsTouched();
+        },
+        error: () => {
+          this.uploadError = 'No se pudo subir la imagen. Intenta nuevamente.';
+        },
+      });
+  }
+
+  getCurrentImageUrl(): string | null {
+    const currentPathImagen = this.editForm.get('pathImagen')?.value;
+    return currentPathImagen ? this.fileService.getFileUrl(currentPathImagen) : null;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IModelo>>): void {

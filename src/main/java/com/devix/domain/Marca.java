@@ -31,8 +31,7 @@ public class Marca implements Serializable {
     @Column(name = "nombre", nullable = false, unique = true)
     private String nombre;
 
-    @NotNull
-    @Column(name = "path_imagen", nullable = false)
+    @Column(name = "path_imagen")
     private String pathImagen;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "marca")

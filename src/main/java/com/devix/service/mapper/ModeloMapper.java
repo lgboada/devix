@@ -11,11 +11,12 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ModeloMapper extends EntityMapper<ModeloDTO, Modelo> {
-    @Mapping(target = "marca", source = "marca", qualifiedByName = "marcaId")
+    @Mapping(target = "marca", source = "marca", qualifiedByName = "marcaResumen")
     ModeloDTO toDto(Modelo s);
 
-    @Named("marcaId")
+    @Named("marcaResumen")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    MarcaDTO toDtoMarcaId(Marca marca);
+    @Mapping(target = "nombre", source = "nombre")
+    MarcaDTO toDtoMarcaResumen(Marca marca);
 }

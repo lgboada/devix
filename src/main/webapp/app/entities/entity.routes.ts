@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'calendario',
+    data: { pageTitle: 'Calendario de citas' },
+    loadComponent: () => import('./calendario/calendario.component').then(m => m.CalendarioComponent),
+  },
+  {
     path: 'pais',
     data: { pageTitle: 'devixApp.pais.home.title' },
     loadChildren: () => import('./pais/pais.routes'),

@@ -118,7 +118,7 @@ spring:
   jpa:
     open-in-view: false
     properties:
-      hibernate.jdbc.time_zone: UTC
+      hibernate.jdbc.time_zone: America/Guayaquil
       hibernate.timezone.default_storage: NORMALIZE
       hibernate.type.preferred_instant_jdbc_type: TIMESTAMP
       hibernate.id.new_generator_mappings: true
@@ -257,3 +257,10 @@ whatsapp:
   phone-number-id: 1054948374368672
   access-token: EAAt5jSKIMiUBQ0JvZCrtp9PJFzrb0wo99CyaFpOJqKcl9TLj50A6fLnEZBLagXR1J62O7NTFk2U1AEMCeeum1ITggJQh2AM1wq504Ygkf5mpdVSHj6BAZClwS4JK9ZArdyQhwjUZA1Ebb876mRN4bxHjlM6ZAFtaNvUUhi7ZAROfuHUuKZAVYZBELCKojCRkXZBe4NWmTPu3ilCFD5RGfK4l8pRIwE9ZBQCjbzvlhcXDF3CF7ElWGa1h9cDlvQroZCkMJ6MCqgkV7eUYqmeleY8ygwZDZD
   timeout-seconds: 10
+
+google:
+  calendar:
+    client-id: ${GOOGLE_CALENDAR_CLIENT_ID:}
+    client-secret: ${GOOGLE_CALENDAR_CLIENT_SECRET:}
+    redirect-uri: ${GOOGLE_CALENDAR_REDIRECT_URI:http://localhost:8080/api/calendario-citas/google/callback}
+    success-redirect: ${GOOGLE_CALENDAR_SUCCESS_REDIRECT:http://localhost:9000/calendario}

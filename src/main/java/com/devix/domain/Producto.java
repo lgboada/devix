@@ -45,8 +45,7 @@ public class Producto implements Serializable {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    @NotNull
-    @Column(name = "path_imagen", nullable = false)
+    @Column(name = "path_imagen")
     private String pathImagen;
 
     @NotNull
@@ -56,6 +55,10 @@ public class Producto implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
     @JsonIgnoreProperties(value = { "factura", "producto" }, allowSetters = true)
     private Set<DetalleFactura> detalleFacturas = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
+    @JsonIgnoreProperties(value = { "producto" }, allowSetters = true)
+    private Set<ProductoImagen> productoImagens = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "productos", "marca" }, allowSetters = true)
@@ -203,6 +206,37 @@ public class Producto implements Serializable {
     public Producto removeDetalleFactura(DetalleFactura detalleFactura) {
         this.detalleFacturas.remove(detalleFactura);
         detalleFactura.setProducto(null);
+        return this;
+    }
+
+    public Set<ProductoImagen> getProductoImagens() {
+        return this.productoImagens;
+    }
+
+    public void setProductoImagens(Set<ProductoImagen> productoImagens) {
+        if (this.productoImagens != null) {
+            this.productoImagens.forEach(i -> i.setProducto(null));
+        }
+        if (productoImagens != null) {
+            productoImagens.forEach(i -> i.setProducto(this));
+        }
+        this.productoImagens = productoImagens;
+    }
+
+    public Producto productoImagens(Set<ProductoImagen> productoImagens) {
+        this.setProductoImagens(productoImagens);
+        return this;
+    }
+
+    public Producto addProductoImagen(ProductoImagen productoImagen) {
+        this.productoImagens.add(productoImagen);
+        productoImagen.setProducto(this);
+        return this;
+    }
+
+    public Producto removeProductoImagen(ProductoImagen productoImagen) {
+        this.productoImagens.remove(productoImagen);
+        productoImagen.setProducto(null);
         return this;
     }
 

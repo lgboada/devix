@@ -55,5 +55,12 @@
     <include file="config/liquibase/changelog/20260304020000_remove_cliente_tipo_cliente_relationship.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260304110000_make_cliente_path_imagen_nullable.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260309120000_update_direccion_location_to_ciudad_fk.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260316170000_add_calendario_module.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260317103000_make_marca_path_imagen_nullable.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260317113000_make_proveedor_path_imagen_nullable.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260317123000_make_producto_path_imagen_nullable.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260317133000_add_producto_imagen_table.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260317150000_add_no_cia_to_producto_imagen.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260317151000_producto_imagen_fill_no_cia_trigger.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

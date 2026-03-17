@@ -22,10 +22,10 @@ import { IDireccion } from 'app/entities/direccion/direccion.model';
 import { DireccionService } from 'app/entities/direccion/service/direccion.service';
 import { ITipoDireccion } from 'app/entities/tipo-direccion/tipo-direccion.model';
 import { TipoDireccionService } from 'app/entities/tipo-direccion/service/tipo-direccion.service';
+import { DireccionModalComponent } from 'app/shared/components/direccion-modal/direccion-modal.component';
 import { ClienteService } from '../service/cliente.service';
 import { ICliente } from '../cliente.model';
 import { ClienteFormGroup, ClienteFormService } from './cliente-form.service';
-import { DireccionModalComponent } from './direccion-modal.component';
 
 @Component({
   selector: 'jhi-cliente-update',

@@ -250,23 +250,6 @@ class ProductoResourceIT {
 
     @Test
     @Transactional
-    void checkPathImagenIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        producto.setPathImagen(null);
-
-        // Create the Producto, which fails.
-        ProductoDTO productoDTO = productoMapper.toDto(producto);
-
-        restProductoMockMvc
-            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productoDTO)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkCodigoIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null

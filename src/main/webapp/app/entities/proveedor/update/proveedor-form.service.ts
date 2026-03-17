@@ -57,9 +57,7 @@ export class ProveedorFormService {
       email: new FormControl(proveedorRawValue.email, {
         validators: [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}')],
       }),
-      pathImagen: new FormControl(proveedorRawValue.pathImagen, {
-        validators: [Validators.required],
-      }),
+      pathImagen: new FormControl(proveedorRawValue.pathImagen),
       telefono: new FormControl(proveedorRawValue.telefono, {
         validators: [Validators.required],
       }),

@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FileService } from 'app/shared/service/file.service';
 
 import { IProveedor } from '../proveedor.model';
 import { ProveedorService } from '../service/proveedor.service';
@@ -18,11 +19,14 @@ import { ProveedorFormGroup, ProveedorFormService } from './proveedor-form.servi
 })
 export class ProveedorUpdateComponent implements OnInit {
   isSaving = false;
+  isUploading = false;
   proveedor: IProveedor | null = null;
+  uploadError: string | null = null;
 
   protected proveedorService = inject(ProveedorService);
   protected proveedorFormService = inject(ProveedorFormService);
   protected activatedRoute = inject(ActivatedRoute);
+  protected fileService = inject(FileService);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProveedorFormGroup = this.proveedorFormService.createProveedorFormGroup();
@@ -48,6 +52,41 @@ export class ProveedorUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.proveedorService.create(proveedor));
     }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const selectedFile = input.files?.[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    this.uploadError = null;
+    this.isUploading = true;
+
+    this.fileService
+      .upload(selectedFile)
+      .pipe(finalize(() => (this.isUploading = false)))
+      .subscribe({
+        next: response => {
+          const storedFilename = response.body?.filename;
+          if (!storedFilename) {
+            this.uploadError = 'No se pudo obtener el nombre del archivo subido.';
+            return;
+          }
+          this.editForm.patchValue({ pathImagen: storedFilename });
+          this.editForm.get('pathImagen')?.markAsDirty();
+          this.editForm.get('pathImagen')?.markAsTouched();
+        },
+        error: () => {
+          this.uploadError = 'No se pudo subir la imagen. Intenta nuevamente.';
+        },
+      });
+  }
+
+  getCurrentImageUrl(): string | null {
+    const currentPathImagen = this.editForm.get('pathImagen')?.value;
+    return currentPathImagen ? this.fileService.getFileUrl(currentPathImagen) : null;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProveedor>>): void {

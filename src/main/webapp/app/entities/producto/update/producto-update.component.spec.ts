@@ -4,12 +4,15 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
+import { IMarca } from 'app/entities/marca/marca.model';
+import { MarcaService } from 'app/entities/marca/service/marca.service';
 import { IModelo } from 'app/entities/modelo/modelo.model';
 import { ModeloService } from 'app/entities/modelo/service/modelo.service';
 import { ITipoProducto } from 'app/entities/tipo-producto/tipo-producto.model';
 import { TipoProductoService } from 'app/entities/tipo-producto/service/tipo-producto.service';
 import { IProveedor } from 'app/entities/proveedor/proveedor.model';
 import { ProveedorService } from 'app/entities/proveedor/service/proveedor.service';
+import { ProductoImagenService } from 'app/entities/producto-imagen/service/producto-imagen.service';
 import { IProducto } from '../producto.model';
 import { ProductoService } from '../service/producto.service';
 import { ProductoFormService } from './producto-form.service';
@@ -22,9 +25,11 @@ describe('Producto Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let productoFormService: ProductoFormService;
   let productoService: ProductoService;
+  let marcaService: MarcaService;
   let modeloService: ModeloService;
   let tipoProductoService: TipoProductoService;
   let proveedorService: ProveedorService;
+  let productoImagenService: ProductoImagenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -47,20 +52,39 @@ describe('Producto Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     productoFormService = TestBed.inject(ProductoFormService);
     productoService = TestBed.inject(ProductoService);
+    marcaService = TestBed.inject(MarcaService);
     modeloService = TestBed.inject(ModeloService);
     tipoProductoService = TestBed.inject(TipoProductoService);
     proveedorService = TestBed.inject(ProveedorService);
+    productoImagenService = TestBed.inject(ProductoImagenService);
+    jest.spyOn(productoImagenService, 'queryByProducto').mockReturnValue(of(new HttpResponse({ body: [] })));
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('should call Modelo query and add missing value', () => {
+    it('should call Marca query', () => {
+      const marcaCollection: IMarca[] = [{ id: 1, nombre: 'Marca A' }];
+      jest.spyOn(marcaService, 'query').mockReturnValue(of(new HttpResponse({ body: marcaCollection })));
+      jest.spyOn(modeloService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+      jest.spyOn(tipoProductoService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+      jest.spyOn(proveedorService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+
+      activatedRoute.data = of({ producto: null });
+      comp.ngOnInit();
+
+      expect(marcaService.query).toHaveBeenCalled();
+      expect(comp.marcasSharedCollection).toEqual(marcaCollection);
+    });
+
+    it('should call Modelo query filtered by marca and add missing value', () => {
       const producto: IProducto = { id: 15581 };
-      const modelo: IModelo = { id: 11658 };
+      const modelo: IModelo = { id: 11658, marca: { id: 77 } };
       producto.modelo = modelo;
 
       const modeloCollection: IModelo[] = [{ id: 11658 }];
+      jest.spyOn(marcaService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+      jest.spyOn(modeloService, 'find').mockReturnValue(of(new HttpResponse({ body: modelo })));
       jest.spyOn(modeloService, 'query').mockReturnValue(of(new HttpResponse({ body: modeloCollection })));
       const additionalModelos = [modelo];
       const expectedCollection: IModelo[] = [...additionalModelos, ...modeloCollection];
@@ -69,7 +93,7 @@ describe('Producto Management Update Component', () => {
       activatedRoute.data = of({ producto });
       comp.ngOnInit();
 
-      expect(modeloService.query).toHaveBeenCalled();
+      expect(modeloService.query).toHaveBeenCalledWith({ 'marcaId.equals': 77 });
       expect(modeloService.addModeloToCollectionIfMissing).toHaveBeenCalledWith(
         modeloCollection,
         ...additionalModelos.map(expect.objectContaining),
@@ -82,8 +106,10 @@ describe('Producto Management Update Component', () => {
       const tipoProducto: ITipoProducto = { id: 6329 };
       producto.tipoProducto = tipoProducto;
 
+      jest.spyOn(marcaService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
       const tipoProductoCollection: ITipoProducto[] = [{ id: 6329 }];
       jest.spyOn(tipoProductoService, 'query').mockReturnValue(of(new HttpResponse({ body: tipoProductoCollection })));
+      jest.spyOn(modeloService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
       const additionalTipoProductos = [tipoProducto];
       const expectedCollection: ITipoProducto[] = [...additionalTipoProductos, ...tipoProductoCollection];
       jest.spyOn(tipoProductoService, 'addTipoProductoToCollectionIfMissing').mockReturnValue(expectedCollection);
@@ -104,8 +130,10 @@ describe('Producto Management Update Component', () => {
       const proveedor: IProveedor = { id: 9668 };
       producto.proveedor = proveedor;
 
+      jest.spyOn(marcaService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
       const proveedorCollection: IProveedor[] = [{ id: 9668 }];
       jest.spyOn(proveedorService, 'query').mockReturnValue(of(new HttpResponse({ body: proveedorCollection })));
+      jest.spyOn(modeloService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
       const additionalProveedors = [proveedor];
       const expectedCollection: IProveedor[] = [...additionalProveedors, ...proveedorCollection];
       jest.spyOn(proveedorService, 'addProveedorToCollectionIfMissing').mockReturnValue(expectedCollection);
@@ -123,16 +151,23 @@ describe('Producto Management Update Component', () => {
 
     it('should update editForm', () => {
       const producto: IProducto = { id: 15581 };
-      const modelo: IModelo = { id: 11658 };
+      const modelo: IModelo = { id: 11658, marca: { id: 77 } };
       producto.modelo = modelo;
       const tipoProducto: ITipoProducto = { id: 6329 };
       producto.tipoProducto = tipoProducto;
       const proveedor: IProveedor = { id: 9668 };
       producto.proveedor = proveedor;
 
+      jest.spyOn(marcaService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+      jest.spyOn(modeloService, 'find').mockReturnValue(of(new HttpResponse({ body: modelo })));
+      jest.spyOn(modeloService, 'query').mockReturnValue(of(new HttpResponse({ body: [modelo] })));
+      jest.spyOn(tipoProductoService, 'query').mockReturnValue(of(new HttpResponse({ body: [tipoProducto] })));
+      jest.spyOn(proveedorService, 'query').mockReturnValue(of(new HttpResponse({ body: [proveedor] })));
+
       activatedRoute.data = of({ producto });
       comp.ngOnInit();
 
+      expect(comp.selectedMarcaId).toEqual(77);
       expect(comp.modelosSharedCollection).toContainEqual(modelo);
       expect(comp.tipoProductosSharedCollection).toContainEqual(tipoProducto);
       expect(comp.proveedorsSharedCollection).toContainEqual(proveedor);
