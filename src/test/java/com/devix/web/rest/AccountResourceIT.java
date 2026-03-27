@@ -109,6 +109,12 @@ class AccountResourceIT {
     }
 
     @Test
+    @WithMockUser(TEST_USER_LOGIN)
+    void testRejectRequestWhenAuthenticatedUserHasNoCompanies() throws Exception {
+        restAccountMockMvc.perform(get("/api/centros").accept(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
+    }
+
+    @Test
     void testGetUnknownAccount() throws Exception {
         restAccountMockMvc.perform(get("/api/account").accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized());
     }
