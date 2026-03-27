@@ -27,6 +27,11 @@ const routes: Routes = [
     loadComponent: () => import('./metrics/metrics.component'),
     title: 'metrics.title',
   },
+  {
+    path: 'company-theme',
+    loadComponent: () => import('./company-theme/company-theme.component'),
+    title: 'Template por empresa',
+  },
   /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
 ];
 

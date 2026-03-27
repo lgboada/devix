@@ -24,7 +24,7 @@ public class Compania implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "no_cia", nullable = false)
+    @Column(name = "no_cia", nullable = false, unique = true)
     private Long noCia;
 
     @NotNull

@@ -100,6 +100,16 @@ module.exports = async (config, options, targetOptions) => {
       to: 'swagger-ui/',
     },
     { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },
+    {
+      context: path.join(path.dirname(require.resolve('bootswatch/package.json')), 'dist'),
+      from: '**/bootstrap.min.css',
+      to({ absoluteFilename }) {
+        const normalized = absoluteFilename.replace(/\\/g, '/');
+        const parts = normalized.split('/').filter(Boolean);
+        const themeName = parts.length >= 2 ? parts[parts.length - 2] : 'theme';
+        return `content/themes/${themeName}.min.css`;
+      },
+    },
     // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
   ];
 

@@ -22,6 +22,24 @@ public interface UsuarioCentroRepository extends JpaRepository<UsuarioCentro, Lo
     )
     List<UsuarioCentro> findAllByUserLoginOrderByPrincipalDescNoCiaAsc(@Param("login") String login);
 
+    /**
+     * Una fila por compañía efectiva ({@code COALESCE(centro.noCia, usuario_centro.noCia)}): nombre de {@link com.devix.domain.Compania}, no del centro.
+     */
+    @Query(
+        """
+        SELECT COALESCE(c.noCia, uc.noCia) AS effectiveNoCia,
+               MAX(CASE WHEN uc.principal = true THEN 1 ELSE 0 END) AS principalInt,
+               MAX(comp.nombre) AS label
+        FROM UsuarioCentro uc
+        LEFT JOIN uc.centro c
+        LEFT JOIN Compania comp ON comp.noCia = COALESCE(c.noCia, uc.noCia)
+        WHERE uc.user.login = :login
+        GROUP BY COALESCE(c.noCia, uc.noCia)
+        ORDER BY MAX(CASE WHEN uc.principal = true THEN 1 ELSE 0 END) DESC, COALESCE(c.noCia, uc.noCia) ASC
+        """
+    )
+    List<AccountCompanyProjection> findDistinctAccountCompaniesByUserLogin(@Param("login") String login);
+
     Optional<UsuarioCentro> findFirstByUser_LoginAndPrincipalTrue(String login);
 
     Optional<UsuarioCentro> findFirstByUser_LoginOrderByNoCiaAsc(String login);

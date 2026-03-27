@@ -17,4 +17,8 @@ public interface CompaniaRepository extends JpaRepository<Compania, Long>, JpaSp
     boolean existsByDniAndNoCia(String dni, Long noCia);
 
     boolean existsByDniAndNoCiaAndIdNot(String dni, Long noCia, Long id);
+
+    boolean existsByNoCia(Long noCia);
+
+    boolean existsByNoCiaAndIdNot(Long noCia, Long id);
 }

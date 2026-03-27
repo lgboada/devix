@@ -36,6 +36,7 @@
     <include file="config/liquibase/changelog/20260205214138_added_entity_Documento.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260222131226_added_entity_UsuarioCentro.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20260326130000_added_entity_CompaniaTheme.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260205214118_added_entity_constraints_Provincia.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260205214119_added_entity_constraints_Ciudad.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260205214121_added_entity_constraints_Centro.xml" relativeToChangelogFile="false"/>
@@ -62,5 +63,6 @@
     <include file="config/liquibase/changelog/20260317133000_add_producto_imagen_table.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260317150000_add_no_cia_to_producto_imagen.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260317151000_producto_imagen_fill_no_cia_trigger.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260327120000_compania_no_cia_unique.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

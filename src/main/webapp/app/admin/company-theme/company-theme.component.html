@@ -1,0 +1,113 @@
+<div>
+  <h2 data-cy="companyThemeHeading">Template por empresa</h2>
+
+  <div class="card p-3 mb-3">
+    <h4 class="mb-3">Empresa a administrar</h4>
+    <div class="row g-2 align-items-end">
+      <div class="col-md-6">
+        <label for="companySelector" class="form-label">Empresa activa</label>
+        <select id="companySelector" class="form-select" [ngModel]="activeCompany()?.noCia ?? ''" (ngModelChange)="onCompanyChange($event)">
+          @for (company of availableCompanies(); track company.noCia) {
+            <option [value]="company.noCia">
+              {{ company.noCia }} — {{ company.label || 'Empresa' }}
+              @if (company.principal) {
+                (Principal)
+              }
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  @if (message()) {
+    <div class="alert alert-success" role="alert">{{ message() }}</div>
+  }
+  @if (error()) {
+    <div class="alert alert-danger" role="alert">{{ error() }}</div>
+  }
+
+  <div class="card p-3 mb-3">
+    <h4 class="mb-3">Seleccionar template</h4>
+    <div class="row g-2 align-items-end">
+      <div class="col-md-6">
+        <label for="themeName" class="form-label">Theme</label>
+        <select id="themeName" class="form-select" [ngModel]="selectedTheme()" (ngModelChange)="selectedTheme.set($event)">
+          @for (theme of themes(); track theme) {
+            <option [value]="theme">{{ theme }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary w-100" type="button" [disabled]="savingTheme()" (click)="saveTheme()">
+          @if (savingTheme()) {
+            Guardando...
+          } @else {
+            Guardar template
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-3 mb-3">
+    <h4 class="mb-3">Logo y background</h4>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="logoFile" class="form-label">Logo</label>
+        <input
+          id="logoFile"
+          class="form-control"
+          type="file"
+          accept="image/png,image/jpeg,image/gif,image/webp"
+          (change)="onLogoSelected($event)"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="backgroundFile" class="form-label">Background</label>
+        <input
+          id="backgroundFile"
+          class="form-control"
+          type="file"
+          accept="image/png,image/jpeg,image/gif,image/webp"
+          (change)="onBackgroundSelected($event)"
+        />
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <button class="btn btn-outline-primary" type="button" [disabled]="!canUpload()" (click)="uploadAssets()">
+        @if (uploadingAssets()) {
+          Subiendo...
+        } @else {
+          Subir assets
+        }
+      </button>
+    </div>
+  </div>
+
+  @if (currentTheme(); as current) {
+    <div class="card p-3">
+      <h4 class="mb-3">Vista actual</h4>
+      <p class="mb-2"><strong>Theme:</strong> {{ current.themeName }}</p>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <p class="mb-1"><strong>Logo:</strong></p>
+          @if (current.logoUrl) {
+            <img [src]="current.logoUrl" alt="Logo actual" class="img-fluid border rounded p-2" style="max-height: 120px" />
+          } @else {
+            <p class="text-muted">Sin logo configurado</p>
+          }
+        </div>
+        <div class="col-md-6">
+          <p class="mb-1"><strong>Background:</strong></p>
+          @if (current.backgroundUrl) {
+            <img [src]="current.backgroundUrl" alt="Background actual" class="img-fluid border rounded p-2" style="max-height: 120px" />
+          } @else {
+            <p class="text-muted">Sin background configurado</p>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

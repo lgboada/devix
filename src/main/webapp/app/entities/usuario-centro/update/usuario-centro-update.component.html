@@ -22,15 +22,32 @@
         @let noCiaRef = editForm.get('noCia')!;
         <div class="mb-3">
           <label class="form-label" for="field_noCia" jhiTranslate="devixApp.usuarioCentro.noCia">No Cia</label>
-          <input type="number" class="form-control" name="noCia" id="field_noCia" data-cy="noCia" formControlName="noCia" />
+          <select
+            class="form-control"
+            name="companiaId"
+            id="field_noCia"
+            data-cy="noCia"
+            data-show-nocia="true"
+            [ngModel]="selectedCompaniaId"
+            (ngModelChange)="onCompaniaIdChange($event)"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option [ngValue]="null"></option>
+            @for (companiaOption of companiasSharedCollection; track companiaOption.id) {
+              <option [ngValue]="companiaOption.id">{{ companiaOption.noCia }} - {{ companiaOption.nombre }}</option>
+            }
+          </select>
+          @if (noCiaDuplicadoEnLista) {
+            <small class="form-text text-warning">
+              Varias empresas tienen el mismo codigo noCia en base de datos. Asigne codigos unicos en Compania (o use id distintos por fila)
+              y actualice centros/temas asociados.
+            </small>
+          }
           @if (noCiaRef.invalid && (noCiaRef.dirty || noCiaRef.touched)) {
             <div>
               @if (editForm.get('noCia')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('noCia')?.errors?.number" jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
             </div>
           }
         </div>

@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { ActiveCompanyService } from 'app/core/auth/active-company.service';
+import { CompanyThemeService } from 'app/core/theme/company-theme.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import FooterComponent from '../footer/footer.component';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
@@ -25,6 +26,7 @@ export default class MainComponent implements OnInit, OnDestroy {
   private readonly appPageTitleStrategy = inject(AppPageTitleStrategy);
   private readonly accountService = inject(AccountService);
   private readonly activeCompanyService = inject(ActiveCompanyService);
+  private readonly companyThemeService = inject(CompanyThemeService);
   private readonly translateService = inject(TranslateService);
   private readonly rootRenderer = inject(RendererFactory2);
 
@@ -88,6 +90,9 @@ export default class MainComponent implements OnInit, OnDestroy {
     const noCiaInputs = document.querySelectorAll('#field_noCia, input[data-cy="noCia"], [formcontrolname="noCia"]');
     noCiaInputs.forEach(inputElement => {
       const input = inputElement as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+      if (input.hasAttribute('data-show-nocia')) {
+        return;
+      }
       if (activeCompany && input.value !== `${activeCompany.noCia}`) {
         this.renderer.setProperty(input, 'value', `${activeCompany.noCia}`);
         input.dispatchEvent(new Event('input', { bubbles: true }));

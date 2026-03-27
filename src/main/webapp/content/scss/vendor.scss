@@ -1,14 +1,9 @@
 /* after changing this file run 'npm run webapp:build' */
 
-/***************************
-put Sass variables here:
-eg $input-color: red;
-****************************/
-@import 'bootswatch/dist/litera/variables';
-// Override Bootstrap variables
-@import 'bootstrap-variables';
-// Import Bootstrap source files from node_modules
-@import 'bootstrap/scss/bootstrap';
-@import 'bootswatch/dist/litera/bootswatch';
+/*
+ * Bootswatch theme is now loaded dynamically per company via:
+ *   <link id="company-theme" ...>
+ * and the theme CSS is copied to `content/themes/*.min.css` at build time.
+ */
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

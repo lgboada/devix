@@ -1,7 +1,7 @@
-@import 'bootstrap-variables';
-@import 'bootstrap/scss/functions';
-@import 'bootswatch/dist/litera/variables';
-@import 'bootstrap/scss/variables';
+/*
+ * Theme (Bootswatch) is loaded dynamically per company at runtime.
+ * Keep global styles theme-agnostic and rely on CSS variables where possible.
+ */
 
 /* ==============================================================
 Bootstrap tweaks
@@ -21,7 +21,7 @@ a:hover {
 }
 
 .dropdown-item:hover {
-  color: $dropdown-link-hover-color;
+  color: var(--bs-dropdown-link-hover-color);
 }
 
 /* ==========================================================================

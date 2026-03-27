@@ -1,5 +1,8 @@
 package com.devix.security.company;
 
+import com.devix.security.AuthoritiesConstants;
+import com.devix.security.SecurityUtils;
+import com.devix.service.criteria.CompaniaCriteria;
 import java.lang.reflect.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,6 +33,12 @@ public class CompanyCriteriaEnforcementAspect {
     }
 
     private void applyCompanyFilter(Object criteria) {
+        // La tabla `compania` define los tenants; no debe filtrarse por la empresa activa
+        // (p. ej. asignación usuario–centro debe listar todas las compañías).
+        if (criteria instanceof CompaniaCriteria) {
+            return;
+        }
+
         Method getNoCia = findMethod(criteria.getClass(), "getNoCia");
         Method setNoCia = findMethod(criteria.getClass(), "setNoCia", LongFilter.class);
         if (getNoCia == null || setNoCia == null) {
@@ -43,7 +52,11 @@ public class CompanyCriteriaEnforcementAspect {
         LongFilter requestedFilter = invokeGetter(criteria, getNoCia);
 
         if (requestedFilter != null && requestedFilter.getEquals() != null && !companyId.equals(requestedFilter.getEquals())) {
-            throw new AccessDeniedException("No puede consultar informacion de otra compania");
+            if (!SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+                throw new AccessDeniedException("No puede consultar informacion de otra compania");
+            }
+            // Administrador: respeta noCia.equals (p. ej. centros al elegir compania en usuario-centro)
+            return;
         }
 
         LongFilter forcedFilter = new LongFilter();

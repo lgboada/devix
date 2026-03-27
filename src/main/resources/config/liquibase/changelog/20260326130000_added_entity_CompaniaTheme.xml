@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260326130000-1" author="devix">
+        <createTable tableName="compania_theme">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="compania_theme_pk"/>
+            </column>
+            <column name="no_cia" type="BIGINT">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_compania_theme_no_cia"/>
+            </column>
+            <column name="theme_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="logo_path" type="VARCHAR(256)"/>
+            <column name="background_path" type="VARCHAR(256)"/>
+        </createTable>
+
+        <addDefaultValue tableName="compania_theme" columnName="theme_name" defaultValue="litera"/>
+
+        <addAutoIncrement tableName="compania_theme" columnName="id" columnDataType="BIGINT"/>
+    </changeSet>
+
+</databaseChangeLog>
+

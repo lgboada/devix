@@ -39,6 +39,7 @@ public class CompaniaService {
     public CompaniaDTO save(CompaniaDTO companiaDTO) {
         LOG.debug("Request to save Compania : {}", companiaDTO);
         validateUniqueDni(companiaDTO);
+        validateUniqueNoCia(companiaDTO);
         Compania compania = companiaMapper.toEntity(companiaDTO);
         compania = companiaRepository.save(compania);
         return companiaMapper.toDto(compania);
@@ -53,6 +54,7 @@ public class CompaniaService {
     public CompaniaDTO update(CompaniaDTO companiaDTO) {
         LOG.debug("Request to update Compania : {}", companiaDTO);
         validateUniqueDni(companiaDTO);
+        validateUniqueNoCia(companiaDTO);
         Compania compania = companiaMapper.toEntity(companiaDTO);
         compania = companiaRepository.save(compania);
         return companiaMapper.toDto(compania);
@@ -72,6 +74,7 @@ public class CompaniaService {
             .map(existingCompania -> {
                 companiaMapper.partialUpdate(existingCompania, companiaDTO);
                 validateUniqueDni(existingCompania);
+                validateUniqueNoCia(existingCompania);
 
                 return existingCompania;
             })
@@ -122,6 +125,30 @@ public class CompaniaService {
             : companiaRepository.existsByDniAndIdNot(compania.getDni(), compania.getId());
         if (exists) {
             throw new BadRequestAlertException("El DNI ya existe para esta compania", ENTITY_NAME, "dniexists");
+        }
+    }
+
+    private void validateUniqueNoCia(CompaniaDTO companiaDTO) {
+        if (companiaDTO.getNoCia() == null) {
+            return;
+        }
+        boolean exists = companiaDTO.getId() == null
+            ? companiaRepository.existsByNoCia(companiaDTO.getNoCia())
+            : companiaRepository.existsByNoCiaAndIdNot(companiaDTO.getNoCia(), companiaDTO.getId());
+        if (exists) {
+            throw new BadRequestAlertException("El codigo de compania (noCia) ya esta en uso", ENTITY_NAME, "nociadup");
+        }
+    }
+
+    private void validateUniqueNoCia(Compania compania) {
+        if (compania.getNoCia() == null) {
+            return;
+        }
+        boolean exists = compania.getId() == null
+            ? companiaRepository.existsByNoCia(compania.getNoCia())
+            : companiaRepository.existsByNoCiaAndIdNot(compania.getNoCia(), compania.getId());
+        if (exists) {
+            throw new BadRequestAlertException("El codigo de compania (noCia) ya esta en uso", ENTITY_NAME, "nociadup");
         }
     }
 }

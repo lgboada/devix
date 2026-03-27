@@ -12,6 +12,7 @@ import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import { environment } from 'environments/environment';
+import { CompanyThemeService } from 'app/core/theme/company-theme.service';
 import ActiveMenuDirective from './active-menu.directive';
 import NavbarItem from './navbar-item.model';
 
@@ -30,6 +31,7 @@ export default class NavbarComponent implements OnInit {
   account = inject(AccountService).trackCurrentAccount();
   activeCompany = inject(ActiveCompanyService).trackActiveCompany();
   availableCompanies = inject(ActiveCompanyService).trackAvailableCompanies();
+  theme = inject(CompanyThemeService).trackTheme();
   entitiesNavbarItems: NavbarItem[] = [];
 
   private readonly loginService = inject(LoginService);

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260327120000-1" author="devix">
+        <comment>Multiempresa: un solo codigo no_cia por fila en compania (corregir duplicados en BD antes de aplicar).</comment>
+        <addUniqueConstraint
+            tableName="compania"
+            columnNames="no_cia"
+            constraintName="ux_compania__no_cia"/>
+    </changeSet>
+</databaseChangeLog>

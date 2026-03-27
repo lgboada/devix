@@ -7,6 +7,8 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { ICompania } from 'app/entities/compania/compania.model';
+import { CompaniaService } from 'app/entities/compania/service/compania.service';
 import { ICentro } from 'app/entities/centro/centro.model';
 import { CentroService } from 'app/entities/centro/service/centro.service';
 import { IUser } from 'app/entities/user/user.model';
@@ -24,11 +26,18 @@ export class UsuarioCentroUpdateComponent implements OnInit {
   isSaving = false;
   usuarioCentro: IUsuarioCentro | null = null;
 
+  /** Id de fila en `compania` (unico); el valor de negocio `noCia` se deriva al guardar. */
+  selectedCompaniaId: number | null = null;
+  /** Varias filas comparten el mismo noCia en BD: hay que corregir datos o elegir por nombre. */
+  noCiaDuplicadoEnLista = false;
+
+  companiasSharedCollection: ICompania[] = [];
   centrosSharedCollection: ICentro[] = [];
   usersSharedCollection: IUser[] = [];
 
   protected usuarioCentroService = inject(UsuarioCentroService);
   protected usuarioCentroFormService = inject(UsuarioCentroFormService);
+  protected companiaService = inject(CompaniaService);
   protected centroService = inject(CentroService);
   protected userService = inject(UserService);
   protected activatedRoute = inject(ActivatedRoute);
@@ -53,6 +62,13 @@ export class UsuarioCentroUpdateComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  onCompaniaIdChange(companiaId: number | null): void {
+    this.selectedCompaniaId = companiaId;
+    const c = companiaId != null ? this.companiasSharedCollection.find(x => x.id === companiaId) : undefined;
+    this.editForm.patchValue({ noCia: c?.noCia ?? null });
+    this.loadCentrosForNoCia(c?.noCia);
   }
 
   save(): void {
@@ -88,24 +104,70 @@ export class UsuarioCentroUpdateComponent implements OnInit {
     this.usuarioCentro = usuarioCentro;
     this.usuarioCentroFormService.resetForm(this.editForm, usuarioCentro);
 
-    this.centrosSharedCollection = this.centroService.addCentroToCollectionIfMissing<ICentro>(
-      this.centrosSharedCollection,
-      usuarioCentro.centro,
-    );
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, usuarioCentro.user);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.centroService
-      .query()
-      .pipe(map((res: HttpResponse<ICentro[]>) => res.body ?? []))
-      .pipe(map((centros: ICentro[]) => this.centroService.addCentroToCollectionIfMissing<ICentro>(centros, this.usuarioCentro?.centro)))
-      .subscribe((centros: ICentro[]) => (this.centrosSharedCollection = centros));
+    // GET /api/companias sin filtro por noCia de contexto: CompanyCriteriaEnforcementAspect omite CompaniaCriteria.
+    this.companiaService
+      .query({ size: 1000 })
+      .pipe(map((res: HttpResponse<ICompania[]>) => res.body ?? []))
+      .subscribe((companias: ICompania[]) => {
+        this.companiasSharedCollection = companias;
+        this.syncSelectedCompaniaFromNoCia();
+      });
+
+    this.loadCentrosForNoCia(this.editForm.controls.noCia.value);
 
     this.userService
       .query()
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.usuarioCentro?.user)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+  }
+
+  /**
+   * Carga centros del noCia elegido. El backend solo aplica noCia.equals distinto al contexto si el usuario es ADMIN.
+   */
+  private loadCentrosForNoCia(noCia: number | null | undefined): void {
+    if (noCia === null || noCia === undefined) {
+      this.centrosSharedCollection = [];
+      return;
+    }
+    this.centroService
+      .query({ size: 1000, 'noCia.equals': noCia })
+      .pipe(map((res: HttpResponse<ICentro[]>) => res.body ?? []))
+      .pipe(
+        map((centros: ICentro[]) =>
+          this.centroService.addCentroToCollectionIfMissing<ICentro>(centros, this.editForm.controls.centro.value),
+        ),
+      )
+      .subscribe((centros: ICentro[]) => {
+        this.centrosSharedCollection = centros;
+        const currentCentro = this.editForm.controls.centro.value;
+        if (currentCentro && !centros.some(c => c.id === currentCentro.id)) {
+          this.editForm.controls.centro.setValue(null);
+        }
+      });
+  }
+
+  private syncSelectedCompaniaFromNoCia(): void {
+    const noCia = this.editForm.controls.noCia.value;
+    if (noCia === null || noCia === undefined) {
+      this.selectedCompaniaId = null;
+      this.noCiaDuplicadoEnLista = false;
+      return;
+    }
+    const matches = this.companiasSharedCollection.filter(c => c.noCia === noCia);
+    if (matches.length === 0) {
+      this.selectedCompaniaId = null;
+      this.noCiaDuplicadoEnLista = false;
+    } else if (matches.length === 1) {
+      this.selectedCompaniaId = matches[0].id ?? null;
+      this.noCiaDuplicadoEnLista = false;
+    } else {
+      this.selectedCompaniaId = null;
+      this.noCiaDuplicadoEnLista = true;
+    }
   }
 }

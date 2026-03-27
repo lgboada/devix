@@ -1,14 +1,10 @@
-@import 'bootstrap/scss/functions';
-@import 'bootswatch/dist/litera/variables';
-@import 'bootstrap/scss/variables';
-
 /* ==========================================================================
 Navbar
 ========================================================================== */
 
 .navbar-version {
   font-size: 0.65em;
-  color: $navbar-dark-color;
+  color: var(--bs-navbar-color);
 }
 
 .profile-image {
@@ -21,7 +17,7 @@ Navbar
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
-    background-color: $dark;
+    background-color: var(--bs-dark);
   }
 
   a.nav-link {
@@ -30,7 +26,7 @@ Navbar
 
   .navbar-toggler {
     &:hover {
-      color: $navbar-dark-hover-color;
+      color: var(--bs-navbar-hover-color);
     }
   }
 }
@@ -45,4 +41,12 @@ Logo styles
   vertical-align: middle;
   background: url('/content/images/logo-jhipster.png') no-repeat center center;
   background-size: contain;
+}
+
+.company-logo {
+  height: 45px;
+  width: 45px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 0.25rem;
 }

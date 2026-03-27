@@ -20,10 +20,12 @@ export class ActiveCompanyService {
 
   initializeCompanies(companies: ActiveCompany[]): void {
     this.availableCompanies.set(companies);
-    const defaultCompany = companies.find(company => company.principal) ?? companies[0] ?? null;
-    this.activeCompany.set(defaultCompany);
-    if (defaultCompany) {
-      this.stateStorageService.storeActiveCompanyNoCia(defaultCompany.noCia);
+    const storedNoCia = this.stateStorageService.getActiveCompanyNoCia();
+    const fromSession = storedNoCia != null ? companies.find(company => company.noCia === storedNoCia) : undefined;
+    const active = fromSession ?? companies.find(company => company.principal) ?? companies[0] ?? null;
+    this.activeCompany.set(active);
+    if (active) {
+      this.stateStorageService.storeActiveCompanyNoCia(active.noCia);
       return;
     }
     this.stateStorageService.clearActiveCompanyNoCia();

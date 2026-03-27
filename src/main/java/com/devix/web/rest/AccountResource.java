@@ -1,11 +1,10 @@
 package com.devix.web.rest;
 
-import com.devix.domain.UsuarioCentro;
+import com.devix.repository.AccountCompanyProjection;
 import com.devix.repository.UsuarioCentroRepository;
 import com.devix.security.SecurityUtils;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import java.security.Principal;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,24 +75,23 @@ public class AccountResource {
             throw new AccountResourceException("User could not be found");
         }
 
-        List<UsuarioCentro> companyRows = usuarioCentroRepository.findAllByUserLoginOrderByPrincipalDescNoCiaAsc(
+        List<AccountCompanyProjection> rows = usuarioCentroRepository.findDistinctAccountCompaniesByUserLogin(
             authenticationToken.getName()
         );
-        Map<Long, CompanyVM> companies = new LinkedHashMap<>();
+        return rows
+            .stream()
+            .map(row ->
+                new CompanyVM(
+                    row.getEffectiveNoCia(),
+                    row.getPrincipalInt() != null && row.getPrincipalInt() >= 1,
+                    nullIfBlank(row.getLabel())
+                )
+            )
+            .toList();
+    }
 
-        for (UsuarioCentro companyRow : companyRows) {
-            CompanyVM current = companies.get(companyRow.getNoCia());
-            boolean principalCompany = Boolean.TRUE.equals(companyRow.getPrincipal());
-            if (current == null) {
-                companies.put(companyRow.getNoCia(), new CompanyVM(companyRow.getNoCia(), principalCompany));
-                continue;
-            }
-            if (!current.principal() && principalCompany) {
-                companies.put(companyRow.getNoCia(), new CompanyVM(companyRow.getNoCia(), true));
-            }
-        }
-
-        return companies.values().stream().toList();
+    private static String nullIfBlank(String s) {
+        return s == null || s.isBlank() ? null : s;
     }
 
     private static class UserVM {
@@ -126,7 +124,7 @@ public class AccountResource {
         }
     }
 
-    private record CompanyVM(Long noCia, boolean principal) {}
+    private record CompanyVM(Long noCia, boolean principal, String label) {}
 
     private static UserVM getUserFromAuthentication(AbstractAuthenticationToken authToken) {
         Map<String, Object> attributes;
