@@ -10,7 +10,7 @@ import java.time.Instant;
  * Aplica para: FACTURA, NOTA_CREDITO, RETENCION, GUIA_REMISION, LIQUIDACION_COMPRA.
  */
 @Entity
-@Table(name = "factura_log")
+@Table(name = "factura_logs")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class FacturaLog implements Serializable {
 
@@ -45,17 +45,17 @@ public class FacturaLog implements Serializable {
     private Instant fechaIntento;
 
     /**
-     * RECEPCION | AUTORIZACION
+     * RECEPCION | AUTORIZACION | FIRMA (fallo antes del envío al WS)
      */
     @NotNull
-    @Column(name = "tipo_accion", nullable = false, length = 20)
+    @Column(name = "tipo_accion", nullable = false, length = 30)
     private String tipoAccion;
 
-    @Column(name = "clave_acceso", length = 49)
+    @Column(name = "clave_acceso", length = 50)
     private String claveAcceso;
 
     /**
-     * RECIBIDA | AUTORIZADA | NO_AUTORIZADA | DEVUELTA | ERROR_SISTEMA
+     * RECIBIDA | AUTORIZADA | NO_AUTORIZADA | DEVUELTA | ERROR_SISTEMA | ERROR_FIRMA
      */
     @Column(name = "estado", length = 20)
     private String estado;

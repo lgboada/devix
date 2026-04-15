@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Alinea tabla legada factura_logs (nombre plural, typo tipo_documentc, columnas incompletas) con la entidad JPA. Solo PostgreSQL. -->
+    <changeSet id="20260415160000-1" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="factura_logs" columnName="tipo_documentc"/>
+        </preConditions>
+        <renameColumn newColumnName="tipo_documento" oldColumnName="tipo_documentc" tableName="factura_logs" columnDataType="varchar(30)"/>
+    </changeSet>
+
+    <changeSet id="20260415160000-2" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="factura_logs" columnName="documento_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="factura_logs">
+            <column defaultValueNumeric="0" name="documento_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <dropDefaultValue columnDataType="bigint" columnName="documento_id" tableName="factura_logs"/>
+    </changeSet>
+
+    <changeSet id="20260415160000-3" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="factura_logs" columnName="numero_autorizacion"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="factura_logs">
+            <column name="numero_autorizacion" type="varchar(37)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260415160000-4" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="factura_logs" columnName="fecha_autorizacion"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="factura_logs">
+            <column name="fecha_autorizacion" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260415160000-5" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="factura_logs" columnName="xml_firmado"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="factura_logs">
+            <column name="xml_firmado" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260415160000-6" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="factura_logs" columnName="ambiente"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="factura_logs">
+            <column name="ambiente" type="integer"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260415160000-7" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="date">
+                SELECT c.data_type FROM information_schema.columns c
+                INNER JOIN information_schema.tables t ON c.table_schema = t.table_schema AND c.table_name = t.table_name
+                WHERE t.table_schema = current_schema() AND t.table_name = 'factura_logs' AND c.column_name = 'fecha_intento'
+                AND t.table_type = 'BASE TABLE'
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            ALTER TABLE factura_logs
+                ALTER COLUMN fecha_intento TYPE timestamp without time zone
+                USING (COALESCE(fecha_intento::timestamp, timezone('UTC', CURRENT_TIMESTAMP)));
+            ALTER TABLE factura_logs ALTER COLUMN fecha_intento SET NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20260415160000-8" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="YES">
+                SELECT c.is_nullable FROM information_schema.columns c
+                INNER JOIN information_schema.tables t ON c.table_schema = t.table_schema AND c.table_name = t.table_name
+                WHERE t.table_schema = current_schema() AND t.table_name = 'factura_logs' AND c.column_name = 'fecha_intento'
+                AND t.table_type = 'BASE TABLE'
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            UPDATE factura_logs SET fecha_intento = timezone('UTC', CURRENT_TIMESTAMP) WHERE fecha_intento IS NULL;
+            ALTER TABLE factura_logs ALTER COLUMN fecha_intento SET NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20260415160000-9" author="devix" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="factura_logs"/>
+        </preConditions>
+        <sql>
+            UPDATE factura_logs SET tipo_documento = 'FACTURA' WHERE tipo_documento IS NULL;
+            UPDATE factura_logs SET tipo_accion = 'RECEPCION' WHERE tipo_accion IS NULL;
+            ALTER TABLE factura_logs ALTER COLUMN tipo_documento SET NOT NULL;
+            ALTER TABLE factura_logs ALTER COLUMN tipo_accion SET NOT NULL;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

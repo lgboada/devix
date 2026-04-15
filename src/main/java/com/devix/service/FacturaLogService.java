@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -34,6 +35,14 @@ public class FacturaLogService {
         );
         FacturaLog saved = facturaLogRepository.save(facturaLog);
         return facturaLogMapper.toDto(saved);
+    }
+
+    /**
+     * Persiste un log en una transacción nueva (p. ej. fallo de firma/envío dentro de {@code enviar} que aborta la transacción principal).
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public FacturaLogDTO saveInNewTransaction(FacturaLog facturaLog) {
+        return save(facturaLog);
     }
 
     @Transactional(readOnly = true)

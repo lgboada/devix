@@ -9,6 +9,7 @@ import com.devix.service.security.AesGcmCryptoService;
 import com.devix.service.security.CompanyClientSecretService;
 import com.devix.service.sri.dto.RespuestaAutorizacion;
 import com.devix.service.sri.dto.RespuestaRecepcion;
+import com.devix.web.rest.errors.BadRequestAlertException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SriEnvioService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SriEnvioService.class);
+    private static final String ENTITY_COMPANIA = "compania";
+    private static final String ENTITY_FACTURA = "factura";
 
     private final Map<String, SriXmlGenerator> generadores;
     private final SriClaveAccesoService sriClaveAccesoService;
@@ -90,17 +93,49 @@ public class SriEnvioService {
         String claveCertPlain = aesGcmCryptoService.decryptIfEncrypted(compania.getClaveCertificado(), key);
         compania.setClaveCertificado(claveCertPlain);
 
-        // 3. Generar clave de acceso
+        // 3. Generar clave de acceso (49 dígitos; la serie no debe incluir guiones en el XML)
         String[] serieSeq = generador.getSerieYSecuencial(documentoId);
         java.time.Instant fechaEmision = generador.getFechaEmision(documentoId);
-        String claveAcceso = sriClaveAccesoService.generar(fechaEmision, generador.getCodigoSri(), serieSeq[0], serieSeq[1], compania);
+        String claveAcceso;
+        try {
+            claveAcceso = sriClaveAccesoService.generar(fechaEmision, generador.getCodigoSri(), serieSeq[0], serieSeq[1], compania);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw new BadRequestAlertException(e.getMessage(), ENTITY_FACTURA, "sriErrorClaveAcceso");
+        }
         LOG.debug("Clave de acceso generada: {}", claveAcceso);
 
         // 4. Generar XML del comprobante
         String xml = generador.generarXml(documentoId, compania, claveAcceso);
 
         // 5. Firmar XML con XAdES-BES
-        String xmlFirmado = sriSignatureService.firmar(xml, compania);
+        String xmlFirmado;
+        try {
+            xmlFirmado = sriSignatureService.firmar(xml, compania);
+        } catch (RuntimeException e) {
+            LOG.error("Error al firmar XML antes del envío SRI: tipoDocumento={}, documentoId={}", tipoDocumento, documentoId, e);
+            String detalle = e.getMessage();
+            if (e.getCause() != null && e.getCause().getMessage() != null) {
+                detalle = detalle + " | " + e.getCause().getMessage();
+            }
+            FacturaLog logFirma = grabarLog(
+                "FIRMA",
+                tipoDocumento,
+                documentoId,
+                noCia,
+                "ERROR_FIRMA",
+                null,
+                claveAcceso,
+                null,
+                detalle,
+                compania.getAmbienteSri()
+            );
+            facturaLogService.saveInNewTransaction(logFirma);
+            throw new BadRequestAlertException(
+                "No se pudo firmar el comprobante electrónico. Revise el historial SRI de la factura para el detalle.",
+                ENTITY_FACTURA,
+                "sriErrorFirma"
+            );
+        }
 
         // 6. Enviar al WS de Recepción
         RespuestaRecepcion recepcion;
@@ -201,16 +236,28 @@ public class SriEnvioService {
 
     private void validarConfiguracionSri(Compania compania) {
         if (compania.getPathCertificado() == null || compania.getPathCertificado().isBlank()) {
-            throw new IllegalStateException("La compañía no tiene configurado el certificado digital (pathCertificado)");
+            throw new BadRequestAlertException(
+                "La compañía no tiene configurado el certificado digital (pathCertificado)",
+                ENTITY_COMPANIA,
+                "sriCompaniaSinPathCertificado"
+            );
         }
         if (compania.getClaveCertificado() == null || compania.getClaveCertificado().isBlank()) {
-            throw new IllegalStateException("La compañía no tiene configurada la clave del certificado (claveCertificado)");
+            throw new BadRequestAlertException(
+                "La compañía no tiene configurada la clave del certificado (claveCertificado)",
+                ENTITY_COMPANIA,
+                "sriCompaniaSinClaveCertificado"
+            );
         }
         if (compania.getAmbienteSri() == null) {
-            throw new IllegalStateException("La compañía no tiene configurado el ambiente SRI (1=pruebas, 2=producción)");
+            throw new BadRequestAlertException(
+                "La compañía no tiene configurado el ambiente SRI (1=pruebas, 2=producción)",
+                ENTITY_COMPANIA,
+                "sriCompaniaSinAmbiente"
+            );
         }
         if (compania.getDni() == null || compania.getDni().length() != 13) {
-            throw new IllegalStateException("El RUC de la compañía debe tener 13 dígitos");
+            throw new BadRequestAlertException("El RUC de la compañía debe tener 13 dígitos", ENTITY_COMPANIA, "sriCompaniaRucInvalido");
         }
     }
 }

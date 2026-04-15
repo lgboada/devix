@@ -376,15 +376,39 @@
         <fa-icon icon="ban"></fa-icon>&nbsp;Cancelar
       </button>
 
-      <button
-        type="button"
-        id="save-entity"
-        class="btn btn-primary"
-        [disabled]="editForm.invalid || isSaving || detalles.length === 0"
-        (click)="save()"
-      >
-        <fa-icon icon="save"></fa-icon>&nbsp;Guardar Factura
-      </button>
+      <div class="d-flex align-items-center gap-2">
+        @if (factura?.id) {
+          <button type="button" class="btn btn-outline-success" [disabled]="isSaving || isEnviandoSri" (click)="enviarSri()">
+            <fa-icon icon="paper-plane"></fa-icon>&nbsp;Enviar al SRI
+          </button>
+        }
+
+        <button
+          type="button"
+          id="save-entity"
+          class="btn btn-primary"
+          [disabled]="editForm.invalid || isSaving || detalles.length === 0"
+          (click)="save()"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;Guardar Factura
+        </button>
+      </div>
     </div>
+
+    @if (isEnviandoSri) {
+      <div class="mt-2 text-muted small">Enviando al SRI...</div>
+    }
+    @if (errorSri) {
+      <div class="mt-2 text-danger small">{{ errorSri }}</div>
+    }
+    @if (resultadoSri) {
+      <div class="mt-2 border rounded p-2 small bg-light">
+        <div><b>Acción:</b> {{ resultadoSri.tipoAccion ?? '—' }}</div>
+        <div><b>Estado:</b> {{ resultadoSri.estado ?? '—' }}</div>
+        <div><b>Clave acceso:</b> {{ resultadoSri.claveAcceso ?? '—' }}</div>
+        <div><b>Núm. autorización:</b> {{ resultadoSri.numeroAutorizacion ?? '—' }}</div>
+        <div><b>Mensajes:</b> {{ resultadoSri.mensajesSri ?? '—' }}</div>
+      </div>
+    }
   </form>
 </div>

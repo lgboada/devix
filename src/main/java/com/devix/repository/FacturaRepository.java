@@ -12,6 +12,11 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Long>, JpaSpecificationExecutor<Factura> {
-    @Query("SELECT f FROM Factura f LEFT JOIN FETCH f.detalles d LEFT JOIN FETCH d.producto WHERE f.id = :id")
+    @Query(
+        "SELECT DISTINCT f FROM Factura f " +
+        "LEFT JOIN FETCH f.cliente " +
+        "LEFT JOIN FETCH f.detalles d LEFT JOIN FETCH d.producto " +
+        "WHERE f.id = :id"
+    )
     Optional<Factura> findByIdWithDetalles(@Param("id") Long id);
 }

@@ -3,6 +3,7 @@ package com.devix.service.sri;
 import com.devix.domain.Compania;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Random;
 import org.springframework.stereotype.Service;
 
@@ -22,27 +23,55 @@ public class SriClaveAccesoService {
     private static final Random RANDOM = new Random();
 
     /**
+     * Establecimiento (3) + punto de emisión (3), solo dígitos. Acepta entradas como {@code "001001"} o {@code "001-001"}.
+     */
+    public static String normalizarSerieSeisDigitos(String serie) {
+        if (serie == null || serie.isBlank()) {
+            throw new IllegalArgumentException("La serie del comprobante está vacía");
+        }
+        String d = serie.replaceAll("\\D", "");
+        if (d.length() > 6) {
+            d = d.substring(0, 6);
+        }
+        while (d.length() < 6) {
+            d = "0" + d;
+        }
+        return d;
+    }
+
+    /**
      * @param fecha           Fecha de emisión (Instant)
      * @param tipoComprobante Código SRI: "01"=Factura, "03"=Liquidación, "04"=NotaCredito,
      *                        "05"=NotaDebito, "06"=GuiaRemision, "07"=Retencion
-     * @param serie           establecimiento+puntoEmision (6 dígitos, ej: "001001")
+     * @param serie           establecimiento+puntoEmision (6 dígitos, ej: "001001" o "001-001")
      * @param secuencial      número secuencial (noFisico), se rellena con ceros hasta 9 dígitos
      * @param compania        datos del emisor
      * @return clave de acceso de 48 dígitos sin el dígito verificador + dígito verificador
      */
     public String generar(java.time.Instant fecha, String tipoComprobante, String serie, String secuencial, Compania compania) {
         String fechaStr = FECHA_FMT.format(fecha.atZone(ZONA_EC).toLocalDate());
-        String ruc = compania.getDni();
+        String ruc = compania.getDni().replaceAll("\\D", "");
+        if (ruc.length() != 13) {
+            throw new IllegalArgumentException("El RUC del emisor debe tener 13 dígitos numéricos para la clave de acceso");
+        }
         String ambiente = String.valueOf(compania.getAmbienteSri());
-        String estab = serie.substring(0, 3);
-        String ptoEmi = serie.substring(3, 6);
-        String seq = String.format("%09d", Long.parseLong(secuencial.replaceAll("\\D", "")));
-        String codigoNumerico = String.format("%08d", RANDOM.nextInt(99_999_999));
+        String serie6 = normalizarSerieSeisDigitos(serie);
+        String estab = serie6.substring(0, 3);
+        String ptoEmi = serie6.substring(3, 6);
+        String seq = String.format(Locale.ROOT, "%09d", Long.parseLong(secuencial.replaceAll("\\D", "")));
+        String codigoNumerico = String.format(Locale.ROOT, "%08d", RANDOM.nextInt(99_999_999));
         String tipoEmision = "1";
 
         String clave48 = fechaStr + tipoComprobante + ruc + ambiente + estab + ptoEmi + seq + codigoNumerico + tipoEmision;
+        if (clave48.length() != 48 || !clave48.matches("[0-9]{48}")) {
+            throw new IllegalStateException("Clave de acceso (48) inválida internamente; revise serie y datos del emisor");
+        }
 
-        return clave48 + calcularDigitoVerificador(clave48);
+        String clave49 = clave48 + calcularDigitoVerificador(clave48);
+        if (!clave49.matches("[0-9]{49}")) {
+            throw new IllegalStateException("Clave de acceso debe ser 49 dígitos");
+        }
+        return clave49;
     }
 
     /**

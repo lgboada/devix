@@ -45,6 +45,9 @@ interface DetalleItem {
 export class FacturaUpdateComponent implements OnInit {
   isSaving = false;
   factura: IFactura | null = null;
+  isEnviandoSri = false;
+  resultadoSri: any | null = null;
+  errorSri: string | null = null;
 
   centrosSharedCollection: ICentro[] = [];
   clientesSharedCollection: ICliente[] = [];
@@ -246,6 +249,23 @@ export class FacturaUpdateComponent implements OnInit {
       next: (res: HttpResponse<IFactura>) => this.guardarDetalles(res.body!.id),
       error: () => this.onSaveError(),
     });
+  }
+
+  enviarSri(): void {
+    const id = this.factura?.id;
+    if (!id) return;
+
+    this.isEnviandoSri = true;
+    this.resultadoSri = null;
+    this.errorSri = null;
+
+    this.facturaService
+      .enviarSri(id)
+      .pipe(finalize(() => (this.isEnviandoSri = false)))
+      .subscribe({
+        next: res => (this.resultadoSri = res.body),
+        error: err => (this.errorSri = err?.error?.message ?? 'Error enviando al SRI'),
+      });
   }
 
   private guardarDetalles(facturaId: number): void {

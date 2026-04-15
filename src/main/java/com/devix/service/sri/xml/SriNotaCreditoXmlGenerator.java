@@ -4,11 +4,14 @@ import com.devix.domain.Compania;
 import com.devix.domain.DetalleFactura;
 import com.devix.domain.Factura;
 import com.devix.repository.FacturaRepository;
+import com.devix.service.sri.SriClaveAccesoService;
+import com.devix.service.sri.SriCompradorIdentificacionValidator;
 import com.devix.service.sri.SriXmlGenerator;
 import com.devix.service.sri.dto.RespuestaAutorizacion;
 import java.io.StringWriter;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.*;
@@ -114,9 +117,10 @@ public class SriNotaCreditoXmlGenerator implements SriXmlGenerator {
         addElem(doc, e, "ruc", compania.getDni());
         addElem(doc, e, "claveAcceso", claveAcceso);
         addElem(doc, e, "codDoc", "04");
-        addElem(doc, e, "estab", factura.getSerie().substring(0, 3));
-        addElem(doc, e, "ptoEmi", factura.getSerie().substring(3, 6));
-        addElem(doc, e, "secuencial", String.format("%09d", Long.parseLong(factura.getNoFisico().replaceAll("\\D", ""))));
+        String serie6 = SriClaveAccesoService.normalizarSerieSeisDigitos(factura.getSerie());
+        addElem(doc, e, "estab", serie6.substring(0, 3));
+        addElem(doc, e, "ptoEmi", serie6.substring(3, 6));
+        addElem(doc, e, "secuencial", String.format(Locale.ROOT, "%09d", Long.parseLong(factura.getNoFisico().replaceAll("\\D", ""))));
         addElem(doc, e, "dirMatriz", compania.getDireccion());
         return e;
     }
@@ -130,18 +134,21 @@ public class SriNotaCreditoXmlGenerator implements SriXmlGenerator {
         }
 
         // tipoIdentificacionComprador: 04=RUC, 05=Cédula, 07=Consumidor final
-        String cedula = factura.getCedula();
+        String cedula = SriCompradorIdentificacionValidator.validarYObtenerIdentificacionComprador(
+            factura.getCliente(),
+            factura.getCedula()
+        );
         String tipoId;
         if ("9999999999999".equals(cedula)) {
             tipoId = "07";
-        } else if (cedula != null && cedula.length() == 13) {
+        } else if (factura.getCliente() != null && "R".equalsIgnoreCase(factura.getCliente().getTipoDocumento())) {
             tipoId = "04";
         } else {
             tipoId = "05";
         }
         addElem(doc, e, "tipoIdentificacionComprador", tipoId);
         addElem(doc, e, "razonSocialComprador", factura.getRazonSocial() != null ? factura.getRazonSocial() : "CONSUMIDOR FINAL");
-        addElem(doc, e, "identificacionComprador", cedula != null ? cedula : "9999999999999");
+        addElem(doc, e, "identificacionComprador", cedula);
 
         if (compania.getContribuyenteEspecial() != null && !compania.getContribuyenteEspecial().isBlank()) {
             addElem(doc, e, "contribuyenteEspecial", compania.getContribuyenteEspecial());
@@ -160,10 +167,10 @@ public class SriNotaCreditoXmlGenerator implements SriXmlGenerator {
                 : FECHA_FMT.format(factura.getFecha())
         );
 
-        addElem(doc, e, "totalSinImpuestos", formatDecimal(factura.getSubtotal()));
+        addElem(doc, e, "totalSinImpuestos", SriXmlDecimalFormatter.twoDecimals(factura.getSubtotal()));
 
         // valorModificacion = total de la NC (valor que se anula/acredita)
-        addElem(doc, e, "valorModificacion", formatDecimal(factura.getTotal()));
+        addElem(doc, e, "valorModificacion", SriXmlDecimalFormatter.twoDecimals(factura.getTotal()));
         addElem(doc, e, "moneda", "DOLAR");
 
         // <totalConImpuestos> — XSD: codigo, codigoPorcentaje, baseImponible, valor, valorDevolucionIva(opt)
@@ -175,15 +182,23 @@ public class SriNotaCreditoXmlGenerator implements SriXmlGenerator {
         double porcentaje = factura.getPorcentajeImpuesto() != null ? factura.getPorcentajeImpuesto() : 0.0;
 
         if (impuestoCero > 0) {
-            totalConImpuestos.appendChild(totalImpuesto(doc, "2", "0", formatDecimal(impuestoCero), "0.00"));
+            totalConImpuestos.appendChild(totalImpuesto(doc, "2", "0", SriXmlDecimalFormatter.twoDecimals(impuestoCero), "0.00"));
         }
         if (impuesto > 0) {
             String codPorcentaje = Math.abs(porcentaje - 15.0) < 0.001 ? "5" : "2";
             double baseGravada = factura.getSubtotal() - impuestoCero;
-            totalConImpuestos.appendChild(totalImpuesto(doc, "2", codPorcentaje, formatDecimal(baseGravada), formatDecimal(impuesto)));
+            totalConImpuestos.appendChild(
+                totalImpuesto(
+                    doc,
+                    "2",
+                    codPorcentaje,
+                    SriXmlDecimalFormatter.twoDecimals(baseGravada),
+                    SriXmlDecimalFormatter.twoDecimals(impuesto)
+                )
+            );
         }
         if (impuestoCero == 0 && impuesto == 0) {
-            totalConImpuestos.appendChild(totalImpuesto(doc, "2", "0", formatDecimal(factura.getSubtotal()), "0.00"));
+            totalConImpuestos.appendChild(totalImpuesto(doc, "2", "0", SriXmlDecimalFormatter.twoDecimals(factura.getSubtotal()), "0.00"));
         }
         e.appendChild(totalConImpuestos);
 
@@ -217,10 +232,10 @@ public class SriNotaCreditoXmlGenerator implements SriXmlGenerator {
             }
             addElem(doc, detalle, "descripcion", df.getProducto() != null ? df.getProducto().getNombre() : "Producto");
 
-            addElem(doc, detalle, "cantidad", formatSeisDec(df.getCantidad().doubleValue()));
-            addElem(doc, detalle, "precioUnitario", formatSeisDec(df.getPrecioUnitario()));
-            addElem(doc, detalle, "descuento", formatDecimal(df.getDescuento()));
-            addElem(doc, detalle, "precioTotalSinImpuesto", formatDecimal(df.getSubtotal()));
+            addElem(doc, detalle, "cantidad", SriXmlDecimalFormatter.sixDecimals(df.getCantidad().doubleValue()));
+            addElem(doc, detalle, "precioUnitario", SriXmlDecimalFormatter.sixDecimals(df.getPrecioUnitario()));
+            addElem(doc, detalle, "descuento", SriXmlDecimalFormatter.twoDecimals(df.getDescuento()));
+            addElem(doc, detalle, "precioTotalSinImpuesto", SriXmlDecimalFormatter.twoDecimals(df.getSubtotal()));
 
             Element impuestos = doc.createElement("impuestos");
             Element impuesto = doc.createElement("impuesto");
@@ -238,9 +253,9 @@ public class SriNotaCreditoXmlGenerator implements SriXmlGenerator {
 
             addElem(doc, impuesto, "codigo", "2");
             addElem(doc, impuesto, "codigoPorcentaje", codPorc);
-            addElem(doc, impuesto, "tarifa", formatDecimal(porcIva));
-            addElem(doc, impuesto, "baseImponible", formatDecimal(df.getSubtotal()));
-            addElem(doc, impuesto, "valor", formatDecimal(impDet));
+            addElem(doc, impuesto, "tarifa", SriXmlDecimalFormatter.twoDecimals(porcIva));
+            addElem(doc, impuesto, "baseImponible", SriXmlDecimalFormatter.twoDecimals(df.getSubtotal()));
+            addElem(doc, impuesto, "valor", SriXmlDecimalFormatter.twoDecimals(impDet));
             impuestos.appendChild(impuesto);
             detalle.appendChild(impuestos);
             detallesElem.appendChild(detalle);
@@ -277,16 +292,6 @@ public class SriNotaCreditoXmlGenerator implements SriXmlGenerator {
         Element e = doc.createElement(tag);
         e.setTextContent(value != null ? value : "");
         parent.appendChild(e);
-    }
-
-    private String formatDecimal(Double value) {
-        if (value == null) return "0.00";
-        return String.format("%.2f", value);
-    }
-
-    private String formatSeisDec(Double value) {
-        if (value == null) return "0.000000";
-        return String.format("%.6f", value);
     }
 
     private String documentToString(Document doc) throws TransformerException {

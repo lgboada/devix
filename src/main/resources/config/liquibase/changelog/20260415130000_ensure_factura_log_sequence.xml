@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Repara BD donde existió factura_log sin secuencia (migración parcial, entorno viejo, etc.) -->
+    <changeSet id="20260415130000-1" author="devix">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="factura_log_sequence"/>
+            </not>
+        </preConditions>
+        <createSequence incrementBy="50" sequenceName="factura_log_sequence" startValue="1"/>
+    </changeSet>
+</databaseChangeLog>

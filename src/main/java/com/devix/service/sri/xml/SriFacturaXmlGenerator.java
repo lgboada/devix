@@ -4,11 +4,14 @@ import com.devix.domain.Compania;
 import com.devix.domain.DetalleFactura;
 import com.devix.domain.Factura;
 import com.devix.repository.FacturaRepository;
+import com.devix.service.sri.SriClaveAccesoService;
+import com.devix.service.sri.SriCompradorIdentificacionValidator;
 import com.devix.service.sri.SriXmlGenerator;
 import com.devix.service.sri.dto.RespuestaAutorizacion;
 import java.io.StringWriter;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.*;
@@ -120,9 +123,10 @@ public class SriFacturaXmlGenerator implements SriXmlGenerator {
         addElem(doc, e, "ruc", compania.getDni());
         addElem(doc, e, "claveAcceso", claveAcceso);
         addElem(doc, e, "codDoc", "01");
-        addElem(doc, e, "estab", factura.getSerie().substring(0, 3));
-        addElem(doc, e, "ptoEmi", factura.getSerie().substring(3, 6));
-        addElem(doc, e, "secuencial", String.format("%09d", Long.parseLong(factura.getNoFisico().replaceAll("\\D", ""))));
+        String serie6 = SriClaveAccesoService.normalizarSerieSeisDigitos(factura.getSerie());
+        addElem(doc, e, "estab", serie6.substring(0, 3));
+        addElem(doc, e, "ptoEmi", serie6.substring(3, 6));
+        addElem(doc, e, "secuencial", String.format(Locale.ROOT, "%09d", Long.parseLong(factura.getNoFisico().replaceAll("\\D", ""))));
         addElem(doc, e, "dirMatriz", compania.getDireccion());
         return e;
     }
@@ -141,22 +145,25 @@ public class SriFacturaXmlGenerator implements SriXmlGenerator {
 
         // Tipo de identificación según XSD pattern [0][4-8]:
         // 04=RUC, 05=Cédula, 06=Pasaporte, 07=Consumidor final, 08=Identificación exterior
-        String cedula = factura.getCedula();
+        String cedula = SriCompradorIdentificacionValidator.validarYObtenerIdentificacionComprador(
+            factura.getCliente(),
+            factura.getCedula()
+        );
         String tipoId;
         if ("9999999999999".equals(cedula)) {
             tipoId = "07";
-        } else if (cedula != null && cedula.length() == 13) {
+        } else if (factura.getCliente() != null && "R".equalsIgnoreCase(factura.getCliente().getTipoDocumento())) {
             tipoId = "04";
         } else {
             tipoId = "05";
         }
         addElem(doc, e, "tipoIdentificacionComprador", tipoId);
         addElem(doc, e, "razonSocialComprador", factura.getRazonSocial() != null ? factura.getRazonSocial() : "CONSUMIDOR FINAL");
-        addElem(doc, e, "identificacionComprador", cedula != null ? cedula : "9999999999999");
+        addElem(doc, e, "identificacionComprador", cedula);
         addElem(doc, e, "direccionComprador", factura.getDireccion() != null ? factura.getDireccion() : "S/N");
 
-        addElem(doc, e, "totalSinImpuestos", formatDecimal(factura.getSubtotal()));
-        addElem(doc, e, "totalDescuento", formatDecimal(factura.getDescuento()));
+        addElem(doc, e, "totalSinImpuestos", SriXmlDecimalFormatter.twoDecimals(factura.getSubtotal()));
+        addElem(doc, e, "totalDescuento", SriXmlDecimalFormatter.twoDecimals(factura.getDescuento()));
 
         // <totalConImpuestos> — orden del XSD: codigo, codigoPorcentaje, descuentoAdicional(opt), baseImponible, tarifa(opt), valor
         Element totalConImpuestos = doc.createElement("totalConImpuestos");
@@ -167,23 +174,32 @@ public class SriFacturaXmlGenerator implements SriXmlGenerator {
 
         // IVA 0% — codigoPorcentaje=0
         if (impuestoCero > 0) {
-            totalConImpuestos.appendChild(totalImpuesto(doc, "2", "0", "0.00", formatDecimal(impuestoCero), "0.00"));
+            totalConImpuestos.appendChild(totalImpuesto(doc, "2", "0", "0.00", SriXmlDecimalFormatter.twoDecimals(impuestoCero), "0.00"));
         }
         // IVA con tarifa — codigoPorcentaje: 2=12%, 5=15%
         if (impuesto > 0) {
             String codPorcentaje = Math.abs(porcentaje - 15.0) < 0.001 ? "5" : "2";
             double baseGravada = factura.getSubtotal() - impuestoCero;
             totalConImpuestos.appendChild(
-                totalImpuesto(doc, "2", codPorcentaje, formatDecimal(porcentaje), formatDecimal(baseGravada), formatDecimal(impuesto))
+                totalImpuesto(
+                    doc,
+                    "2",
+                    codPorcentaje,
+                    SriXmlDecimalFormatter.twoDecimals(porcentaje),
+                    SriXmlDecimalFormatter.twoDecimals(baseGravada),
+                    SriXmlDecimalFormatter.twoDecimals(impuesto)
+                )
             );
         }
         // Si no hay impuestos (todo a 0%), agregar entrada con base total
         if (impuestoCero == 0 && impuesto == 0) {
-            totalConImpuestos.appendChild(totalImpuesto(doc, "2", "0", "0.00", formatDecimal(factura.getSubtotal()), "0.00"));
+            totalConImpuestos.appendChild(
+                totalImpuesto(doc, "2", "0", "0.00", SriXmlDecimalFormatter.twoDecimals(factura.getSubtotal()), "0.00")
+            );
         }
         e.appendChild(totalConImpuestos);
 
-        addElem(doc, e, "importeTotal", formatDecimal(factura.getTotal()));
+        addElem(doc, e, "importeTotal", SriXmlDecimalFormatter.twoDecimals(factura.getTotal()));
         addElem(doc, e, "moneda", "DOLAR");
 
         // <pagos> — minOccurs=0 en XSD pero el SRI lo valida en práctica
@@ -191,7 +207,7 @@ public class SriFacturaXmlGenerator implements SriXmlGenerator {
         Element pagos = doc.createElement("pagos");
         Element pago = doc.createElement("pago");
         addElem(doc, pago, "formaPago", "01");
-        addElem(doc, pago, "total", formatDecimal(factura.getTotal()));
+        addElem(doc, pago, "total", SriXmlDecimalFormatter.twoDecimals(factura.getTotal()));
         pagos.appendChild(pago);
         e.appendChild(pagos);
 
@@ -229,10 +245,10 @@ public class SriFacturaXmlGenerator implements SriXmlGenerator {
             }
 
             // cantidad y precioUnitario requieren 6 decimales según XSD (fractionDigits=6)
-            addElem(doc, detalle, "cantidad", formatSeisDec(df.getCantidad().doubleValue()));
-            addElem(doc, detalle, "precioUnitario", formatSeisDec(df.getPrecioUnitario()));
-            addElem(doc, detalle, "descuento", formatDecimal(df.getDescuento()));
-            addElem(doc, detalle, "precioTotalSinImpuesto", formatDecimal(df.getSubtotal()));
+            addElem(doc, detalle, "cantidad", SriXmlDecimalFormatter.sixDecimals(df.getCantidad().doubleValue()));
+            addElem(doc, detalle, "precioUnitario", SriXmlDecimalFormatter.sixDecimals(df.getPrecioUnitario()));
+            addElem(doc, detalle, "descuento", SriXmlDecimalFormatter.twoDecimals(df.getDescuento()));
+            addElem(doc, detalle, "precioTotalSinImpuesto", SriXmlDecimalFormatter.twoDecimals(df.getSubtotal()));
 
             // <impuestos> — orden XSD del tipo "impuesto":
             // codigo, codigoPorcentaje, tarifa, baseImponible, valor
@@ -252,9 +268,9 @@ public class SriFacturaXmlGenerator implements SriXmlGenerator {
 
             addElem(doc, impuesto, "codigo", "2"); // 2 = IVA
             addElem(doc, impuesto, "codigoPorcentaje", codPorc);
-            addElem(doc, impuesto, "tarifa", formatDecimal(porcIva));
-            addElem(doc, impuesto, "baseImponible", formatDecimal(df.getSubtotal()));
-            addElem(doc, impuesto, "valor", formatDecimal(impDet));
+            addElem(doc, impuesto, "tarifa", SriXmlDecimalFormatter.twoDecimals(porcIva));
+            addElem(doc, impuesto, "baseImponible", SriXmlDecimalFormatter.twoDecimals(df.getSubtotal()));
+            addElem(doc, impuesto, "valor", SriXmlDecimalFormatter.twoDecimals(impDet));
             impuestos.appendChild(impuesto);
             detalle.appendChild(impuestos);
             detallesElem.appendChild(detalle);
@@ -287,16 +303,6 @@ public class SriFacturaXmlGenerator implements SriXmlGenerator {
         Element e = doc.createElement(tag);
         e.setTextContent(value != null ? value : "");
         parent.appendChild(e);
-    }
-
-    private String formatDecimal(Double value) {
-        if (value == null) return "0.00";
-        return String.format("%.2f", value);
-    }
-
-    private String formatSeisDec(Double value) {
-        if (value == null) return "0.000000";
-        return String.format("%.6f", value);
     }
 
     private String documentToString(Document doc) throws TransformerException {

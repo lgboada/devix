@@ -52,7 +52,8 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(TranslationModule),
     provideHttpClient(withInterceptorsFromDi()),
     Title,
-    { provide: LOCALE_ID, useValue: 'es' },
+    // Números en pantalla: coma como separador de miles y punto decimal (p. ej. 1,150.63). Coherente con XSD decimal del SRI en backend.
+    { provide: LOCALE_ID, useValue: 'en-US' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },

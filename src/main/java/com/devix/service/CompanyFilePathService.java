@@ -40,7 +40,13 @@ public class CompanyFilePathService {
         Compania compania = companiaRepository
             .findByNoCia(noCia)
             .orElseThrow(() -> new AccessDeniedException("No existe la compania activa"));
+        return resolveCompanyRootLocationOrThrow(compania);
+    }
 
+    /**
+     * Directorio raíz de archivos de una compañía (misma regla que {@link #resolveCurrentCompanyRootLocationOrThrow()}).
+     */
+    public Path resolveCompanyRootLocationOrThrow(Compania compania) {
         String configured = compania.getPathFileServer();
         Path rootLocation;
         if (configured != null && !configured.isBlank()) {
@@ -49,8 +55,7 @@ public class CompanyFilePathService {
                 throw new IllegalArgumentException("El pathFileServer debe ser una ruta absoluta");
             }
         } else {
-            // fallback seguro: subcarpeta por compañía dentro del upload-dir existente
-            rootLocation = Paths.get(fallbackUploadDir).resolve("cia_" + noCia);
+            rootLocation = Paths.get(fallbackUploadDir).resolve("cia_" + compania.getNoCia());
         }
 
         try {

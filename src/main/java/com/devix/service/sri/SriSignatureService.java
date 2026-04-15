@@ -5,6 +5,8 @@ import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -56,7 +58,8 @@ public class SriSignatureService {
         try {
             // 1. Cargar .p12
             KeyStore ks = KeyStore.getInstance("PKCS12");
-            byte[] certBytes = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(compania.getPathCertificado()));
+            Path certPath = resolveCertificadoPath(compania);
+            byte[] certBytes = java.nio.file.Files.readAllBytes(certPath);
             char[] password = compania.getClaveCertificado().toCharArray();
             ks.load(new ByteArrayInputStream(certBytes), password);
 
@@ -80,6 +83,10 @@ public class SriSignatureService {
             dbf.setNamespaceAware(true);
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(new InputSource(new StringReader(xmlSinFirmar)));
+            Element root = doc.getDocumentElement();
+            if (root != null && root.hasAttribute("id")) {
+                root.setIdAttribute("id", true);
+            }
 
             // 4. Crear la firma XML
             XMLSignature sig = new XMLSignature(
@@ -111,8 +118,51 @@ public class SriSignatureService {
             // 8. Serializar a String
             return documentToString(doc);
         } catch (Exception e) {
-            LOG.error("Error al firmar comprobante con certificado: {}", compania.getPathCertificado(), e);
+            LOG.error(
+                "Error al firmar comprobante con certificado (configurado={}): {}",
+                compania.getPathCertificado(),
+                resolveCertificadoPathSafe(compania),
+                e
+            );
             throw new RuntimeException("Error al firmar el comprobante electrónico: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * {@code pathCertificado} suele ser el nombre devuelto por {@code POST /api/files}; en ese caso la ruta absoluta
+     * es {@code pathFileServer}/{@code filename}. Si {@code pathCertificado} ya es una ruta absoluta, se usa tal cual.
+     */
+    private Path resolveCertificadoPath(Compania compania) {
+        String configured = compania.getPathCertificado();
+        if (configured == null || configured.isBlank()) {
+            throw new IllegalStateException("pathCertificado vacío");
+        }
+        Path p = Paths.get(configured.trim());
+        if (p.isAbsolute()) {
+            return p;
+        }
+
+        String rootDir = compania.getPathFileServer();
+        if (rootDir == null || rootDir.isBlank()) {
+            throw new IllegalStateException("pathFileServer requerido en la compañía para localizar el certificado .p12");
+        }
+        Path root = Paths.get(rootDir.trim());
+        if (!root.isAbsolute()) {
+            throw new IllegalStateException("pathFileServer debe ser una ruta absoluta");
+        }
+
+        Path resolved = root.resolve(p).normalize();
+        if (!resolved.startsWith(root.toAbsolutePath().normalize())) {
+            throw new IllegalStateException("Ruta de certificado inválida (fuera del directorio permitido)");
+        }
+        return resolved;
+    }
+
+    private String resolveCertificadoPathSafe(Compania compania) {
+        try {
+            return resolveCertificadoPath(compania).toString();
+        } catch (Exception e) {
+            return "(no resuelto: " + e.getMessage() + ")";
         }
     }
 
@@ -124,7 +174,9 @@ public class SriSignatureService {
     private void agregarXadesSignedProperties(Document doc, XMLSignature sig, X509Certificate cert) throws Exception {
         String xadesNs = "http://uri.etsi.org/01903/v1.3.2#";
         String sigId = "Signature";
-        sig.getElement().setAttribute("Id", sigId);
+        org.w3c.dom.Element sigEl = sig.getElement();
+        sigEl.setAttribute("Id", sigId);
+        sigEl.setIdAttribute("Id", true);
 
         Element qualifyingProps = doc.createElementNS(xadesNs, "xades:QualifyingProperties");
         qualifyingProps.setAttribute("xmlns:xades", xadesNs);
@@ -132,6 +184,7 @@ public class SriSignatureService {
 
         Element signedProps = doc.createElementNS(xadesNs, "xades:SignedProperties");
         signedProps.setAttribute("Id", "SignedProperties");
+        signedProps.setIdAttribute("Id", true);
 
         Element signedSigProps = doc.createElementNS(xadesNs, "xades:SignedSignatureProperties");
 
@@ -158,7 +211,10 @@ public class SriSignatureService {
 
         signedProps.appendChild(signedSigProps);
         qualifyingProps.appendChild(signedProps);
-        sig.getElement().appendChild(qualifyingProps);
+        // XSD xmldsig: QualifyingProperties debe ir dentro de ds:Object, no como hijo directo de Signature.
+        Element objectEl = doc.createElementNS(Constants.SignatureSpecNS, "ds:Object");
+        objectEl.appendChild(qualifyingProps);
+        sigEl.appendChild(objectEl);
 
         // Referencia a SignedProperties
         Transforms xadesTransforms = new Transforms(doc);

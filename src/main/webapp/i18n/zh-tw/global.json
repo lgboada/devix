@@ -163,7 +163,18 @@
     "file": {
       "could.not.extract": "無法解壓縮檔案",
       "not.image": "檔案應該要是圖片格式，但實際卻是 \"{{ fileType }}\""
-    }
+    },
+    "sriCompaniaSinPathCertificado": "The company has no digital certificate configured (pathCertificado).",
+    "sriCompaniaSinClaveCertificado": "The company has no certificate password configured (claveCertificado).",
+    "sriCompaniaSinAmbiente": "The company has no SRI environment configured (1=test, 2=production).",
+    "sriCompaniaRucInvalido": "The company RUC must be 13 digits.",
+    "sriCompradorSinIdentificacion": "Buyer identification is required.",
+    "sriCompradorSinTipoDocumento": "The invoice customer has no document type (C/R) configured.",
+    "sriCompradorCedulaInvalida": "Buyer ID card must be 10 digits.",
+    "sriCompradorRucInvalido": "Buyer RUC must be 13 digits.",
+    "sriCompradorTipoDocumentoInvalido": "Customer document type is not supported for SRI.",
+    "sriErrorFirma": "The electronic document could not be signed. Check the invoice SRI history for details.",
+    "sriErrorClaveAcceso": "Could not generate the document access key. Check RUC, establishment/emission point series (6 digits), and sequential."
   },
   "footer": "這裡是您的頁尾"
 }

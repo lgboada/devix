@@ -75,5 +75,8 @@
     <include file="config/liquibase/changelog/20260413140000_add_linea_tipodoc_nc_to_factura.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260414100000_fix_tipo_documento_no_cia_type.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260414120000_add_path_file_server_to_compania.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260415130000_ensure_factura_log_sequence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260415140000_ensure_factura_log_table.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260415160000_align_factura_logs_legacy.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

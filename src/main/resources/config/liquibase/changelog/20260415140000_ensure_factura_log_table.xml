@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Repara BD donde existe la secuencia pero no la tabla (p. ej. secuencia creada a mano). -->
+    <changeSet id="20260415140000-1" author="devix">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="factura_log"/>
+                </not>
+                <not>
+                    <tableExists tableName="factura_logs"/>
+                </not>
+            </and>
+        </preConditions>
+        <createTable tableName="factura_log">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="no_cia" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipo_documento" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="documento_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha_intento" type="${datetimeType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipo_accion" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="clave_acceso" type="varchar(49)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="estado" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="numero_autorizacion" type="varchar(37)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="fecha_autorizacion" type="${datetimeType}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="xml_firmado" type="clob">
+                <constraints nullable="true"/>
+            </column>
+            <column name="mensajes_sri" type="varchar(2000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ambiente" type="integer">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

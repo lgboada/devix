@@ -163,7 +163,18 @@
     "file": {
       "could.not.extract": "No se pudo extraer el fichero",
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
-    }
+    },
+    "sriCompaniaSinPathCertificado": "La compañía no tiene configurado el certificado digital (pathCertificado).",
+    "sriCompaniaSinClaveCertificado": "La compañía no tiene configurada la clave del certificado (claveCertificado).",
+    "sriCompaniaSinAmbiente": "La compañía no tiene configurado el ambiente SRI (1=pruebas, 2=producción).",
+    "sriCompaniaRucInvalido": "El RUC de la compañía debe tener 13 dígitos.",
+    "sriCompradorSinIdentificacion": "La identificación del comprador es obligatoria.",
+    "sriCompradorSinTipoDocumento": "El cliente de la factura no tiene tipo de documento (C/R) configurado.",
+    "sriCompradorCedulaInvalida": "La cédula del comprador debe tener 10 dígitos.",
+    "sriCompradorRucInvalido": "El RUC del comprador debe tener 13 dígitos.",
+    "sriCompradorTipoDocumentoInvalido": "Tipo de documento del cliente no soportado para SRI.",
+    "sriErrorFirma": "No se pudo firmar el comprobante electrónico. Revise el historial SRI de la factura para el detalle.",
+    "sriErrorClaveAcceso": "No se pudo generar la clave de acceso del comprobante. Revise RUC, serie (6 dígitos) y secuencial."
   },
   "footer": "Pie de página"
 }
