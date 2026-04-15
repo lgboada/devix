@@ -126,6 +126,16 @@ const routes: Routes = [
     data: { pageTitle: 'devixApp.usuarioCentro.home.title' },
     loadChildren: () => import('./usuario-centro/usuario-centro.routes'),
   },
+  {
+    path: 'linea-negocio',
+    data: { pageTitle: 'Líneas de Negocio' },
+    loadChildren: () => import('./linea-negocio/linea-negocio.routes'),
+  },
+  {
+    path: 'tipo-documento',
+    data: { pageTitle: 'Tipos de Documento' },
+    loadChildren: () => import('./tipo-documento/tipo-documento.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

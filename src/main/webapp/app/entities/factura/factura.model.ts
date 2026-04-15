@@ -18,6 +18,19 @@ export interface IFactura {
   direccion?: string | null;
   email?: string | null;
   estado?: string | null;
+  telefono?: string | null;
+  // SRI fields
+  tipoDocumento?: string | null;
+  lineaNo?: string | null;
+  razonSocial?: string | null;
+  claveAcceso?: string | null;
+  numeroAutorizacion?: string | null;
+  fechaAutorizacion?: dayjs.Dayjs | null;
+  // NC / ND specific
+  codDocModificado?: string | null;
+  numDocModificado?: string | null;
+  fechaEmisionDocSustento?: dayjs.Dayjs | null;
+  motivo?: string | null;
   centro?: Pick<ICentro, 'id'> | null;
   cliente?: Pick<ICliente, 'id'> | null;
 }

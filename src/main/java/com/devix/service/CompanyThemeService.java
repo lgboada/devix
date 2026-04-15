@@ -46,15 +46,18 @@ public class CompanyThemeService {
     private final CompanyContextService companyContextService;
     private final CompaniaThemeRepository companiaThemeRepository;
     private final FileStorageService fileStorageService;
+    private final CompanyFilePathService companyFilePathService;
 
     public CompanyThemeService(
         CompanyContextService companyContextService,
         CompaniaThemeRepository companiaThemeRepository,
-        FileStorageService fileStorageService
+        FileStorageService fileStorageService,
+        CompanyFilePathService companyFilePathService
     ) {
         this.companyContextService = companyContextService;
         this.companiaThemeRepository = companiaThemeRepository;
         this.fileStorageService = fileStorageService;
+        this.companyFilePathService = companyFilePathService;
     }
 
     @Transactional(readOnly = true)
@@ -99,11 +102,34 @@ public class CompanyThemeService {
 
         if (logo != null && !logo.isEmpty()) {
             validateImageFile(logo);
-            theme.setLogoPath(fileStorageService.store(logo));
+            java.nio.file.Path rootLocation = companyFilePathService.resolveCurrentCompanyRootLocationOrThrow();
+            theme.setLogoPath(fileStorageService.store(logo, rootLocation));
         }
         if (background != null && !background.isEmpty()) {
             validateImageFile(background);
-            theme.setBackgroundPath(fileStorageService.store(background));
+            java.nio.file.Path rootLocation = companyFilePathService.resolveCurrentCompanyRootLocationOrThrow();
+            theme.setBackgroundPath(fileStorageService.store(background, rootLocation));
+        }
+
+        return companiaThemeRepository.save(theme);
+    }
+
+    public CompaniaTheme clearAssets(boolean clearLogo, boolean clearBackground) {
+        Long noCia = companyContextService.getCurrentCompanyIdOrThrow();
+        CompaniaTheme theme = companiaThemeRepository
+            .findOneByNoCia(noCia)
+            .orElseGet(() -> {
+                CompaniaTheme created = new CompaniaTheme();
+                created.setNoCia(noCia);
+                created.setThemeName(DEFAULT_THEME);
+                return created;
+            });
+
+        if (clearLogo) {
+            theme.setLogoPath(null);
+        }
+        if (clearBackground) {
+            theme.setBackgroundPath(null);
         }
 
         return companiaThemeRepository.save(theme);

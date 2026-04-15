@@ -33,7 +33,7 @@
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         @if (account() !== null) {
-          @if (availableCompanies().length > 1) {
+          @if (availableCompanies().length > 0) {
             <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
               <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="company-menu">
                 <span>
@@ -327,6 +327,30 @@
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.entities.tipoCliente">Tipo Cliente</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/tipo-documento"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span>Tipo Documento</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/linea-negocio"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span>Línea de Negocio</span>
               </a>
             </li>
             <li>

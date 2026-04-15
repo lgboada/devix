@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260413130000" author="devix">
+        <createTable tableName="tipo_documento">
+            <column name="no_cia" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipo_documento" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descripcion" type="varchar(60)"/>
+            <column name="indice" type="varchar(2)"/>
+            <!-- codigo_sri: "01"=Factura,"04"=NC,"05"=ND,"06"=Guía,"07"=Retención,"03"=LiqComp -->
+            <column name="codigo_sri" type="varchar(2)"/>
+        </createTable>
+        <addPrimaryKey tableName="tipo_documento"
+                       columnNames="no_cia, tipo_documento"
+                       constraintName="pk_tipo_documento"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260413120000" author="devix">
+        <createTable tableName="linea_negocio">
+            <column name="no_cia" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="linea_no" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descripcion" type="varchar(60)"/>
+        </createTable>
+        <addPrimaryKey tableName="linea_negocio"
+                       columnNames="no_cia, linea_no"
+                       constraintName="pk_linea_negocio"/>
+    </changeSet>
+
+</databaseChangeLog>

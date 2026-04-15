@@ -31,9 +31,16 @@ public class UsuarioCentroQueryService extends QueryService<UsuarioCentro> {
 
     private final UsuarioCentroMapper usuarioCentroMapper;
 
-    public UsuarioCentroQueryService(UsuarioCentroRepository usuarioCentroRepository, UsuarioCentroMapper usuarioCentroMapper) {
+    private final UsuarioCentroDtoEnricher usuarioCentroDtoEnricher;
+
+    public UsuarioCentroQueryService(
+        UsuarioCentroRepository usuarioCentroRepository,
+        UsuarioCentroMapper usuarioCentroMapper,
+        UsuarioCentroDtoEnricher usuarioCentroDtoEnricher
+    ) {
         this.usuarioCentroRepository = usuarioCentroRepository;
         this.usuarioCentroMapper = usuarioCentroMapper;
+        this.usuarioCentroDtoEnricher = usuarioCentroDtoEnricher;
     }
 
     /**
@@ -45,7 +52,9 @@ public class UsuarioCentroQueryService extends QueryService<UsuarioCentro> {
     public List<UsuarioCentroDTO> findByCriteria(UsuarioCentroCriteria criteria) {
         LOG.debug("find by criteria : {}", criteria);
         final Specification<UsuarioCentro> specification = createSpecification(criteria);
-        return usuarioCentroMapper.toDto(usuarioCentroRepository.findAll(specification));
+        List<UsuarioCentroDTO> list = usuarioCentroMapper.toDto(usuarioCentroRepository.findAll(specification));
+        usuarioCentroDtoEnricher.enrichCompaniaNombre(list);
+        return list;
     }
 
     /**

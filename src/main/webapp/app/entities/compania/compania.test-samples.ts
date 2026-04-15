@@ -34,6 +34,12 @@ export const sampleWithFullData: ICompania = {
   telefono: 'nasalise pertain solace',
   pathImage: 'writ outside',
   activa: false,
+  establecimiento: '001',
+  contribuyenteEspecial: '1234567890',
+  obligadoContabilidad: true,
+  ambienteSri: 1,
+  pathCertificado: 'uuid_cert.p12',
+  claveCertificado: 'secret',
 };
 
 export const sampleWithNewData: NewCompania = {

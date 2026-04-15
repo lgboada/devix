@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tipoDocumento(); as ref) {
+      <div>
+        <h2 data-cy="tipoDocumentoDetailsHeading">Tipo de Documento</h2>
+        <hr />
+        <jhi-alert-error />
+        <jhi-alert />
+
+        <dl class="row">
+          <dt class="col-sm-3">Compañía</dt>
+          <dd class="col-sm-9">{{ ref.noCia }}</dd>
+
+          <dt class="col-sm-3">Código Interno</dt>
+          <dd class="col-sm-9">
+            <strong>{{ ref.tipoDocumento }}</strong>
+          </dd>
+
+          <dt class="col-sm-3">Descripción</dt>
+          <dd class="col-sm-9">{{ ref.descripcion }}</dd>
+
+          <dt class="col-sm-3">Índice</dt>
+          <dd class="col-sm-9">{{ ref.indice }}</dd>
+
+          <dt class="col-sm-3">Código SRI</dt>
+          <dd class="col-sm-9">
+            @if (ref.codigoSri) {
+              <span class="badge bg-secondary">{{ ref.codigoSri }}</span>
+            }
+          </dd>
+        </dl>
+
+        <div class="d-flex gap-2">
+          <button type="button" (click)="previousState()" class="btn btn-info"><fa-icon icon="arrow-left"></fa-icon>&nbsp;Volver</button>
+          <button type="button" [routerLink]="['/tipo-documento', ref.noCia, ref.tipoDocumento, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;Editar
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

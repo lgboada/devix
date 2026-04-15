@@ -86,6 +86,47 @@ public class Factura implements Serializable {
     @Column(name = "estado", nullable = false)
     private String estado;
 
+    @Column(name = "telefono")
+    private String telefono;
+
+    @Column(name = "razon_social", length = 300)
+    private String razonSocial;
+
+    @Column(name = "clave_acceso", length = 49)
+    private String claveAcceso;
+
+    @Column(name = "numero_autorizacion", length = 37)
+    private String numeroAutorizacion;
+
+    @Column(name = "fecha_autorizacion")
+    private Instant fechaAutorizacion;
+
+    /** Código de tipo de documento: "FAC", "NCV", "NDB", "GRM", "RET" */
+    @Column(name = "tipo_documento", length = 3)
+    private String tipoDocumento;
+
+    /** Código de línea de negocio: "VEH", "REP", "TAL", etc. */
+    @Column(name = "linea_no", length = 3)
+    private String lineaNo;
+
+    // Campos para Nota de Crédito (nulos en facturas normales)
+
+    /** Código SRI del documento modificado: "01"=Factura, "04"=NC, etc. */
+    @Column(name = "cod_doc_modificado", length = 2)
+    private String codDocModificado;
+
+    /** Número del documento modificado: formato 001-001-000000001 */
+    @Column(name = "num_doc_modificado", length = 17)
+    private String numDocModificado;
+
+    /** Fecha de emisión del documento original que se está modificando */
+    @Column(name = "fecha_emision_doc_sustento")
+    private Instant fechaEmisionDocSustento;
+
+    /** Motivo de la nota de crédito */
+    @Column(name = "motivo", length = 300)
+    private String motivo;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "factura")
     @JsonIgnoreProperties(value = { "factura", "producto" }, allowSetters = true)
     private Set<DetalleFactura> detalles = new HashSet<>();
@@ -352,6 +393,119 @@ public class Factura implements Serializable {
         return this;
     }
 
+    public String getTelefono() {
+        return this.telefono;
+    }
+
+    public Factura telefono(String telefono) {
+        this.setTelefono(telefono);
+        return this;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getRazonSocial() {
+        return this.razonSocial;
+    }
+
+    public Factura razonSocial(String razonSocial) {
+        this.setRazonSocial(razonSocial);
+        return this;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public String getClaveAcceso() {
+        return this.claveAcceso;
+    }
+
+    public Factura claveAcceso(String claveAcceso) {
+        this.setClaveAcceso(claveAcceso);
+        return this;
+    }
+
+    public void setClaveAcceso(String claveAcceso) {
+        this.claveAcceso = claveAcceso;
+    }
+
+    public String getNumeroAutorizacion() {
+        return this.numeroAutorizacion;
+    }
+
+    public Factura numeroAutorizacion(String numeroAutorizacion) {
+        this.setNumeroAutorizacion(numeroAutorizacion);
+        return this;
+    }
+
+    public void setNumeroAutorizacion(String numeroAutorizacion) {
+        this.numeroAutorizacion = numeroAutorizacion;
+    }
+
+    public Instant getFechaAutorizacion() {
+        return this.fechaAutorizacion;
+    }
+
+    public Factura fechaAutorizacion(Instant fechaAutorizacion) {
+        this.setFechaAutorizacion(fechaAutorizacion);
+        return this;
+    }
+
+    public void setFechaAutorizacion(Instant fechaAutorizacion) {
+        this.fechaAutorizacion = fechaAutorizacion;
+    }
+
+    public String getTipoDocumento() {
+        return this.tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getLineaNo() {
+        return this.lineaNo;
+    }
+
+    public void setLineaNo(String lineaNo) {
+        this.lineaNo = lineaNo;
+    }
+
+    public String getCodDocModificado() {
+        return this.codDocModificado;
+    }
+
+    public void setCodDocModificado(String codDocModificado) {
+        this.codDocModificado = codDocModificado;
+    }
+
+    public String getNumDocModificado() {
+        return this.numDocModificado;
+    }
+
+    public void setNumDocModificado(String numDocModificado) {
+        this.numDocModificado = numDocModificado;
+    }
+
+    public Instant getFechaEmisionDocSustento() {
+        return this.fechaEmisionDocSustento;
+    }
+
+    public void setFechaEmisionDocSustento(Instant fechaEmisionDocSustento) {
+        this.fechaEmisionDocSustento = fechaEmisionDocSustento;
+    }
+
+    public String getMotivo() {
+        return this.motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -390,6 +544,7 @@ public class Factura implements Serializable {
             ", direccion='" + getDireccion() + "'" +
             ", email='" + getEmail() + "'" +
             ", estado='" + getEstado() + "'" +
+            ", telefono='" + getTelefono() + "'" +
             "}";
     }
 }

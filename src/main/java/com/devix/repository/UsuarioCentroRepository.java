@@ -46,6 +46,21 @@ public interface UsuarioCentroRepository extends JpaRepository<UsuarioCentro, Lo
 
     boolean existsByUser_LoginAndNoCia(String login, Long noCia);
 
+    /**
+     * Valida pertenencia por compañía efectiva: {@code COALESCE(centro.noCia, usuario_centro.noCia)}.
+     * Esto cubre casos donde el permiso viene por el centro y {@code uc.noCia} puede ser null.
+     */
+    @Query(
+        """
+        select (count(uc) > 0)
+        from UsuarioCentro uc
+        left join uc.centro c
+        where uc.user.login = :login
+          and COALESCE(c.noCia, uc.noCia) = :noCia
+        """
+    )
+    boolean existsByUserLoginAndEffectiveNoCia(@Param("login") String login, @Param("noCia") Long noCia);
+
     default Optional<UsuarioCentro> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }

@@ -1,6 +1,7 @@
 package com.devix.security.company;
 
 import com.devix.domain.UsuarioCentro;
+import com.devix.repository.AccountCompanyProjection;
 import com.devix.repository.UsuarioCentroRepository;
 import com.devix.security.SecurityUtils;
 import java.util.List;
@@ -49,16 +50,14 @@ public class CompanyContextService {
 
         if (headerValue != null && !headerValue.isBlank()) {
             Long requestedCompany = parseCompanyId(headerValue);
-            if (!usuarioCentroRepository.existsByUser_LoginAndNoCia(login, requestedCompany)) {
+            if (!usuarioCentroRepository.existsByUserLoginAndEffectiveNoCia(login, requestedCompany)) {
                 throw new AccessDeniedException("La compania enviada en header no pertenece al usuario autenticado");
             }
             return Optional.of(requestedCompany);
         }
 
-        return usuarioCentroRepository
-            .findFirstByUser_LoginAndPrincipalTrue(login)
-            .map(UsuarioCentro::getNoCia)
-            .or(() -> usuarioCentroRepository.findFirstByUser_LoginOrderByNoCiaAsc(login).map(UsuarioCentro::getNoCia));
+        List<AccountCompanyProjection> rows = usuarioCentroRepository.findDistinctAccountCompaniesByUserLogin(login);
+        return rows.stream().map(AccountCompanyProjection::getEffectiveNoCia).findFirst();
     }
 
     private Long parseCompanyId(String companyHeader) {

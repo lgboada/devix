@@ -31,6 +31,9 @@ public class Centro implements Serializable {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
+    @Column(name = "punto_emision", length = 3)
+    private String puntoEmision;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "centro")
     @JsonIgnoreProperties(value = { "detalles", "centro", "cliente" }, allowSetters = true)
     private Set<Factura> facturas = new HashSet<>();
@@ -140,6 +143,19 @@ public class Centro implements Serializable {
         this.eventos.remove(evento);
         evento.setCentro(null);
         return this;
+    }
+
+    public String getPuntoEmision() {
+        return this.puntoEmision;
+    }
+
+    public Centro puntoEmision(String puntoEmision) {
+        this.setPuntoEmision(puntoEmision);
+        return this;
+    }
+
+    public void setPuntoEmision(String puntoEmision) {
+        this.puntoEmision = puntoEmision;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

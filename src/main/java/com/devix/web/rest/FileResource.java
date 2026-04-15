@@ -1,11 +1,11 @@
 package com.devix.web.rest;
 
+import com.devix.service.CompanyFilePathService;
 import com.devix.service.FileStorageService;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +23,15 @@ public class FileResource {
 
     private static final String ENTITY_NAME = "file";
 
-    @Value("${jhipster.clientApp.name}")
+    @org.springframework.beans.factory.annotation.Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    @Value("${app.files.upload-dir:uploads}")
-    private String uploadDir;
-
     private final FileStorageService fileStorageService;
+    private final CompanyFilePathService companyFilePathService;
 
-    public FileResource(FileStorageService fileStorageService) {
+    public FileResource(FileStorageService fileStorageService, CompanyFilePathService companyFilePathService) {
         this.fileStorageService = fileStorageService;
+        this.companyFilePathService = companyFilePathService;
     }
 
     /**
@@ -46,7 +45,7 @@ public class FileResource {
     public ResponseEntity<org.springframework.core.io.Resource> getFile(@PathVariable String filename) {
         LOG.debug("REST request to get file : {}", filename);
         try {
-            java.nio.file.Path rootLocation = java.nio.file.Paths.get(uploadDir);
+            java.nio.file.Path rootLocation = companyFilePathService.resolveCurrentCompanyRootLocationOrThrow();
             java.nio.file.Path filePath = rootLocation.resolve(filename).normalize();
 
             // Validar que el archivo no salga del directorio raíz (seguridad)
@@ -100,7 +99,8 @@ public class FileResource {
         }
 
         try {
-            String storedFilename = fileStorageService.store(file);
+            java.nio.file.Path rootLocation = companyFilePathService.resolveCurrentCompanyRootLocationOrThrow();
+            String storedFilename = fileStorageService.store(file, rootLocation);
             response.put("filename", storedFilename);
             return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert(applicationName, "Archivo subido exitosamente", ENTITY_NAME))

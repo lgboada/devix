@@ -37,6 +37,20 @@ public class CompaniaDTO implements Serializable {
     @NotNull
     private Boolean activa;
 
+    private String establecimiento;
+
+    private String contribuyenteEspecial;
+
+    private Boolean obligadoContabilidad;
+
+    private Integer ambienteSri;
+
+    private String pathCertificado;
+
+    private String claveCertificado;
+
+    private String pathFileServer;
+
     public Long getId() {
         return id;
     }
@@ -107,6 +121,62 @@ public class CompaniaDTO implements Serializable {
 
     public void setActiva(Boolean activa) {
         this.activa = activa;
+    }
+
+    public String getEstablecimiento() {
+        return establecimiento;
+    }
+
+    public void setEstablecimiento(String establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    public String getContribuyenteEspecial() {
+        return contribuyenteEspecial;
+    }
+
+    public void setContribuyenteEspecial(String contribuyenteEspecial) {
+        this.contribuyenteEspecial = contribuyenteEspecial;
+    }
+
+    public Boolean getObligadoContabilidad() {
+        return obligadoContabilidad;
+    }
+
+    public void setObligadoContabilidad(Boolean obligadoContabilidad) {
+        this.obligadoContabilidad = obligadoContabilidad;
+    }
+
+    public Integer getAmbienteSri() {
+        return ambienteSri;
+    }
+
+    public void setAmbienteSri(Integer ambienteSri) {
+        this.ambienteSri = ambienteSri;
+    }
+
+    public String getPathCertificado() {
+        return pathCertificado;
+    }
+
+    public void setPathCertificado(String pathCertificado) {
+        this.pathCertificado = pathCertificado;
+    }
+
+    public String getClaveCertificado() {
+        return claveCertificado;
+    }
+
+    public void setClaveCertificado(String claveCertificado) {
+        this.claveCertificado = claveCertificado;
+    }
+
+    public String getPathFileServer() {
+        return pathFileServer;
+    }
+
+    public void setPathFileServer(String pathFileServer) {
+        this.pathFileServer = pathFileServer;
     }
 
     @Override

@@ -1,350 +1,390 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-factura-heading" data-cy="FacturaCreateUpdateHeading" jhiTranslate="devixApp.factura.home.createOrEditLabel">
-        Crear o editar Factura
-      </h2>
+<div class="container-fluid py-3">
+  <jhi-alert-error />
 
-      <div>
-        <jhi-alert-error />
+  <form name="editForm" novalidate [formGroup]="editForm">
+    <!-- ===== HEADER: 3 COLUMNAS ===== -->
+    <div class="row g-2 mb-3">
+      <!-- Columna 1: Datos del Receptor -->
+      <div class="col-lg-5 col-md-12">
+        <div class="card h-100 border-secondary">
+          <div class="card-header py-1 bg-secondary text-white fw-semibold small">Datos del Receptor</div>
+          <div class="card-body py-2 px-3">
+            <!-- Cliente -->
+            <div class="mb-2">
+              <label class="form-label form-label-sm mb-1 fw-semibold" for="field_cliente">Cliente</label>
+              <select
+                class="form-select form-select-sm"
+                id="field_cliente"
+                name="cliente"
+                formControlName="cliente"
+                [compareWith]="compareCliente"
+                (change)="onClienteChange()"
+              >
+                <option [ngValue]="null">-- Seleccione cliente --</option>
+                @for (c of clientesSharedCollection; track c.id) {
+                  <option [ngValue]="c">{{ clienteNombre(c) }}</option>
+                }
+              </select>
+            </div>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="devixApp.factura.id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            <!-- Cédula + Email -->
+            <div class="row g-2 mb-2">
+              <div class="col-5">
+                <label class="form-label form-label-sm mb-1" for="field_cedula">Cédula / RUC</label>
+                <input
+                  type="text"
+                  class="form-control form-control-sm bg-light"
+                  id="field_cedula"
+                  name="cedula"
+                  formControlName="cedula"
+                  readonly
+                />
+              </div>
+              <div class="col-7">
+                <label class="form-label form-label-sm mb-1" for="field_email">Email</label>
+                <input type="email" class="form-control form-control-sm" id="field_email" name="email" formControlName="email" />
+              </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-2">
+              <label class="form-label form-label-sm mb-1" for="field_telefono">Teléfono</label>
+              <input type="text" class="form-control form-control-sm" id="field_telefono" name="telefono" formControlName="telefono" />
+            </div>
+
+            <!-- Dirección -->
+            <div class="mb-0">
+              <label class="form-label form-label-sm mb-1" for="field_direccion">Dirección</label>
+              <input type="text" class="form-control form-control-sm" id="field_direccion" name="direccion" formControlName="direccion" />
+            </div>
           </div>
-        }
-
-        @let noCiaRef = editForm.get('noCia')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_noCia" jhiTranslate="devixApp.factura.noCia">No Cia</label>
-          <input type="number" class="form-control" name="noCia" id="field_noCia" data-cy="noCia" formControlName="noCia" />
-          @if (noCiaRef.invalid && (noCiaRef.dirty || noCiaRef.touched)) {
-            <div>
-              @if (editForm.get('noCia')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('noCia')?.errors?.number" jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let serieRef = editForm.get('serie')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_serie" jhiTranslate="devixApp.factura.serie">Serie</label>
-          <input type="text" class="form-control" name="serie" id="field_serie" data-cy="serie" formControlName="serie" />
-          @if (serieRef.invalid && (serieRef.dirty || serieRef.touched)) {
-            <div>
-              @if (editForm.get('serie')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let noFisicoRef = editForm.get('noFisico')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_noFisico" jhiTranslate="devixApp.factura.noFisico">No Fisico</label>
-          <input type="text" class="form-control" name="noFisico" id="field_noFisico" data-cy="noFisico" formControlName="noFisico" />
-          @if (noFisicoRef.invalid && (noFisicoRef.dirty || noFisicoRef.touched)) {
-            <div>
-              @if (editForm.get('noFisico')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let fechaRef = editForm.get('fecha')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_fecha" jhiTranslate="devixApp.factura.fecha">Fecha</label>
-          <div class="d-flex">
-            <input
-              id="field_fecha"
-              data-cy="fecha"
-              type="datetime-local"
-              class="form-control"
-              name="fecha"
-              formControlName="fecha"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-          @if (fechaRef.invalid && (fechaRef.dirty || fechaRef.touched)) {
-            <div>
-              @if (editForm.get('fecha')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('fecha')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >Este campo debe ser una fecha y hora.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let subtotalRef = editForm.get('subtotal')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_subtotal" jhiTranslate="devixApp.factura.subtotal">Subtotal</label>
-          <input type="number" class="form-control" name="subtotal" id="field_subtotal" data-cy="subtotal" formControlName="subtotal" />
-          @if (subtotalRef.invalid && (subtotalRef.dirty || subtotalRef.touched)) {
-            <div>
-              @if (editForm.get('subtotal')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              @if (editForm.get('subtotal')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Este campo debe ser mayor que 0.</small
-                >
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('subtotal')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let impuestoRef = editForm.get('impuesto')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_impuesto" jhiTranslate="devixApp.factura.impuesto">Impuesto</label>
-          <input type="number" class="form-control" name="impuesto" id="field_impuesto" data-cy="impuesto" formControlName="impuesto" />
-          @if (impuestoRef.invalid && (impuestoRef.dirty || impuestoRef.touched)) {
-            <div>
-              @if (editForm.get('impuesto')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              @if (editForm.get('impuesto')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Este campo debe ser mayor que 0.</small
-                >
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('impuesto')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let impuestoCeroRef = editForm.get('impuestoCero')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_impuestoCero" jhiTranslate="devixApp.factura.impuestoCero">Impuesto Cero</label>
-          <input
-            type="number"
-            class="form-control"
-            name="impuestoCero"
-            id="field_impuestoCero"
-            data-cy="impuestoCero"
-            formControlName="impuestoCero"
-          />
-          @if (impuestoCeroRef.invalid && (impuestoCeroRef.dirty || impuestoCeroRef.touched)) {
-            <div>
-              @if (editForm.get('impuestoCero')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              @if (editForm.get('impuestoCero')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Este campo debe ser mayor que 0.</small
-                >
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('impuestoCero')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let descuentoRef = editForm.get('descuento')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_descuento" jhiTranslate="devixApp.factura.descuento">Descuento</label>
-          <input type="number" class="form-control" name="descuento" id="field_descuento" data-cy="descuento" formControlName="descuento" />
-          @if (descuentoRef.invalid && (descuentoRef.dirty || descuentoRef.touched)) {
-            <div>
-              @if (editForm.get('descuento')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              @if (editForm.get('descuento')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Este campo debe ser mayor que 0.</small
-                >
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('descuento')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let totalRef = editForm.get('total')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_total" jhiTranslate="devixApp.factura.total">Total</label>
-          <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
-          @if (totalRef.invalid && (totalRef.dirty || totalRef.touched)) {
-            <div>
-              @if (editForm.get('total')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              @if (editForm.get('total')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Este campo debe ser mayor que 0.</small
-                >
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('total')?.errors?.number" jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let porcentajeImpuestoRef = editForm.get('porcentajeImpuesto')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_porcentajeImpuesto" jhiTranslate="devixApp.factura.porcentajeImpuesto"
-            >Porcentaje Impuesto</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="porcentajeImpuesto"
-            id="field_porcentajeImpuesto"
-            data-cy="porcentajeImpuesto"
-            formControlName="porcentajeImpuesto"
-          />
-          @if (porcentajeImpuestoRef.invalid && (porcentajeImpuestoRef.dirty || porcentajeImpuestoRef.touched)) {
-            <div>
-              @if (editForm.get('porcentajeImpuesto')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-              @if (editForm.get('porcentajeImpuesto')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Este campo debe ser mayor que 0.</small
-                >
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('porcentajeImpuesto')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Este campo debe ser un número.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let cedulaRef = editForm.get('cedula')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_cedula" jhiTranslate="devixApp.factura.cedula">Cedula</label>
-          <input type="text" class="form-control" name="cedula" id="field_cedula" data-cy="cedula" formControlName="cedula" />
-          @if (cedulaRef.invalid && (cedulaRef.dirty || cedulaRef.touched)) {
-            <div>
-              @if (editForm.get('cedula')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let direccionRef = editForm.get('direccion')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_direccion" jhiTranslate="devixApp.factura.direccion">Direccion</label>
-          <input type="text" class="form-control" name="direccion" id="field_direccion" data-cy="direccion" formControlName="direccion" />
-          @if (direccionRef.invalid && (direccionRef.dirty || direccionRef.touched)) {
-            <div>
-              @if (editForm.get('direccion')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let emailRef = editForm.get('email')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_email" jhiTranslate="devixApp.factura.email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
-            <div>
-              @if (editForm.get('email')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let estadoRef = editForm.get('estado')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_estado" jhiTranslate="devixApp.factura.estado">Estado</label>
-          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
-          @if (estadoRef.invalid && (estadoRef.dirty || estadoRef.touched)) {
-            <div>
-              @if (editForm.get('estado')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_centro" jhiTranslate="devixApp.factura.centro">Centro</label>
-          <select
-            class="form-control"
-            id="field_centro"
-            data-cy="centro"
-            name="centro"
-            formControlName="centro"
-            [compareWith]="compareCentro"
-          >
-            <option [ngValue]="null"></option>
-            @for (centroOption of centrosSharedCollection; track $index) {
-              <option [ngValue]="centroOption">{{ centroOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_cliente" jhiTranslate="devixApp.factura.cliente">Cliente</label>
-          <select
-            class="form-control"
-            id="field_cliente"
-            data-cy="cliente"
-            name="cliente"
-            formControlName="cliente"
-            [compareWith]="compareCliente"
-          >
-            <option [ngValue]="null"></option>
-            @for (clienteOption of clientesSharedCollection; track $index) {
-              <option [ngValue]="clienteOption">{{ clienteOption.id }}</option>
-            }
-          </select>
         </div>
       </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
-        </button>
+      <!-- Columna 2: Datos Adicionales -->
+      <div class="col-lg-3 col-md-6">
+        <div class="card h-100 border-secondary">
+          <div class="card-header py-1 bg-secondary text-white fw-semibold small">Datos Adicionales</div>
+          <div class="card-body py-2 px-3">
+            <div class="mb-2">
+              <label class="form-label form-label-sm mb-1" for="field_estado">Estado</label>
+              <select class="form-select form-select-sm" id="field_estado" name="estado" formControlName="estado">
+                <option value="PROFORMA">PROFORMA</option>
+                <option value="FACTURA">FACTURA</option>
+              </select>
+            </div>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
-        </button>
+            <div class="mb-2">
+              <label class="form-label form-label-sm mb-1" for="field_centro">Centro</label>
+              <select
+                class="form-select form-select-sm"
+                id="field_centro"
+                name="centro"
+                formControlName="centro"
+                [compareWith]="compareCentro"
+              >
+                <option [ngValue]="null">-- Seleccione --</option>
+                @for (c of centrosSharedCollection; track c.id) {
+                  <option [ngValue]="c">{{ c.id }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label form-label-sm mb-1" for="field_tipoDocumento">Tipo Documento</label>
+              <select class="form-select form-select-sm" id="field_tipoDocumento" name="tipoDocumento" formControlName="tipoDocumento">
+                <option [ngValue]="null">-- Seleccione --</option>
+                @for (td of tipoDocumentosCollection; track td.tipoDocumento) {
+                  <option [ngValue]="td.tipoDocumento">{{ td.tipoDocumento }} — {{ td.descripcion }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label form-label-sm mb-1" for="field_lineaNo">Línea de Negocio</label>
+              <select class="form-select form-select-sm" id="field_lineaNo" name="lineaNo" formControlName="lineaNo">
+                <option [ngValue]="null">-- Seleccione --</option>
+                @for (ln of lineaNegociosCollection; track ln.lineaNo) {
+                  <option [ngValue]="ln.lineaNo">{{ ln.lineaNo }} — {{ ln.descripcion }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="mb-0">
+              <label class="form-label form-label-sm mb-1" for="field_porcentajeImpuesto">IVA %</label>
+              <input
+                type="number"
+                class="form-control form-control-sm"
+                id="field_porcentajeImpuesto"
+                name="porcentajeImpuesto"
+                formControlName="porcentajeImpuesto"
+                min="0"
+                (input)="recalcularTodos()"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-    </form>
-  </div>
+
+      <!-- Columna 3: Datos del Documento -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 border-secondary">
+          <div class="card-header py-1 bg-secondary text-white fw-semibold small">Datos del Documento</div>
+          <div class="card-body py-2 px-3">
+            <div class="row g-2 mb-2">
+              <div class="col-4">
+                <label class="form-label form-label-sm mb-1" for="field_serie">Serie</label>
+                <input type="text" class="form-control form-control-sm" id="field_serie" name="serie" formControlName="serie" />
+              </div>
+              <div class="col-8">
+                <label class="form-label form-label-sm mb-1" for="field_noFisico">No. Físico</label>
+                <input type="text" class="form-control form-control-sm" id="field_noFisico" name="noFisico" formControlName="noFisico" />
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label form-label-sm mb-1" for="field_fecha">Fecha de Emisión</label>
+              <input type="datetime-local" class="form-control form-control-sm" id="field_fecha" name="fecha" formControlName="fecha" />
+            </div>
+
+            <div class="mb-0">
+              <label class="form-label form-label-sm mb-1" for="field_razonSocial">Razón Social</label>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                id="field_razonSocial"
+                name="razonSocial"
+                formControlName="razonSocial"
+                placeholder="Razón social del receptor"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- fin header -->
+
+    <!-- ===== CAMPOS NOTA DE CRÉDITO / NOTA DE DÉBITO (condicional) ===== -->
+    @if (editForm.get('tipoDocumento')?.value) {
+      <div class="row g-2 mb-3">
+        <div class="col-12">
+          <div class="card border-warning">
+            <div class="card-header py-1 bg-warning text-dark fw-semibold small">Datos del Documento de Referencia (NC / ND)</div>
+            <div class="card-body py-2 px-3">
+              <div class="row g-2">
+                <div class="col-lg-2 col-md-4">
+                  <label class="form-label form-label-sm mb-1" for="field_codDocModificado">Tipo Doc.</label>
+                  <select class="form-select form-select-sm" id="field_codDocModificado" formControlName="codDocModificado">
+                    <option [ngValue]="null">--</option>
+                    <option value="01">01 - Factura</option>
+                    <option value="03">03 - Liq. Compra</option>
+                    <option value="04">04 - Nota Crédito</option>
+                    <option value="05">05 - Nota Débito</option>
+                  </select>
+                </div>
+                <div class="col-lg-4 col-md-8">
+                  <label class="form-label form-label-sm mb-1" for="field_numDocModificado">No. Comprobante Modificado</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="field_numDocModificado"
+                    formControlName="numDocModificado"
+                    placeholder="001-001-000000001"
+                  />
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label class="form-label form-label-sm mb-1" for="field_fechaEmisionDocSustento">Fecha Emisión Doc. Sustento</label>
+                  <input
+                    type="datetime-local"
+                    class="form-control form-control-sm"
+                    id="field_fechaEmisionDocSustento"
+                    formControlName="fechaEmisionDocSustento"
+                  />
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label class="form-label form-label-sm mb-1" for="field_motivo">Motivo</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="field_motivo"
+                    formControlName="motivo"
+                    placeholder="Motivo de la nota"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- ===== TABLA DE PRODUCTOS + PANEL TOTALES ===== -->
+    <div class="row g-0 mb-3">
+      <!-- Tabla de ítems -->
+      <div class="col-lg-9 col-md-12">
+        <div class="card border-secondary">
+          <div class="card-header py-1 bg-secondary text-white fw-semibold small">Detalle de Productos</div>
+          <div class="card-body p-0">
+            <table class="table table-sm table-bordered table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="text-center" style="width: 35px">#</th>
+                  <th style="width: 80px">Código</th>
+                  <th>Producto / Descripción</th>
+                  <th class="text-center" style="width: 65px">Cant.</th>
+                  <th class="text-end" style="width: 85px">P. Unit.</th>
+                  <th class="text-end" style="width: 85px">Desc.</th>
+                  <th class="text-center" style="width: 42px">IVA</th>
+                  <th class="text-end" style="width: 90px">Total</th>
+                  <th style="width: 65px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (d of detalles; let i = $index; track i) {
+                  <tr>
+                    <td class="text-center text-muted align-middle small">{{ i + 1 }}</td>
+                    <td class="align-middle small text-muted">{{ d.producto?.codigo ?? '—' }}</td>
+                    <td class="p-0">
+                      <select
+                        class="form-select form-select-sm border-0 rounded-0 h-100"
+                        style="min-width: 160px"
+                        [ngModel]="d.producto"
+                        [ngModelOptions]="{ standalone: true }"
+                        (ngModelChange)="d.producto = $event; onProductoChange(i)"
+                      >
+                        <option [ngValue]="null">-- Seleccione producto --</option>
+                        @for (p of productosCollection; track p.id) {
+                          <option [ngValue]="p">{{ p.codigo ? p.codigo + ' — ' : '' }}{{ p.nombre }}</option>
+                        }
+                      </select>
+                    </td>
+                    <td class="p-0">
+                      <input
+                        type="number"
+                        class="form-control form-control-sm border-0 rounded-0 text-center"
+                        style="width: 65px"
+                        [(ngModel)]="d.cantidad"
+                        [ngModelOptions]="{ standalone: true }"
+                        (input)="recalcularDetalle(i)"
+                        min="1"
+                      />
+                    </td>
+                    <td class="text-end align-middle small pe-2">
+                      {{ d.precioUnitario | number: '1.2-2' }}
+                    </td>
+                    <td class="p-0">
+                      <input
+                        type="number"
+                        class="form-control form-control-sm border-0 rounded-0 text-end"
+                        style="width: 85px"
+                        [(ngModel)]="d.descuento"
+                        [ngModelOptions]="{ standalone: true }"
+                        (input)="recalcularDetalle(i)"
+                        min="0"
+                      />
+                    </td>
+                    <td class="text-center align-middle">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        [(ngModel)]="d.conIva"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="recalcularDetalle(i)"
+                      />
+                    </td>
+                    <td class="text-end align-middle fw-semibold small pe-2">
+                      {{ d.total | number: '1.2-2' }}
+                    </td>
+                    <td class="text-center align-middle">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-success py-0 px-1 me-1"
+                        title="Insertar línea debajo"
+                        (click)="agregarDetalleEn(i)"
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger py-0 px-1"
+                        title="Eliminar línea"
+                        (click)="eliminarDetalle(i)"
+                      >
+                        ✕
+                      </button>
+                    </td>
+                  </tr>
+                }
+                @if (detalles.length === 0) {
+                  <tr>
+                    <td colspan="9" class="text-center text-muted py-4 fst-italic">
+                      Sin productos. Haga clic en "+ Agregar línea" para comenzar.
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer py-2 bg-white">
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="agregarDetalle()">+ Agregar línea</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel de Totales -->
+      <div class="col-lg-3 col-md-12 ps-lg-2 pt-2 pt-lg-0">
+        <div class="card border-secondary h-100">
+          <div class="card-header py-1 bg-secondary text-white fw-semibold small text-end">Totales</div>
+          <div class="card-body p-2">
+            <table class="table table-sm table-borderless mb-0 small">
+              <tbody>
+                <tr>
+                  <td class="text-muted">Subtotal</td>
+                  <td class="text-end">{{ subtotalFactura | number: '1.2-2' }}</td>
+                </tr>
+                <tr>
+                  <td class="text-muted">Descuento</td>
+                  <td class="text-end">{{ descuentoFactura | number: '1.2-2' }}</td>
+                </tr>
+                <tr class="border-top">
+                  <td class="fw-semibold">Neto</td>
+                  <td class="text-end fw-semibold">{{ netoFactura | number: '1.2-2' }}</td>
+                </tr>
+                <tr>
+                  <td class="text-muted">IVA ({{ porcentajeImpuesto }}%)</td>
+                  <td class="text-end">{{ impuestoFactura | number: '1.2-2' }}</td>
+                </tr>
+                <tr>
+                  <td class="text-muted">Imp. Cero</td>
+                  <td class="text-end">{{ impuestoCeroFactura | number: '1.2-2' }}</td>
+                </tr>
+                <tr class="border-top bg-light">
+                  <td class="fw-bold fs-6">TOTAL</td>
+                  <td class="text-end fw-bold fs-6">{{ totalFactura | number: '1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- fin tabla + totales -->
+
+    <!-- ===== FOOTER: BOTONES ===== -->
+    <div class="d-flex justify-content-between align-items-center">
+      <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;Cancelar
+      </button>
+
+      <button
+        type="button"
+        id="save-entity"
+        class="btn btn-primary"
+        [disabled]="editForm.invalid || isSaving || detalles.length === 0"
+        (click)="save()"
+      >
+        <fa-icon icon="save"></fa-icon>&nbsp;Guardar Factura
+      </button>
+    </div>
+  </form>
 </div>

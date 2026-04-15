@@ -138,6 +138,138 @@
             </div>
           }
         </div>
+
+        <hr />
+        <h3 class="h5 mb-3" jhiTranslate="devixApp.compania.sriSection">Integración SRI</h3>
+
+        @let establecimientoRef = editForm.get('establecimiento')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_establecimiento" jhiTranslate="devixApp.compania.establecimiento">Establecimiento</label>
+          <input
+            type="text"
+            class="form-control"
+            name="establecimiento"
+            id="field_establecimiento"
+            data-cy="establecimiento"
+            formControlName="establecimiento"
+            maxlength="3"
+          />
+          @if (establecimientoRef.invalid && (establecimientoRef.dirty || establecimientoRef.touched)) {
+            <div>
+              @if (editForm.get('establecimiento')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 3 }"
+                  >Este campo no puede superar 3 caracteres.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let contribuyenteRef = editForm.get('contribuyenteEspecial')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_contribuyenteEspecial" jhiTranslate="devixApp.compania.contribuyenteEspecial"
+            >Contribuyente especial</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="contribuyenteEspecial"
+            id="field_contribuyenteEspecial"
+            data-cy="contribuyenteEspecial"
+            formControlName="contribuyenteEspecial"
+            maxlength="10"
+          />
+          @if (contribuyenteRef.invalid && (contribuyenteRef.dirty || contribuyenteRef.touched)) {
+            <div>
+              @if (editForm.get('contribuyenteEspecial')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 10 }"
+                  >Este campo no puede superar 10 caracteres.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_obligadoContabilidad" jhiTranslate="devixApp.compania.obligadoContabilidad"
+            >Obligado a llevar contabilidad</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="obligadoContabilidad"
+            id="field_obligadoContabilidad"
+            data-cy="obligadoContabilidad"
+            formControlName="obligadoContabilidad"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_ambienteSri" jhiTranslate="devixApp.compania.ambienteSri">Ambiente SRI</label>
+          <select class="form-select" name="ambienteSri" id="field_ambienteSri" data-cy="ambienteSri" formControlName="ambienteSri">
+            <option [ngValue]="null" jhiTranslate="devixApp.compania.ambienteSriSinDefinir">Sin definir</option>
+            <option [ngValue]="1" jhiTranslate="devixApp.compania.ambienteSriDesarrollo">Desarrollo (1)</option>
+            <option [ngValue]="2" jhiTranslate="devixApp.compania.ambienteSriProduccion">Producción (2)</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pathCertificado_file" jhiTranslate="devixApp.compania.pathCertificado"
+            >Certificado firma electrónica (.p12)</label
+          >
+          <input
+            type="file"
+            class="form-control"
+            name="pathCertificadoFile"
+            id="field_pathCertificado_file"
+            data-cy="pathCertificadoFile"
+            accept=".p12,application/x-pkcs12"
+            (change)="onCertificadoSelected($event)"
+          />
+          @if (isUploadingCert) {
+            <small class="form-text text-info" jhiTranslate="devixApp.compania.certificadoUploading">Subiendo certificado...</small>
+          }
+          @if (uploadCertError) {
+            <small class="form-text text-danger">{{ uploadCertError }}</small>
+          }
+          @if (editForm.get('pathCertificado')?.value) {
+            <div class="mt-2">
+              <small class="form-text text-muted" jhiTranslate="devixApp.compania.certificadoAlmacenado">Archivo en servidor:</small>
+              <span class="text-muted"> {{ editForm.get('pathCertificado')?.value }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_claveCertificado" jhiTranslate="devixApp.compania.claveCertificado"
+            >Clave del certificado</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            name="claveCertificado"
+            id="field_claveCertificado"
+            data-cy="claveCertificado"
+            formControlName="claveCertificado"
+            autocomplete="new-password"
+          />
+          <small class="form-text text-muted" jhiTranslate="devixApp.compania.claveCertificadoHelp">Contraseña del archivo .p12.</small>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pathFileServer" jhiTranslate="devixApp.compania.pathFileServer">Path File Server</label>
+          <input
+            type="text"
+            class="form-control"
+            name="pathFileServer"
+            id="field_pathFileServer"
+            data-cy="pathFileServer"
+            formControlName="pathFileServer"
+          />
+          <small class="form-text text-muted" jhiTranslate="devixApp.compania.pathFileServerHelp"
+            >Directorio raíz (absoluto) donde se almacenan los archivos de esta compañía.</small
+          >
+        </div>
       </div>
 
       <div>

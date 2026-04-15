@@ -27,6 +27,7 @@ export default class CompanyThemeComponent implements OnInit {
   readonly message = signal<string>('');
   readonly error = signal<string>('');
 
+  readonly clearingAssets = signal<boolean>(false);
   readonly canUpload = computed(() => !this.uploadingAssets() && (!!this.logoFile() || !!this.backgroundFile()));
 
   private readonly logoFile = signal<File | null>(null);
@@ -103,6 +104,23 @@ export default class CompanyThemeComponent implements OnInit {
         },
         error: () => {
           this.error.set('No se pudo subir logo/background. Verifica formato de imagen.');
+        },
+      });
+  }
+
+  clearAsset(type: 'logo' | 'background'): void {
+    this.clearMessages();
+    this.clearingAssets.set(true);
+    this.companyThemeAdminService
+      .clearAssets(type === 'logo', type === 'background')
+      .pipe(finalize(() => this.clearingAssets.set(false)))
+      .subscribe({
+        next: response => {
+          this.currentTheme.set(response);
+          this.message.set(type === 'logo' ? 'Logo eliminado correctamente.' : 'Background eliminado correctamente.');
+        },
+        error: () => {
+          this.error.set('No se pudo eliminar la imagen.');
         },
       });
   }

@@ -132,20 +132,24 @@ export class UsuarioCentroUpdateComponent implements OnInit {
   private loadCentrosForNoCia(noCia: number | null | undefined): void {
     if (noCia === null || noCia === undefined) {
       this.centrosSharedCollection = [];
+      this.editForm.controls.centro.setValue(null);
       return;
     }
     this.centroService
       .query({ size: 1000, 'noCia.equals': noCia })
       .pipe(map((res: HttpResponse<ICentro[]>) => res.body ?? []))
-      .pipe(
-        map((centros: ICentro[]) =>
-          this.centroService.addCentroToCollectionIfMissing<ICentro>(centros, this.editForm.controls.centro.value),
-        ),
-      )
       .subscribe((centros: ICentro[]) => {
-        this.centrosSharedCollection = centros;
         const currentCentro = this.editForm.controls.centro.value;
-        if (currentCentro && !centros.some(c => c.id === currentCentro.id)) {
+        const mismoNoCia = (c: ICentro | null | undefined): boolean => c?.noCia != null && Number(c.noCia) === Number(noCia);
+
+        let merged = [...centros];
+        if (currentCentro && mismoNoCia(currentCentro) && !merged.some(c => c.id === currentCentro.id)) {
+          merged = [currentCentro, ...merged];
+        }
+
+        this.centrosSharedCollection = merged;
+
+        if (currentCentro && (!mismoNoCia(currentCentro) || !merged.some(c => c.id === currentCentro.id))) {
           this.editForm.controls.centro.setValue(null);
         }
       });

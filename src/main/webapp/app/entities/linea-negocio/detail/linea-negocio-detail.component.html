@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (lineaNegocio(); as ref) {
+      <div>
+        <h2 data-cy="lineaNegocioDetailsHeading">Línea de Negocio</h2>
+        <hr />
+        <jhi-alert-error />
+        <jhi-alert />
+
+        <dl class="row">
+          <dt class="col-sm-3">Compañía</dt>
+          <dd class="col-sm-9">{{ ref.noCia }}</dd>
+
+          <dt class="col-sm-3">Código</dt>
+          <dd class="col-sm-9">
+            <strong>{{ ref.lineaNo }}</strong>
+          </dd>
+
+          <dt class="col-sm-3">Descripción</dt>
+          <dd class="col-sm-9">{{ ref.descripcion }}</dd>
+        </dl>
+
+        <div class="d-flex gap-2">
+          <button type="button" (click)="previousState()" class="btn btn-info"><fa-icon icon="arrow-left"></fa-icon>&nbsp;Volver</button>
+          <button type="button" [routerLink]="['/linea-negocio', ref.noCia, ref.lineaNo, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;Editar
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -26,7 +26,23 @@
       "telefono": "Telefono",
       "pathImage": "Path Image",
       "activa": "Activa",
-      "centros": "Centros"
+      "centros": "Centros",
+      "sriSection": "SRI integration",
+      "establecimiento": "Establishment code",
+      "contribuyenteEspecial": "Special taxpayer",
+      "obligadoContabilidad": "Required to keep accounting records",
+      "ambienteSri": "SRI environment",
+      "ambienteSriSinDefinir": "Not set",
+      "ambienteSriDesarrollo": "Development (1)",
+      "ambienteSriProduccion": "Production (2)",
+      "pathCertificado": "Electronic signature certificate (.p12)",
+      "claveCertificado": "Certificate password",
+      "claveCertificadoHelp": "Password for the .p12 file.",
+      "certificadoUploading": "Uploading certificate...",
+      "certificadoAlmacenado": "File on server:",
+      "claveCertificadoOculta": "Set",
+      "pathFileServer": "File server directory",
+      "pathFileServerHelp": "Absolute path of the directory where this company's files are stored."
     }
   }
 }

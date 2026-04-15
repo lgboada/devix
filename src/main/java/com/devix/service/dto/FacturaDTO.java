@@ -61,6 +61,28 @@ public class FacturaDTO implements Serializable {
     @NotNull
     private String estado;
 
+    private String telefono;
+
+    private String razonSocial;
+
+    private String claveAcceso;
+
+    private String numeroAutorizacion;
+
+    private Instant fechaAutorizacion;
+
+    private String tipoDocumento;
+
+    private String lineaNo;
+
+    private String codDocModificado;
+
+    private String numDocModificado;
+
+    private Instant fechaEmisionDocSustento;
+
+    private String motivo;
+
     private CentroDTO centro;
 
     private ClienteDTO cliente;
@@ -185,6 +207,94 @@ public class FacturaDTO implements Serializable {
         this.estado = estado;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public String getClaveAcceso() {
+        return claveAcceso;
+    }
+
+    public void setClaveAcceso(String claveAcceso) {
+        this.claveAcceso = claveAcceso;
+    }
+
+    public String getNumeroAutorizacion() {
+        return numeroAutorizacion;
+    }
+
+    public void setNumeroAutorizacion(String numeroAutorizacion) {
+        this.numeroAutorizacion = numeroAutorizacion;
+    }
+
+    public Instant getFechaAutorizacion() {
+        return fechaAutorizacion;
+    }
+
+    public void setFechaAutorizacion(Instant fechaAutorizacion) {
+        this.fechaAutorizacion = fechaAutorizacion;
+    }
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getLineaNo() {
+        return lineaNo;
+    }
+
+    public void setLineaNo(String lineaNo) {
+        this.lineaNo = lineaNo;
+    }
+
+    public String getCodDocModificado() {
+        return codDocModificado;
+    }
+
+    public void setCodDocModificado(String codDocModificado) {
+        this.codDocModificado = codDocModificado;
+    }
+
+    public String getNumDocModificado() {
+        return numDocModificado;
+    }
+
+    public void setNumDocModificado(String numDocModificado) {
+        this.numDocModificado = numDocModificado;
+    }
+
+    public Instant getFechaEmisionDocSustento() {
+        return fechaEmisionDocSustento;
+    }
+
+    public void setFechaEmisionDocSustento(Instant fechaEmisionDocSustento) {
+        this.fechaEmisionDocSustento = fechaEmisionDocSustento;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
     public CentroDTO getCentro() {
         return centro;
     }
@@ -241,6 +351,7 @@ public class FacturaDTO implements Serializable {
             ", direccion='" + getDireccion() + "'" +
             ", email='" + getEmail() + "'" +
             ", estado='" + getEstado() + "'" +
+            ", telefono='" + getTelefono() + "'" +
             ", centro=" + getCentro() +
             ", cliente=" + getCliente() +
             "}";

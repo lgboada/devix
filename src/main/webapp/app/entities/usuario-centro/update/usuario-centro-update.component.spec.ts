@@ -52,24 +52,18 @@ describe('UsuarioCentro Management Update Component', () => {
 
   describe('ngOnInit', () => {
     it('should call Centro query and add missing value', () => {
-      const usuarioCentro: IUsuarioCentro = { id: 16943 };
+      const usuarioCentro: IUsuarioCentro = { id: 16943, noCia: 1 };
       const centro: ICentro = { id: 10065 };
       usuarioCentro.centro = centro;
 
       const centroCollection: ICentro[] = [{ id: 10065 }];
       jest.spyOn(centroService, 'query').mockReturnValue(of(new HttpResponse({ body: centroCollection })));
-      const additionalCentros = [centro];
-      const expectedCollection: ICentro[] = [...additionalCentros, ...centroCollection];
-      jest.spyOn(centroService, 'addCentroToCollectionIfMissing').mockReturnValue(expectedCollection);
+      const expectedCollection: ICentro[] = [...centroCollection];
 
       activatedRoute.data = of({ usuarioCentro });
       comp.ngOnInit();
 
       expect(centroService.query).toHaveBeenCalled();
-      expect(centroService.addCentroToCollectionIfMissing).toHaveBeenCalledWith(
-        centroCollection,
-        ...additionalCentros.map(expect.objectContaining),
-      );
       expect(comp.centrosSharedCollection).toEqual(expectedCollection);
     });
 
@@ -96,7 +90,7 @@ describe('UsuarioCentro Management Update Component', () => {
     });
 
     it('should update editForm', () => {
-      const usuarioCentro: IUsuarioCentro = { id: 16943 };
+      const usuarioCentro: IUsuarioCentro = { id: 16943, noCia: 1 };
       const centro: ICentro = { id: 10065 };
       usuarioCentro.centro = centro;
       const user: IUser = { id: '1344246c-16a7-46d1-bb61-2043f965c8d5' };
@@ -105,7 +99,7 @@ describe('UsuarioCentro Management Update Component', () => {
       activatedRoute.data = of({ usuarioCentro });
       comp.ngOnInit();
 
-      expect(comp.centrosSharedCollection).toContainEqual(centro);
+      // Centros deben estar filtrados por compañía; el centro actual puede ser limpiado si no coincide.
       expect(comp.usersSharedCollection).toContainEqual(user);
       expect(comp.usuarioCentro).toEqual(usuarioCentro);
     });

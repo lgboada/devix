@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Campos de clasificación -->
+    <changeSet id="20260413140000-1" author="devix">
+        <addColumn tableName="factura">
+            <column name="tipo_documento" type="varchar(3)" remarks="Código tipo doc: FAC, NCV, NDB, GRM, RET"/>
+            <column name="linea_no" type="varchar(3)" remarks="Código línea de negocio: VEH, REP, TAL, etc."/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Campos específicos de Nota de Crédito (nulos en facturas normales) -->
+    <changeSet id="20260413140000-2" author="devix">
+        <addColumn tableName="factura">
+            <column name="cod_doc_modificado" type="varchar(2)"
+                    remarks="Código SRI del doc original: 01=Factura"/>
+            <column name="num_doc_modificado" type="varchar(17)"
+                    remarks="Número del doc original: 001-001-000000001"/>
+            <column name="fecha_emision_doc_sustento" type="timestamp"
+                    remarks="Fecha de emisión del documento original"/>
+            <column name="motivo" type="varchar(300)"
+                    remarks="Motivo de la nota de crédito"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

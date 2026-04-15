@@ -24,6 +24,13 @@ export class CompanyThemeAdminService {
     return this.http.put<CompanyThemeResponse>('/api/company-theme/current', { themeName });
   }
 
+  clearAssets(logo: boolean, background: boolean): Observable<CompanyThemeResponse> {
+    const params: Record<string, string> = {};
+    if (logo) params['logo'] = 'true';
+    if (background) params['background'] = 'true';
+    return this.http.delete<CompanyThemeResponse>('/api/company-theme/current/assets', { params });
+  }
+
   uploadAssets(logo?: File, background?: File): Observable<CompanyThemeResponse> {
     const formData = new FormData();
     if (logo) {

@@ -31,6 +31,11 @@ public class FileSystemFileStorageService implements FileStorageService {
 
     @Override
     public String store(MultipartFile file) {
+        return store(file, this.rootLocation);
+    }
+
+    @Override
+    public String store(MultipartFile file, Path rootLocation) {
         if (file.isEmpty()) {
             throw new RuntimeException("No se puede almacenar un archivo vacío");
         }
@@ -44,6 +49,7 @@ public class FileSystemFileStorageService implements FileStorageService {
         String filename = UUID.randomUUID() + "_" + originalFilename;
 
         try {
+            Files.createDirectories(rootLocation);
             Path destinationFile = rootLocation.resolve(filename).normalize().toAbsolutePath();
 
             // Validar que el archivo no salga del directorio raíz (seguridad)

@@ -64,5 +64,16 @@
     <include file="config/liquibase/changelog/20260317150000_add_no_cia_to_producto_imagen.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260317151000_producto_imagen_fill_no_cia_trigger.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260327120000_compania_no_cia_unique.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260412100000_add_telefono_to_factura.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260412110000_add_sri_fields_to_compania.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260412120000_add_punto_emision_to_centro.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260412130000_add_sri_fields_to_factura.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260413100000_add_factura_logs_table.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260413110000_add_razon_social_to_factura.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260413120000_add_linea_negocio_table.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260413130000_add_tipo_documento_table.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260413140000_add_linea_tipodoc_nc_to_factura.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260414100000_fix_tipo_documento_no_cia_type.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260414120000_add_path_file_server_to_compania.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

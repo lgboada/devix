@@ -26,7 +26,23 @@
       "telefono": "Telefono",
       "pathImage": "Path Image",
       "activa": "Activa",
-      "centros": "Centros"
+      "centros": "Centros",
+      "sriSection": "Intégration SRI",
+      "establecimiento": "Code établissement",
+      "contribuyenteEspecial": "Contribuable spécial",
+      "obligadoContabilidad": "Obligation comptable",
+      "ambienteSri": "Environnement SRI",
+      "ambienteSriSinDefinir": "Non défini",
+      "ambienteSriDesarrollo": "Développement (1)",
+      "ambienteSriProduccion": "Production (2)",
+      "pathCertificado": "Certificat signature (.p12)",
+      "claveCertificado": "Mot de passe du certificat",
+      "claveCertificadoHelp": "Mot de passe du fichier .p12.",
+      "certificadoUploading": "Téléversement du certificat...",
+      "certificadoAlmacenado": "Fichier sur le serveur :",
+      "claveCertificadoOculta": "Défini",
+      "pathFileServer": "Répertoire fichiers (serveur)",
+      "pathFileServerHelp": "Chemin absolu du répertoire où les fichiers de cette société sont stockés."
     }
   }
 }

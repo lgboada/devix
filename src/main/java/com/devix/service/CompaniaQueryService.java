@@ -3,11 +3,15 @@ package com.devix.service;
 import com.devix.domain.*; // for static metamodels
 import com.devix.domain.Compania;
 import com.devix.repository.CompaniaRepository;
+import com.devix.repository.UsuarioCentroRepository;
+import com.devix.security.AuthoritiesConstants;
+import com.devix.security.SecurityUtils;
 import com.devix.service.criteria.CompaniaCriteria;
 import com.devix.service.dto.CompaniaDTO;
 import com.devix.service.mapper.CompaniaMapper;
 import jakarta.persistence.criteria.JoinType;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,9 +35,16 @@ public class CompaniaQueryService extends QueryService<Compania> {
 
     private final CompaniaMapper companiaMapper;
 
-    public CompaniaQueryService(CompaniaRepository companiaRepository, CompaniaMapper companiaMapper) {
+    private final UsuarioCentroRepository usuarioCentroRepository;
+
+    public CompaniaQueryService(
+        CompaniaRepository companiaRepository,
+        CompaniaMapper companiaMapper,
+        UsuarioCentroRepository usuarioCentroRepository
+    ) {
         this.companiaRepository = companiaRepository;
         this.companiaMapper = companiaMapper;
+        this.usuarioCentroRepository = usuarioCentroRepository;
     }
 
     /**
@@ -83,6 +94,39 @@ public class CompaniaQueryService extends QueryService<Compania> {
                 buildSpecification(criteria.getCentrosId(), root -> root.join(Compania_.centros, JoinType.LEFT).get(Centro_.id))
             );
         }
-        return specification;
+        return Specification.allOf(specification, restrictToCurrentUserCompanies());
+    }
+
+    /**
+     * En el listado de compañías (/api/companias), se deben devolver únicamente las compañías a las que
+     * el usuario autenticado tiene permiso vía UsuarioCentro (noCia efectivo).
+     *
+     * Admin queda sin restricción para poder administrar compañías.
+     */
+    private Specification<Compania> restrictToCurrentUserCompanies() {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            return null;
+        }
+
+        Optional<String> loginOpt = SecurityUtils.getCurrentUserLogin();
+        if (loginOpt.isEmpty()) {
+            // Si no hay usuario, no debe listar compañías
+            return (root, query, cb) -> cb.disjunction();
+        }
+
+        String login = loginOpt.get();
+        List<Long> allowedNoCias = usuarioCentroRepository
+            .findDistinctAccountCompaniesByUserLogin(login)
+            .stream()
+            .map(p -> p.getEffectiveNoCia())
+            .filter(java.util.Objects::nonNull)
+            .distinct()
+            .toList();
+
+        if (allowedNoCias.isEmpty()) {
+            return (root, query, cb) -> cb.disjunction();
+        }
+
+        return (root, query, cb) -> root.get(Compania_.noCia).in(allowedNoCias);
     }
 }

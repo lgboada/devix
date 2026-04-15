@@ -40,12 +40,8 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="noCia">
-              <div class="d-flex">
-                <span jhiTranslate="devixApp.usuarioCentro.noCia">No Cia</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
+            <th scope="col">
+              <span jhiTranslate="devixApp.usuarioCentro.compania">Compañía</span>
             </th>
             <th scope="col" jhiSortBy="principal">
               <div class="d-flex">
@@ -75,7 +71,7 @@
               <td>
                 <a [routerLink]="['/usuario-centro', usuarioCentro.id, 'view']">{{ usuarioCentro.id }}</a>
               </td>
-              <td>{{ usuarioCentro.noCia }}</td>
+              <td>{{ usuarioCentro.companiaNombre ?? '—' }}</td>
               <td>{{ usuarioCentro.principal }}</td>
               <td>
                 @if (usuarioCentro.centro) {

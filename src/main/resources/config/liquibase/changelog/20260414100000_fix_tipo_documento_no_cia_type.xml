@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Corrige no_cia en tipo_documento de character varying a bigint,
+         consistente con todas las demás tablas del sistema. -->
+    <changeSet id="20260414100000" author="devix">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="character varying">
+                SELECT data_type FROM information_schema.columns
+                WHERE table_name='tipo_documento' AND column_name='no_cia'
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            ALTER TABLE tipo_documento ALTER COLUMN no_cia TYPE bigint USING no_cia::bigint;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

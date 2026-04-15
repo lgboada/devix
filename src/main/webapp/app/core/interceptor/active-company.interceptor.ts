@@ -36,7 +36,9 @@ export class ActiveCompanyInterceptor implements HttpInterceptor {
   }
 
   private isApiRequest(url: string): boolean {
-    return url.includes('/api/');
+    // En este proyecto `ApplicationConfigService.getEndpointFor('api/...')` devuelve `api/...` (sin slash inicial).
+    // También puede venir como URL absoluta. Cubrimos ambos casos.
+    return /(^|\/)api\//.test(url);
   }
 
   private shouldAttachNoCiaInBody(request: HttpRequest<any>): boolean {
@@ -47,6 +49,10 @@ export class ActiveCompanyInterceptor implements HttpInterceptor {
       return false;
     }
     if (request.url.includes('/api/account') || request.url.includes('/api/authenticate')) {
+      return false;
+    }
+    // `Compania` define los tenants; no se debe forzar noCia desde la sesión.
+    if (request.url.includes('/api/companias')) {
       return false;
     }
     return true;

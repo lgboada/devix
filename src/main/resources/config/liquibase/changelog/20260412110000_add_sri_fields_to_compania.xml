@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260412110000-1" author="devix">
+        <addColumn tableName="compania">
+            <column name="establecimiento" type="varchar(3)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="contribuyente_especial" type="varchar(10)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="obligado_contabilidad" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ambiente_sri" type="integer">
+                <constraints nullable="true"/>
+            </column>
+            <column name="path_certificado" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="clave_certificado" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

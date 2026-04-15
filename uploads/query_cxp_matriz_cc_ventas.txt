@@ -1,0 +1,41 @@
+--para lineas de negocio de veh
+select a.no_cia, to_char(a.fecha,'YYYY') anio,to_char(a.fecha,'MM') mes,g.cc_nivel1,a.linea_negocio no_linea,h.cc_nivel2,a.centrod agencia,i.cc_nivel4,e.familia,e.cc_nivel5,sum(a.total) valor,sysdate fecha_crea,user usuario_crea
+from fac_ventas_cab a, fac_ventas_vehiculos b , svfinven c, svfmaster d, veh_familias e, gen_negocios g , arcjli h ,agencias i
+where a.no_cia=b.no_cia
+and a.no_factu=b.no_factu
+and b.no_cia=c.no_cia
+and b.chasis=c.svincodi
+and c.no_cia=d.no_cia
+and c.svmamaster=d.svmamaster
+and c.sfx=d.sfx
+and d.no_cia=e.no_cia
+and d.familia=e.familia
+and a.no_cia=g.no_cia
+and a.no_cia='08'
+and a.no_cia=h.no_cia
+and a.linea_negocio=h.no_linea
+and a.no_cia=i.no_cia
+and a.centrod=i.codigo
+and g.negocio_id='B'
+and trunc(a.fecha) >='01/05/2025' and trunc(a.fecha)<'30/06/2025'
+and a.linea_negocio in(select l.no_linea from arcjli l where l.no_cia=a.no_cia and l.aplica_vehiculos='S')
+and nvl(a.ind_anu_dev,'X')<>'A' 
+and a.km is null
+group by a.no_cia,to_char(a.fecha,'YYYY') ,to_char(a.fecha,'MM'),g.cc_nivel1 ,a.linea_negocio,h.cc_nivel2,a.centrod ,i.cc_nivel4,e.familia,e.cc_nivel5
+union
+--para otras lineas de negocio
+select a.no_cia, to_char(a.fecha,'YYYY') anio,to_char(a.fecha,'MM') mes,g.cc_nivel1,a.linea_negocio no_linea,h.cc_nivel2,a.centrod agencia,i.cc_nivel4,'' familia,'' cc_nivel5,sum(a.total) valor,sysdate fecha_crea,user usuario_crea
+
+from fac_ventas_cab a, gen_negocios g , arcjli h ,agencias i
+where  a.no_cia=g.no_cia
+and a.no_cia='08'
+and a.no_cia=h.no_cia
+and a.linea_negocio=h.no_linea
+and a.no_cia=i.no_cia
+and a.centrod=i.codigo
+and g.negocio_id='B'
+--and trunc(a.fecha) >='01/05/2025' and trunc(a.fecha)<'30/06/2025'
+and a.linea_negocio not in(select l.no_linea from arcjli l where l.no_cia=a.no_cia and l.aplica_vehiculos='S')
+and nvl(a.ind_anu_dev,'X')<>'A' 
+and a.km is null
+group by a.no_cia,to_char(a.fecha,'YYYY') ,to_char(a.fecha,'MM'),g.cc_nivel1 ,a.linea_negocio,h.cc_nivel2,a.centrod ,i.cc_nivel4;

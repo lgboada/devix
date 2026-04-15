@@ -1,6 +1,7 @@
 package com.devix.web.rest;
 
 import com.devix.repository.UsuarioCentroRepository;
+import com.devix.service.UsuarioCentroDtoEnricher;
 import com.devix.service.UsuarioCentroQueryService;
 import com.devix.service.UsuarioCentroService;
 import com.devix.service.criteria.UsuarioCentroCriteria;
@@ -41,14 +42,18 @@ public class UsuarioCentroResource {
 
     private final UsuarioCentroQueryService usuarioCentroQueryService;
 
+    private final UsuarioCentroDtoEnricher usuarioCentroDtoEnricher;
+
     public UsuarioCentroResource(
         UsuarioCentroService usuarioCentroService,
         UsuarioCentroRepository usuarioCentroRepository,
-        UsuarioCentroQueryService usuarioCentroQueryService
+        UsuarioCentroQueryService usuarioCentroQueryService,
+        UsuarioCentroDtoEnricher usuarioCentroDtoEnricher
     ) {
         this.usuarioCentroService = usuarioCentroService;
         this.usuarioCentroRepository = usuarioCentroRepository;
         this.usuarioCentroQueryService = usuarioCentroQueryService;
+        this.usuarioCentroDtoEnricher = usuarioCentroDtoEnricher;
     }
 
     /**
@@ -151,6 +156,7 @@ public class UsuarioCentroResource {
         LOG.debug("REST request to get UsuarioCentros by criteria: {}", criteria);
 
         List<UsuarioCentroDTO> entityList = usuarioCentroQueryService.findByCriteria(criteria);
+        usuarioCentroDtoEnricher.enrichCompaniaNombre(entityList);
         return ResponseEntity.ok().body(entityList);
     }
 

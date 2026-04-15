@@ -50,6 +50,19 @@ public class CompanyThemeResource {
         return ResponseEntity.ok(toVm(theme));
     }
 
+    @DeleteMapping("/current/assets")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    public ResponseEntity<CompanyThemeVM> clearAssets(
+        @RequestParam(value = "logo", required = false, defaultValue = "false") boolean logo,
+        @RequestParam(value = "background", required = false, defaultValue = "false") boolean background
+    ) {
+        if (!logo && !background) {
+            return ResponseEntity.badRequest().build();
+        }
+        CompaniaTheme theme = companyThemeService.clearAssets(logo, background);
+        return ResponseEntity.ok(toVm(theme));
+    }
+
     @GetMapping("/themes")
     public ResponseEntity<Map<String, Object>> getAllowedThemes() {
         List<String> themes = List.of(

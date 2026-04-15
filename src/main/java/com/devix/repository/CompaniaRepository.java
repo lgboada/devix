@@ -1,6 +1,8 @@
 package com.devix.repository;
 
 import com.devix.domain.Compania;
+import java.util.Collection;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +23,8 @@ public interface CompaniaRepository extends JpaRepository<Compania, Long>, JpaSp
     boolean existsByNoCia(Long noCia);
 
     boolean existsByNoCiaAndIdNot(Long noCia, Long id);
+
+    java.util.Optional<Compania> findByNoCia(Long noCia);
+
+    List<Compania> findAllByNoCiaIn(Collection<Long> noCias);
 }

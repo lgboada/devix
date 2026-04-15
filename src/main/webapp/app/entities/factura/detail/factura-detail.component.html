@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-10">
     @if (factura(); as facturaRef) {
       <div>
         <h2 data-cy="facturaDetailsHeading"><span jhiTranslate="devixApp.factura.detail.title">Factura</span></h2>
@@ -10,67 +10,142 @@
 
         <jhi-alert />
 
+        <!-- Panel SRI -->
+        @if (resultadoSri(); as sri) {
+          <div class="alert mb-3" [class.alert-success]="sri.estado === 'AUTORIZADO'" [class.alert-warning]="sri.estado !== 'AUTORIZADO'">
+            <strong>SRI — {{ sri.estado }}</strong>
+            @if (sri.numeroAutorizacion) {
+              <span class="ms-2">Autorización: {{ sri.numeroAutorizacion }}</span>
+            }
+            @if (sri.mensajes) {
+              <div class="mt-1 small">{{ sri.mensajes }}</div>
+            }
+          </div>
+        }
+        @if (errorSri(); as err) {
+          <div class="alert alert-danger mb-3"><strong>Error SRI:</strong> {{ err }}</div>
+        }
+
         <dl class="row-md jh-entity-details">
           <dt><span jhiTranslate="global.field.id">ID</span></dt>
           <dd>
             <span>{{ facturaRef.id }}</span>
           </dd>
+
           <dt><span jhiTranslate="devixApp.factura.noCia">No Cia</span></dt>
           <dd>
             <span>{{ facturaRef.noCia }}</span>
           </dd>
+
+          <dt>Tipo Documento</dt>
+          <dd>
+            <span>{{ facturaRef.tipoDocumento }}</span>
+          </dd>
+
+          <dt>Línea de Negocio</dt>
+          <dd>
+            <span>{{ facturaRef.lineaNo }}</span>
+          </dd>
+
           <dt><span jhiTranslate="devixApp.factura.serie">Serie</span></dt>
           <dd>
             <span>{{ facturaRef.serie }}</span>
           </dd>
+
           <dt><span jhiTranslate="devixApp.factura.noFisico">No Fisico</span></dt>
           <dd>
             <span>{{ facturaRef.noFisico }}</span>
           </dd>
+
           <dt><span jhiTranslate="devixApp.factura.fecha">Fecha</span></dt>
           <dd>
             <span>{{ facturaRef.fecha | formatMediumDatetime }}</span>
           </dd>
-          <dt><span jhiTranslate="devixApp.factura.subtotal">Subtotal</span></dt>
-          <dd>
-            <span>{{ facturaRef.subtotal }}</span>
-          </dd>
-          <dt><span jhiTranslate="devixApp.factura.impuesto">Impuesto</span></dt>
-          <dd>
-            <span>{{ facturaRef.impuesto }}</span>
-          </dd>
-          <dt><span jhiTranslate="devixApp.factura.impuestoCero">Impuesto Cero</span></dt>
-          <dd>
-            <span>{{ facturaRef.impuestoCero }}</span>
-          </dd>
-          <dt><span jhiTranslate="devixApp.factura.descuento">Descuento</span></dt>
-          <dd>
-            <span>{{ facturaRef.descuento }}</span>
-          </dd>
-          <dt><span jhiTranslate="devixApp.factura.total">Total</span></dt>
-          <dd>
-            <span>{{ facturaRef.total }}</span>
-          </dd>
-          <dt><span jhiTranslate="devixApp.factura.porcentajeImpuesto">Porcentaje Impuesto</span></dt>
-          <dd>
-            <span>{{ facturaRef.porcentajeImpuesto }}</span>
-          </dd>
-          <dt><span jhiTranslate="devixApp.factura.cedula">Cedula</span></dt>
+
+          <dt><span jhiTranslate="devixApp.factura.cedula">Cédula / RUC</span></dt>
           <dd>
             <span>{{ facturaRef.cedula }}</span>
           </dd>
-          <dt><span jhiTranslate="devixApp.factura.direccion">Direccion</span></dt>
+
+          <dt>Razón Social</dt>
           <dd>
-            <span>{{ facturaRef.direccion }}</span>
+            <span>{{ facturaRef.razonSocial }}</span>
           </dd>
+
           <dt><span jhiTranslate="devixApp.factura.email">Email</span></dt>
           <dd>
             <span>{{ facturaRef.email }}</span>
           </dd>
+
+          <dt><span jhiTranslate="devixApp.factura.subtotal">Subtotal</span></dt>
+          <dd>
+            <span>{{ facturaRef.subtotal | number: '1.2-2' }}</span>
+          </dd>
+
+          <dt><span jhiTranslate="devixApp.factura.descuento">Descuento</span></dt>
+          <dd>
+            <span>{{ facturaRef.descuento | number: '1.2-2' }}</span>
+          </dd>
+
+          <dt><span jhiTranslate="devixApp.factura.impuesto">Impuesto</span></dt>
+          <dd>
+            <span>{{ facturaRef.impuesto | number: '1.2-2' }}</span>
+          </dd>
+
+          <dt><span jhiTranslate="devixApp.factura.total">Total</span></dt>
+          <dd>
+            <strong>{{ facturaRef.total | number: '1.2-2' }}</strong>
+          </dd>
+
           <dt><span jhiTranslate="devixApp.factura.estado">Estado</span></dt>
           <dd>
-            <span>{{ facturaRef.estado }}</span>
+            <span
+              class="badge"
+              [class.bg-success]="facturaRef.estado === 'AUTORIZADA'"
+              [class.bg-primary]="facturaRef.estado === 'FACTURA'"
+              [class.bg-secondary]="facturaRef.estado === 'PROFORMA'"
+              [class.bg-danger]="facturaRef.estado === 'ANULADA'"
+            >
+              {{ facturaRef.estado }}
+            </span>
           </dd>
+
+          @if (facturaRef.claveAcceso) {
+            <dt>Clave de Acceso</dt>
+            <dd>
+              <span class="font-monospace small">{{ facturaRef.claveAcceso }}</span>
+            </dd>
+          }
+
+          @if (facturaRef.numeroAutorizacion) {
+            <dt>No. Autorización</dt>
+            <dd>
+              <span class="font-monospace small">{{ facturaRef.numeroAutorizacion }}</span>
+            </dd>
+
+            <dt>Fecha Autorización</dt>
+            <dd>
+              <span>{{ facturaRef.fechaAutorizacion | formatMediumDatetime }}</span>
+            </dd>
+          }
+
+          @if (facturaRef.codDocModificado) {
+            <dt>Doc. Modificado</dt>
+            <dd>
+              <span>{{ facturaRef.codDocModificado }} — {{ facturaRef.numDocModificado }}</span>
+            </dd>
+
+            <dt>Fecha Doc. Sustento</dt>
+            <dd>
+              <span>{{ facturaRef.fechaEmisionDocSustento | formatMediumDatetime }}</span>
+            </dd>
+
+            <dt>Motivo</dt>
+            <dd>
+              <span>{{ facturaRef.motivo }}</span>
+            </dd>
+          }
+
           <dt><span jhiTranslate="devixApp.factura.centro">Centro</span></dt>
           <dd>
             @if (factura()!.centro) {
@@ -79,6 +154,7 @@
               </div>
             }
           </dd>
+
           <dt><span jhiTranslate="devixApp.factura.cliente">Cliente</span></dt>
           <dd>
             @if (factura()!.cliente) {
@@ -89,13 +165,30 @@
           </dd>
         </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
-        </button>
+        <div class="d-flex gap-2 flex-wrap">
+          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+          </button>
 
-        <button type="button" [routerLink]="['/factura', facturaRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
-        </button>
+          <button type="button" [routerLink]="['/factura', facturaRef.id, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-success"
+            [disabled]="enviandoSri()"
+            (click)="enviarAlSri()"
+            title="Firmar y enviar al SRI Ecuador"
+          >
+            @if (enviandoSri()) {
+              <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            } @else {
+              <fa-icon icon="paper-plane"></fa-icon>
+            }
+            &nbsp;Enviar al SRI
+          </button>
+        </div>
       </div>
     }
   </div>

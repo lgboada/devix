@@ -56,6 +56,27 @@ public class Compania implements Serializable {
     @Column(name = "activa", nullable = false)
     private Boolean activa;
 
+    @Column(name = "establecimiento", length = 3)
+    private String establecimiento;
+
+    @Column(name = "contribuyente_especial", length = 10)
+    private String contribuyenteEspecial;
+
+    @Column(name = "obligado_contabilidad")
+    private Boolean obligadoContabilidad;
+
+    @Column(name = "ambiente_sri")
+    private Integer ambienteSri;
+
+    @Column(name = "path_certificado", length = 500)
+    private String pathCertificado;
+
+    @Column(name = "clave_certificado", length = 200)
+    private String claveCertificado;
+
+    @Column(name = "path_file_server", length = 500)
+    private String pathFileServer;
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "no_cia", referencedColumnName = "no_cia", insertable = false, updatable = false)
     @JsonIgnoreProperties(value = { "facturas", "eventos" }, allowSetters = true)
@@ -201,6 +222,97 @@ public class Compania implements Serializable {
     public Compania removeCentros(Centro centro) {
         this.centros.remove(centro);
         return this;
+    }
+
+    public String getEstablecimiento() {
+        return this.establecimiento;
+    }
+
+    public Compania establecimiento(String establecimiento) {
+        this.setEstablecimiento(establecimiento);
+        return this;
+    }
+
+    public void setEstablecimiento(String establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    public String getContribuyenteEspecial() {
+        return this.contribuyenteEspecial;
+    }
+
+    public Compania contribuyenteEspecial(String contribuyenteEspecial) {
+        this.setContribuyenteEspecial(contribuyenteEspecial);
+        return this;
+    }
+
+    public void setContribuyenteEspecial(String contribuyenteEspecial) {
+        this.contribuyenteEspecial = contribuyenteEspecial;
+    }
+
+    public Boolean getObligadoContabilidad() {
+        return this.obligadoContabilidad;
+    }
+
+    public Compania obligadoContabilidad(Boolean obligadoContabilidad) {
+        this.setObligadoContabilidad(obligadoContabilidad);
+        return this;
+    }
+
+    public void setObligadoContabilidad(Boolean obligadoContabilidad) {
+        this.obligadoContabilidad = obligadoContabilidad;
+    }
+
+    public Integer getAmbienteSri() {
+        return this.ambienteSri;
+    }
+
+    public Compania ambienteSri(Integer ambienteSri) {
+        this.setAmbienteSri(ambienteSri);
+        return this;
+    }
+
+    public void setAmbienteSri(Integer ambienteSri) {
+        this.ambienteSri = ambienteSri;
+    }
+
+    public String getPathCertificado() {
+        return this.pathCertificado;
+    }
+
+    public Compania pathCertificado(String pathCertificado) {
+        this.setPathCertificado(pathCertificado);
+        return this;
+    }
+
+    public void setPathCertificado(String pathCertificado) {
+        this.pathCertificado = pathCertificado;
+    }
+
+    public String getClaveCertificado() {
+        return this.claveCertificado;
+    }
+
+    public Compania claveCertificado(String claveCertificado) {
+        this.setClaveCertificado(claveCertificado);
+        return this;
+    }
+
+    public void setClaveCertificado(String claveCertificado) {
+        this.claveCertificado = claveCertificado;
+    }
+
+    public String getPathFileServer() {
+        return this.pathFileServer;
+    }
+
+    public Compania pathFileServer(String pathFileServer) {
+        this.setPathFileServer(pathFileServer);
+        return this;
+    }
+
+    public void setPathFileServer(String pathFileServer) {
+        this.pathFileServer = pathFileServer;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

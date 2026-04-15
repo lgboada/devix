@@ -21,8 +21,10 @@ import { CompaniaFormGroup, CompaniaFormService } from './compania-form.service'
 export class CompaniaUpdateComponent implements OnInit {
   isSaving = false;
   isUploading = false;
+  isUploadingCert = false;
   compania: ICompania | null = null;
   uploadError: string | null = null;
+  uploadCertError: string | null = null;
 
   protected companiaService = inject(CompaniaService);
   protected companiaFormService = inject(CompaniaFormService);
@@ -54,13 +56,15 @@ export class CompaniaUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const compania = this.companiaFormService.getCompania(this.editForm);
-    const activeCompanyNoCia = this.getActiveCompanyNoCia();
-    if (activeCompanyNoCia !== null) {
-      compania.noCia = activeCompanyNoCia;
-    }
     if (compania.id !== null) {
       this.subscribeToSaveResponse(this.companiaService.update(compania));
     } else {
+      const activeCompanyNoCia = this.getActiveCompanyNoCia();
+      // En creación, si existe compañía activa, prellenamos el noCia por defecto.
+      // En edición no se debe sobrescribir (puede estar editando otra compañía permitida).
+      if (activeCompanyNoCia !== null) {
+        compania.noCia = activeCompanyNoCia;
+      }
       this.subscribeToSaveResponse(this.companiaService.create(compania));
     }
   }
@@ -122,6 +126,36 @@ export class CompaniaUpdateComponent implements OnInit {
   getCurrentImageUrl(): string | null {
     const currentPathImage = this.editForm.get('pathImage')?.value;
     return currentPathImage ? this.fileService.getFileUrl(currentPathImage) : null;
+  }
+
+  onCertificadoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const selectedFile = input.files?.[0];
+    if (!selectedFile) {
+      return;
+    }
+
+    this.uploadCertError = null;
+    this.isUploadingCert = true;
+
+    this.fileService
+      .upload(selectedFile)
+      .pipe(finalize(() => (this.isUploadingCert = false)))
+      .subscribe({
+        next: response => {
+          const storedFilename = response.body?.filename;
+          if (!storedFilename) {
+            this.uploadCertError = 'No se pudo obtener el nombre del archivo del certificado.';
+            return;
+          }
+          this.editForm.patchValue({ pathCertificado: storedFilename });
+          this.editForm.get('pathCertificado')?.markAsDirty();
+          this.editForm.get('pathCertificado')?.markAsTouched();
+        },
+        error: () => {
+          this.uploadCertError = 'No se pudo subir el certificado. Intenta nuevamente.';
+        },
+      });
   }
 
   private getActiveCompanyNoCia(): number | null {

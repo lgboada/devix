@@ -3,12 +3,16 @@ package com.devix.security.company;
 import com.devix.security.AuthoritiesConstants;
 import com.devix.security.SecurityUtils;
 import com.devix.service.criteria.CompaniaCriteria;
+import com.devix.service.criteria.UsuarioCentroCriteria;
+import jakarta.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tech.jhipster.service.filter.LongFilter;
 
 @Aspect
@@ -39,6 +43,11 @@ public class CompanyCriteriaEnforcementAspect {
             return;
         }
 
+        // Admin: en /api/usuario-centros (listado/pantalla) debe poder ver todas las compañías.
+        if (criteria instanceof UsuarioCentroCriteria && isUsuarioCentroApiRequestByAdmin()) {
+            return;
+        }
+
         Method getNoCia = findMethod(criteria.getClass(), "getNoCia");
         Method setNoCia = findMethod(criteria.getClass(), "setNoCia", LongFilter.class);
         if (getNoCia == null || setNoCia == null) {
@@ -62,6 +71,26 @@ public class CompanyCriteriaEnforcementAspect {
         LongFilter forcedFilter = new LongFilter();
         forcedFilter.setEquals(companyId);
         invokeSetter(criteria, setNoCia, forcedFilter);
+    }
+
+    private boolean isUsuarioCentroApiRequestByAdmin() {
+        if (!SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            return false;
+        }
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attrs == null) {
+            return false;
+        }
+        HttpServletRequest req = attrs.getRequest();
+        if (!"GET".equals(req.getMethod())) {
+            return false;
+        }
+        String path = req.getRequestURI();
+        String contextPath = req.getContextPath();
+        if (contextPath != null && !contextPath.isEmpty() && path.startsWith(contextPath)) {
+            path = path.substring(contextPath.length());
+        }
+        return "/api/usuario-centros".equals(path) || path.startsWith("/api/usuario-centros/");
     }
 
     private Method findMethod(Class<?> type, String name, Class<?>... parameterTypes) {

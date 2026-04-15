@@ -70,7 +70,9 @@ module.exports = async (config, options, targetOptions) => {
           */
         },
         {
-          reload: targetOptions.target === 'build', // enabled for build --watch
+          // Con `ng serve`, antes quedaba en false: solo HMR. Rutas lazy (p. ej. /usuario-centro) a veces
+          // no se actualizan y el navegador puede seguir mostrando plantillas viejas hasta recarga completa.
+          reload: true,
         },
       ),
     );

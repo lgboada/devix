@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type CompaniaFormGroupInput = ICompania | PartialWithRequiredKeyOf<NewCompania>;
 
-type CompaniaFormDefaults = Pick<NewCompania, 'id' | 'activa'>;
+type CompaniaFormDefaults = Pick<NewCompania, 'id' | 'activa' | 'obligadoContabilidad' | 'ambienteSri'>;
 
 type CompaniaFormGroupContent = {
   id: FormControl<ICompania['id'] | NewCompania['id']>;
@@ -26,6 +26,13 @@ type CompaniaFormGroupContent = {
   telefono: FormControl<ICompania['telefono']>;
   pathImage: FormControl<ICompania['pathImage']>;
   activa: FormControl<ICompania['activa']>;
+  establecimiento: FormControl<ICompania['establecimiento']>;
+  contribuyenteEspecial: FormControl<ICompania['contribuyenteEspecial']>;
+  obligadoContabilidad: FormControl<ICompania['obligadoContabilidad']>;
+  ambienteSri: FormControl<ICompania['ambienteSri']>;
+  pathCertificado: FormControl<ICompania['pathCertificado']>;
+  claveCertificado: FormControl<ICompania['claveCertificado']>;
+  pathFileServer: FormControl<ICompania['pathFileServer']>;
 };
 
 export type CompaniaFormGroup = FormGroup<CompaniaFormGroupContent>;
@@ -69,6 +76,17 @@ export class CompaniaFormService {
       activa: new FormControl(companiaRawValue.activa, {
         validators: [Validators.required],
       }),
+      establecimiento: new FormControl(companiaRawValue.establecimiento, {
+        validators: [Validators.maxLength(3)],
+      }),
+      contribuyenteEspecial: new FormControl(companiaRawValue.contribuyenteEspecial, {
+        validators: [Validators.maxLength(10)],
+      }),
+      obligadoContabilidad: new FormControl(companiaRawValue.obligadoContabilidad),
+      ambienteSri: new FormControl(companiaRawValue.ambienteSri),
+      pathCertificado: new FormControl(companiaRawValue.pathCertificado),
+      claveCertificado: new FormControl(companiaRawValue.claveCertificado),
+      pathFileServer: new FormControl(companiaRawValue.pathFileServer),
     });
   }
 
@@ -90,6 +108,8 @@ export class CompaniaFormService {
     return {
       id: null,
       activa: false,
+      obligadoContabilidad: false,
+      ambienteSri: 1,
     };
   }
 }

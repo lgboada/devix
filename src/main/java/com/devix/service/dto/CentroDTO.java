@@ -18,6 +18,8 @@ public class CentroDTO implements Serializable {
     @NotNull
     private String descripcion;
 
+    private String puntoEmision;
+
     public Long getId() {
         return id;
     }
@@ -40,6 +42,14 @@ public class CentroDTO implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getPuntoEmision() {
+        return puntoEmision;
+    }
+
+    public void setPuntoEmision(String puntoEmision) {
+        this.puntoEmision = puntoEmision;
     }
 
     @Override

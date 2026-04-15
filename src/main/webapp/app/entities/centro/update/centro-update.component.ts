@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { ActiveCompanyService } from 'app/core/auth/active-company.service';
 import { ICentro } from '../centro.model';
 import { CentroService } from '../service/centro.service';
 import { CentroFormGroup, CentroFormService } from './centro-form.service';
@@ -22,6 +23,7 @@ export class CentroUpdateComponent implements OnInit {
 
   protected centroService = inject(CentroService);
   protected centroFormService = inject(CentroFormService);
+  protected activeCompanyService = inject(ActiveCompanyService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -32,7 +34,15 @@ export class CentroUpdateComponent implements OnInit {
       this.centro = centro;
       if (centro) {
         this.updateForm(centro);
+      } else {
+        const activeNoCia = this.activeCompanyService.trackActiveCompany()()?.noCia ?? null;
+        if (activeNoCia != null) {
+          this.editForm.patchValue({ noCia: activeNoCia });
+        }
       }
+
+      // El centro pertenece a la compañía conectada (tenant).
+      this.editForm.controls.noCia.disable();
     });
   }
 

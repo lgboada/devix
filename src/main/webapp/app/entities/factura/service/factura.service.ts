@@ -11,8 +11,10 @@ import { IFactura, NewFactura } from '../factura.model';
 
 export type PartialUpdateFactura = Partial<IFactura> & Pick<IFactura, 'id'>;
 
-type RestOf<T extends IFactura | NewFactura> = Omit<T, 'fecha'> & {
+type RestOf<T extends IFactura | NewFactura> = Omit<T, 'fecha' | 'fechaAutorizacion' | 'fechaEmisionDocSustento'> & {
   fecha?: string | null;
+  fechaAutorizacion?: string | null;
+  fechaEmisionDocSustento?: string | null;
 };
 
 export type RestFactura = RestOf<IFactura>;
@@ -69,6 +71,14 @@ export class FacturaService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  enviarSri(id: number): Observable<HttpResponse<any>> {
+    return this.http.post<any>(`${this.resourceUrl}/${id}/enviar-sri`, {}, { observe: 'response' });
+  }
+
+  getLogsSri(id: number): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(`${this.resourceUrl}/${id}/logs-sri`, { observe: 'response' });
+  }
+
   getFacturaIdentifier(factura: Pick<IFactura, 'id'>): number {
     return factura.id;
   }
@@ -101,6 +111,8 @@ export class FacturaService {
     return {
       ...factura,
       fecha: factura.fecha?.toJSON() ?? null,
+      fechaAutorizacion: factura.fechaAutorizacion?.toJSON() ?? null,
+      fechaEmisionDocSustento: factura.fechaEmisionDocSustento?.toJSON() ?? null,
     };
   }
 
@@ -108,6 +120,8 @@ export class FacturaService {
     return {
       ...restFactura,
       fecha: restFactura.fecha ? dayjs(restFactura.fecha) : undefined,
+      fechaAutorizacion: restFactura.fechaAutorizacion ? dayjs(restFactura.fechaAutorizacion) : undefined,
+      fechaEmisionDocSustento: restFactura.fechaEmisionDocSustento ? dayjs(restFactura.fechaEmisionDocSustento) : undefined,
     };
   }
 

@@ -1,0 +1,69 @@
+<div class="d-flex justify-content-center">
+  <div class="col-md-5">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-linea-negocio-heading" data-cy="LineaNegocioCreateUpdateHeading">
+        {{ isEditing ? 'Editar' : 'Nueva' }} Línea de Negocio
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        <div class="mb-3">
+          <label class="form-label" for="field_noCia">Compañía (noCia)</label>
+          <input type="number" class="form-control bg-light" name="noCia" id="field_noCia" formControlName="noCia" readonly />
+        </div>
+
+        @let lineaNoRef = editForm.get('lineaNo')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_lineaNo">
+            Código <span class="text-danger">*</span>
+            @if (isEditing) {
+              <span class="text-muted small">(no editable)</span>
+            }
+          </label>
+          <input
+            type="text"
+            class="form-control text-uppercase"
+            name="lineaNo"
+            id="field_lineaNo"
+            formControlName="lineaNo"
+            maxlength="3"
+            placeholder="Ej: VEH"
+          />
+          @if (lineaNoRef.invalid && (lineaNoRef.dirty || lineaNoRef.touched)) {
+            <div>
+              @if (lineaNoRef.errors?.['required']) {
+                <small class="form-text text-danger">Este campo es obligatorio.</small>
+              }
+              @if (lineaNoRef.errors?.['maxlength']) {
+                <small class="form-text text-danger">Máximo 3 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_descripcion">Descripción</label>
+          <input
+            type="text"
+            class="form-control"
+            name="descripcion"
+            id="field_descripcion"
+            formControlName="descripcion"
+            maxlength="60"
+            placeholder="Ej: Vehículos"
+          />
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;Cancelar
+        </button>
+        <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+          <fa-icon icon="save"></fa-icon>&nbsp;Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

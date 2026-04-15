@@ -19,15 +19,16 @@ type FacturaFormGroupInput = IFactura | PartialWithRequiredKeyOf<NewFactura>;
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IFactura | NewFactura> = Omit<T, 'fecha'> & {
+type FormValueOf<T extends IFactura | NewFactura> = Omit<T, 'fecha' | 'fechaEmisionDocSustento'> & {
   fecha?: string | null;
+  fechaEmisionDocSustento?: string | null;
 };
 
 type FacturaFormRawValue = FormValueOf<IFactura>;
 
 type NewFacturaFormRawValue = FormValueOf<NewFactura>;
 
-type FacturaFormDefaults = Pick<NewFactura, 'id' | 'fecha'>;
+type FacturaFormDefaults = Pick<NewFactura, 'id' | 'fecha' | 'subtotal' | 'impuesto' | 'impuestoCero' | 'descuento' | 'total'>;
 
 type FacturaFormGroupContent = {
   id: FormControl<FacturaFormRawValue['id'] | NewFactura['id']>;
@@ -45,6 +46,14 @@ type FacturaFormGroupContent = {
   direccion: FormControl<FacturaFormRawValue['direccion']>;
   email: FormControl<FacturaFormRawValue['email']>;
   estado: FormControl<FacturaFormRawValue['estado']>;
+  telefono: FormControl<FacturaFormRawValue['telefono']>;
+  tipoDocumento: FormControl<FacturaFormRawValue['tipoDocumento']>;
+  lineaNo: FormControl<FacturaFormRawValue['lineaNo']>;
+  razonSocial: FormControl<FacturaFormRawValue['razonSocial']>;
+  codDocModificado: FormControl<FacturaFormRawValue['codDocModificado']>;
+  numDocModificado: FormControl<FacturaFormRawValue['numDocModificado']>;
+  fechaEmisionDocSustento: FormControl<FacturaFormRawValue['fechaEmisionDocSustento']>;
+  motivo: FormControl<FacturaFormRawValue['motivo']>;
   centro: FormControl<FacturaFormRawValue['centro']>;
   cliente: FormControl<FacturaFormRawValue['cliente']>;
 };
@@ -108,6 +117,14 @@ export class FacturaFormService {
       estado: new FormControl(facturaRawValue.estado, {
         validators: [Validators.required],
       }),
+      telefono: new FormControl(facturaRawValue.telefono ?? null),
+      tipoDocumento: new FormControl(facturaRawValue.tipoDocumento ?? null),
+      lineaNo: new FormControl(facturaRawValue.lineaNo ?? null),
+      razonSocial: new FormControl(facturaRawValue.razonSocial ?? null),
+      codDocModificado: new FormControl(facturaRawValue.codDocModificado ?? null),
+      numDocModificado: new FormControl(facturaRawValue.numDocModificado ?? null),
+      fechaEmisionDocSustento: new FormControl(facturaRawValue.fechaEmisionDocSustento ?? null),
+      motivo: new FormControl(facturaRawValue.motivo ?? null),
       centro: new FormControl(facturaRawValue.centro),
       cliente: new FormControl(facturaRawValue.cliente),
     });
@@ -133,6 +150,11 @@ export class FacturaFormService {
     return {
       id: null,
       fecha: currentTime,
+      subtotal: 0,
+      impuesto: 0,
+      impuestoCero: 0,
+      descuento: 0,
+      total: 0,
     };
   }
 
@@ -140,6 +162,7 @@ export class FacturaFormService {
     return {
       ...rawFactura,
       fecha: dayjs(rawFactura.fecha, DATE_TIME_FORMAT),
+      fechaEmisionDocSustento: rawFactura.fechaEmisionDocSustento ? dayjs(rawFactura.fechaEmisionDocSustento, DATE_TIME_FORMAT) : undefined,
     };
   }
 
@@ -149,6 +172,7 @@ export class FacturaFormService {
     return {
       ...factura,
       fecha: factura.fecha ? factura.fecha.format(DATE_TIME_FORMAT) : undefined,
+      fechaEmisionDocSustento: factura.fechaEmisionDocSustento ? factura.fechaEmisionDocSustento.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

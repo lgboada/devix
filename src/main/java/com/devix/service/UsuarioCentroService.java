@@ -4,10 +4,12 @@ import com.devix.domain.UsuarioCentro;
 import com.devix.repository.UsuarioCentroRepository;
 import com.devix.service.dto.UsuarioCentroDTO;
 import com.devix.service.mapper.UsuarioCentroMapper;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +27,16 @@ public class UsuarioCentroService {
 
     private final UsuarioCentroMapper usuarioCentroMapper;
 
-    public UsuarioCentroService(UsuarioCentroRepository usuarioCentroRepository, UsuarioCentroMapper usuarioCentroMapper) {
+    private final UsuarioCentroDtoEnricher usuarioCentroDtoEnricher;
+
+    public UsuarioCentroService(
+        UsuarioCentroRepository usuarioCentroRepository,
+        UsuarioCentroMapper usuarioCentroMapper,
+        UsuarioCentroDtoEnricher usuarioCentroDtoEnricher
+    ) {
         this.usuarioCentroRepository = usuarioCentroRepository;
         this.usuarioCentroMapper = usuarioCentroMapper;
+        this.usuarioCentroDtoEnricher = usuarioCentroDtoEnricher;
     }
 
     /**
@@ -40,7 +49,9 @@ public class UsuarioCentroService {
         LOG.debug("Request to save UsuarioCentro : {}", usuarioCentroDTO);
         UsuarioCentro usuarioCentro = usuarioCentroMapper.toEntity(usuarioCentroDTO);
         usuarioCentro = usuarioCentroRepository.save(usuarioCentro);
-        return usuarioCentroMapper.toDto(usuarioCentro);
+        UsuarioCentroDTO dto = usuarioCentroMapper.toDto(usuarioCentro);
+        usuarioCentroDtoEnricher.enrichCompaniaNombre(dto);
+        return dto;
     }
 
     /**
@@ -53,7 +64,9 @@ public class UsuarioCentroService {
         LOG.debug("Request to update UsuarioCentro : {}", usuarioCentroDTO);
         UsuarioCentro usuarioCentro = usuarioCentroMapper.toEntity(usuarioCentroDTO);
         usuarioCentro = usuarioCentroRepository.save(usuarioCentro);
-        return usuarioCentroMapper.toDto(usuarioCentro);
+        UsuarioCentroDTO dto = usuarioCentroMapper.toDto(usuarioCentro);
+        usuarioCentroDtoEnricher.enrichCompaniaNombre(dto);
+        return dto;
     }
 
     /**
@@ -73,7 +86,11 @@ public class UsuarioCentroService {
                 return existingUsuarioCentro;
             })
             .map(usuarioCentroRepository::save)
-            .map(usuarioCentroMapper::toDto);
+            .map(usuarioCentroMapper::toDto)
+            .map(dto -> {
+                usuarioCentroDtoEnricher.enrichCompaniaNombre(dto);
+                return dto;
+            });
     }
 
     /**
@@ -82,7 +99,10 @@ public class UsuarioCentroService {
      * @return the list of entities.
      */
     public Page<UsuarioCentroDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return usuarioCentroRepository.findAllWithEagerRelationships(pageable).map(usuarioCentroMapper::toDto);
+        Page<UsuarioCentro> page = usuarioCentroRepository.findAllWithEagerRelationships(pageable);
+        List<UsuarioCentroDTO> dtos = usuarioCentroMapper.toDto(page.getContent());
+        usuarioCentroDtoEnricher.enrichCompaniaNombre(dtos);
+        return new PageImpl<>(dtos, page.getPageable(), page.getTotalElements());
     }
 
     /**
@@ -94,7 +114,13 @@ public class UsuarioCentroService {
     @Transactional(readOnly = true)
     public Optional<UsuarioCentroDTO> findOne(Long id) {
         LOG.debug("Request to get UsuarioCentro : {}", id);
-        return usuarioCentroRepository.findOneWithEagerRelationships(id).map(usuarioCentroMapper::toDto);
+        return usuarioCentroRepository
+            .findOneWithEagerRelationships(id)
+            .map(usuarioCentroMapper::toDto)
+            .map(dto -> {
+                usuarioCentroDtoEnricher.enrichCompaniaNombre(dto);
+                return dto;
+            });
     }
 
     /**

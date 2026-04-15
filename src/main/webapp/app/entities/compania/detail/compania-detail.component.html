@@ -47,6 +47,44 @@
           <dd>
             <span>{{ companiaRef.activa }}</span>
           </dd>
+          <dt><span jhiTranslate="devixApp.compania.establecimiento">Establecimiento</span></dt>
+          <dd>
+            <span>{{ companiaRef.establecimiento ?? '—' }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.compania.contribuyenteEspecial">Contribuyente especial</span></dt>
+          <dd>
+            <span>{{ companiaRef.contribuyenteEspecial ?? '—' }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.compania.obligadoContabilidad">Obligado contabilidad</span></dt>
+          <dd>
+            <span>{{ companiaRef.obligadoContabilidad }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.compania.ambienteSri">Ambiente SRI</span></dt>
+          <dd>
+            @if (companiaRef.ambienteSri === 1) {
+              <span jhiTranslate="devixApp.compania.ambienteSriDesarrollo">Desarrollo (1)</span>
+            } @else if (companiaRef.ambienteSri === 2) {
+              <span jhiTranslate="devixApp.compania.ambienteSriProduccion">Producción (2)</span>
+            } @else {
+              <span>—</span>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.compania.pathCertificado">Certificado (.p12)</span></dt>
+          <dd>
+            <span>{{ companiaRef.pathCertificado ?? '—' }}</span>
+          </dd>
+          <dt><span jhiTranslate="devixApp.compania.claveCertificado">Clave certificado</span></dt>
+          <dd>
+            @if (companiaRef.claveCertificado) {
+              <span jhiTranslate="devixApp.compania.claveCertificadoOculta">Configurada</span>
+            } @else {
+              <span>—</span>
+            }
+          </dd>
+          <dt><span jhiTranslate="devixApp.compania.pathFileServer">Path File Server</span></dt>
+          <dd>
+            <span>{{ companiaRef.pathFileServer ?? '—' }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

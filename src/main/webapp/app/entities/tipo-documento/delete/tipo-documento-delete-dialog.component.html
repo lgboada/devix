@@ -1,0 +1,23 @@
+@if (tipoDocumento) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(tipoDocumento.noCia, tipoDocumento.tipoDocumento)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="tipoDocumentoDeleteDialogHeading">Confirmar eliminación</h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p id="jhi-delete-tipoDocumento-heading">
+        ¿Seguro que desea eliminar el tipo de documento
+        <strong>{{ tipoDocumento.tipoDocumento }} — {{ tipoDocumento.descripcion }}</strong
+        >?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancel()"><fa-icon icon="ban"></fa-icon>&nbsp;Cancelar</button>
+      <button id="jhi-confirm-delete-tipoDocumento" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;Eliminar
+      </button>
+    </div>
+  </form>
+}

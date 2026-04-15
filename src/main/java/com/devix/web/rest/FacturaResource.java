@@ -1,10 +1,14 @@
 package com.devix.web.rest;
 
 import com.devix.repository.FacturaRepository;
+import com.devix.repository.TipoDocumentoRepository;
+import com.devix.service.FacturaLogService;
 import com.devix.service.FacturaQueryService;
 import com.devix.service.FacturaService;
 import com.devix.service.criteria.FacturaCriteria;
 import com.devix.service.dto.FacturaDTO;
+import com.devix.service.dto.FacturaLogDTO;
+import com.devix.service.sri.SriEnvioService;
 import com.devix.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,15 +45,26 @@ public class FacturaResource {
     private String applicationName;
 
     private final FacturaService facturaService;
-
     private final FacturaRepository facturaRepository;
-
     private final FacturaQueryService facturaQueryService;
+    private final SriEnvioService sriEnvioService;
+    private final FacturaLogService facturaLogService;
+    private final TipoDocumentoRepository tipoDocumentoRepository;
 
-    public FacturaResource(FacturaService facturaService, FacturaRepository facturaRepository, FacturaQueryService facturaQueryService) {
+    public FacturaResource(
+        FacturaService facturaService,
+        FacturaRepository facturaRepository,
+        FacturaQueryService facturaQueryService,
+        SriEnvioService sriEnvioService,
+        FacturaLogService facturaLogService,
+        TipoDocumentoRepository tipoDocumentoRepository
+    ) {
         this.facturaService = facturaService;
+        this.tipoDocumentoRepository = tipoDocumentoRepository;
         this.facturaRepository = facturaRepository;
         this.facturaQueryService = facturaQueryService;
+        this.sriEnvioService = sriEnvioService;
+        this.facturaLogService = facturaLogService;
     }
 
     /**
@@ -182,6 +197,62 @@ public class FacturaResource {
         LOG.debug("REST request to get Factura : {}", id);
         Optional<FacturaDTO> facturaDTO = facturaService.findOne(id);
         return ResponseUtil.wrapOrNotFound(facturaDTO);
+    }
+
+    /**
+     * {@code POST /facturas/:id/enviar-sri} : Envía la factura al SRI Ecuador.
+     * Genera el XML, lo firma con XAdES-BES y lo envía al WebService del SRI.
+     * Registra cada intento en factura_log.
+     *
+     * @param id el id de la factura a enviar
+     * @return el log del último intento (recepción o autorización)
+     */
+    @PostMapping("/{id}/enviar-sri")
+    public ResponseEntity<FacturaLogDTO> enviarAlSri(@PathVariable("id") Long id) {
+        LOG.debug("REST request to enviar Factura al SRI : {}", id);
+        FacturaDTO factura = facturaService
+            .findOne(id)
+            .orElseThrow(() -> new BadRequestAlertException("Factura no encontrada", ENTITY_NAME, "idnotfound"));
+        String tipoGenerador = resolverTipoGenerador(factura.getNoCia(), factura.getTipoDocumento());
+        FacturaLogDTO resultado = sriEnvioService.enviar(id, tipoGenerador, factura.getNoCia());
+        return ResponseEntity.ok(resultado);
+    }
+
+    /**
+     * {@code GET /facturas/:id/logs-sri} : Obtiene el historial de intentos de envío al SRI.
+     *
+     * @param id el id de la factura
+     * @return lista de logs ordenados por fecha descendente
+     */
+    @GetMapping("/{id}/logs-sri")
+    public ResponseEntity<List<FacturaLogDTO>> getLogsSri(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logs SRI de Factura : {}", id);
+        FacturaDTO factura = facturaService
+            .findOne(id)
+            .orElseThrow(() -> new BadRequestAlertException("Factura no encontrada", ENTITY_NAME, "idnotfound"));
+        String tipoGenerador = resolverTipoGenerador(factura.getNoCia(), factura.getTipoDocumento());
+        List<FacturaLogDTO> logs = facturaLogService.findByDocumentoId(id, tipoGenerador);
+        return ResponseEntity.ok(logs);
+    }
+
+    /**
+     * Resuelve el tipo de generador SRI a partir del tipo_documento configurado en la compañía.
+     * Consulta el campo codigo_sri del catálogo tipo_documento y lo mapea al identificador del generador.
+     */
+    private String resolverTipoGenerador(Long noCia, String tipoDocumentoCod) {
+        if (tipoDocumentoCod == null) return "FACTURA";
+        String codigoSri = tipoDocumentoRepository
+            .findByNoCiaAndTipoDocumento(noCia, tipoDocumentoCod)
+            .map(td -> td.getCodigoSri())
+            .orElse("01");
+        return switch (codigoSri) {
+            case "04" -> "NOTA_CREDITO";
+            case "05" -> "NOTA_DEBITO";
+            case "06" -> "GUIA_REMISION";
+            case "07" -> "RETENCION";
+            case "03" -> "LIQUIDACION_COMPRA";
+            default -> "FACTURA";
+        };
     }
 
     /**

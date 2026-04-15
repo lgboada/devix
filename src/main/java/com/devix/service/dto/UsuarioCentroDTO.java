@@ -22,6 +22,9 @@ public class UsuarioCentroDTO implements Serializable {
 
     private UserDTO user;
 
+    /** Nombre de la compañía ({@link com.devix.domain.Compania#getNombre()}) para el {@code noCia}; solo lectura en API. */
+    private String companiaNombre;
+
     public Long getId() {
         return id;
     }
@@ -60,6 +63,14 @@ public class UsuarioCentroDTO implements Serializable {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public String getCompaniaNombre() {
+        return companiaNombre;
+    }
+
+    public void setCompaniaNombre(String companiaNombre) {
+        this.companiaNombre = companiaNombre;
     }
 
     @Override

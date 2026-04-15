@@ -94,7 +94,12 @@
         <div class="col-md-6">
           <p class="mb-1"><strong>Logo:</strong></p>
           @if (current.logoUrl) {
-            <img [src]="current.logoUrl" alt="Logo actual" class="img-fluid border rounded p-2" style="max-height: 120px" />
+            <div class="d-flex flex-column gap-2 align-items-start">
+              <img [src]="current.logoUrl" alt="Logo actual" class="img-fluid border rounded p-2" style="max-height: 120px" />
+              <button class="btn btn-sm btn-outline-danger" type="button" [disabled]="clearingAssets()" (click)="clearAsset('logo')">
+                {{ clearingAssets() ? 'Eliminando...' : 'Limpiar logo' }}
+              </button>
+            </div>
           } @else {
             <p class="text-muted">Sin logo configurado</p>
           }
@@ -102,7 +107,12 @@
         <div class="col-md-6">
           <p class="mb-1"><strong>Background:</strong></p>
           @if (current.backgroundUrl) {
-            <img [src]="current.backgroundUrl" alt="Background actual" class="img-fluid border rounded p-2" style="max-height: 120px" />
+            <div class="d-flex flex-column gap-2 align-items-start">
+              <img [src]="current.backgroundUrl" alt="Background actual" class="img-fluid border rounded p-2" style="max-height: 120px" />
+              <button class="btn btn-sm btn-outline-danger" type="button" [disabled]="clearingAssets()" (click)="clearAsset('background')">
+                {{ clearingAssets() ? 'Eliminando...' : 'Limpiar background' }}
+              </button>
+            </div>
           } @else {
             <p class="text-muted">Sin background configurado</p>
           }

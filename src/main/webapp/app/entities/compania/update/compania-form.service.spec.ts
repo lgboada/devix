@@ -28,6 +28,13 @@ describe('Compania Form Service', () => {
             telefono: expect.any(Object),
             pathImage: expect.any(Object),
             activa: expect.any(Object),
+            establecimiento: expect.any(Object),
+            contribuyenteEspecial: expect.any(Object),
+            obligadoContabilidad: expect.any(Object),
+            ambienteSri: expect.any(Object),
+            pathCertificado: expect.any(Object),
+            claveCertificado: expect.any(Object),
+            pathFileServer: expect.any(Object),
           }),
         );
       });
@@ -46,6 +53,13 @@ describe('Compania Form Service', () => {
             telefono: expect.any(Object),
             pathImage: expect.any(Object),
             activa: expect.any(Object),
+            establecimiento: expect.any(Object),
+            contribuyenteEspecial: expect.any(Object),
+            obligadoContabilidad: expect.any(Object),
+            ambienteSri: expect.any(Object),
+            pathCertificado: expect.any(Object),
+            claveCertificado: expect.any(Object),
+            pathFileServer: expect.any(Object),
           }),
         );
       });

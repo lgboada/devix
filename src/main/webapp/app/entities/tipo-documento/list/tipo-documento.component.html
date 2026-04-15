@@ -1,0 +1,78 @@
+<div>
+  <h2 id="page-heading" data-cy="TipoDocumentoHeading">
+    <span>Tipos de Documento</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        Refrescar lista
+      </button>
+
+      <button id="jh-create-entity" data-cy="entityCreateButton" class="btn btn-primary" [routerLink]="['/tipo-documento/new']">
+        <fa-icon icon="plus"></fa-icon>
+        Nuevo Tipo de Documento
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+  <jhi-alert />
+
+  @if (tipoDocumentos().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No se encontraron tipos de documento.</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="indice">
+              <div class="d-flex"><span>Índice</span><fa-icon class="p-1" icon="sort"></fa-icon></div>
+            </th>
+            <th scope="col" jhiSortBy="tipoDocumento">
+              <div class="d-flex"><span>Código</span><fa-icon class="p-1" icon="sort"></fa-icon></div>
+            </th>
+            <th scope="col" jhiSortBy="descripcion">
+              <div class="d-flex"><span>Descripción</span><fa-icon class="p-1" icon="sort"></fa-icon></div>
+            </th>
+            <th scope="col">Cód. SRI</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (td of tipoDocumentos(); track trackKey(td)) {
+            <tr data-cy="entityTable">
+              <td>{{ td.indice }}</td>
+              <td>
+                <strong>{{ td.tipoDocumento }}</strong>
+              </td>
+              <td>{{ td.descripcion }}</td>
+              <td>
+                @if (td.codigoSri) {
+                  <span class="badge bg-secondary">{{ td.codigoSri }}</span>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/tipo-documento', td.noCia, td.tipoDocumento, 'view']" class="btn btn-info btn-sm">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Vista</span>
+                  </a>
+                  <a [routerLink]="['/tipo-documento', td.noCia, td.tipoDocumento, 'edit']" class="btn btn-primary btn-sm">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </a>
+                  <button type="submit" (click)="delete(td)" class="btn btn-danger btn-sm">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

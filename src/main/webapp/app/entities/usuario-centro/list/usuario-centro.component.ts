@@ -15,6 +15,9 @@ import { UsuarioCentroDeleteDialogComponent } from '../delete/usuario-centro-del
   selector: 'jhi-usuario-centro',
   templateUrl: './usuario-centro.component.html',
   imports: [RouterModule, FormsModule, SharedModule, SortDirective, SortByDirective],
+  host: {
+    '[attr.data-list]': "'usuario-centro-v2'",
+  },
 })
 export class UsuarioCentroComponent implements OnInit {
   subscription: Subscription | null = null;
