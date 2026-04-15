@@ -49,6 +49,11 @@ public class CompaniaDTO implements Serializable {
 
     private String claveCertificado;
 
+    /**
+     * Indica si existe una clave de certificado configurada (sin exponerla).
+     */
+    private Boolean claveCertificadoConfigurada;
+
     private String pathFileServer;
 
     public Long getId() {
@@ -169,6 +174,14 @@ public class CompaniaDTO implements Serializable {
 
     public void setClaveCertificado(String claveCertificado) {
         this.claveCertificado = claveCertificado;
+    }
+
+    public Boolean getClaveCertificadoConfigurada() {
+        return claveCertificadoConfigurada;
+    }
+
+    public void setClaveCertificadoConfigurada(Boolean claveCertificadoConfigurada) {
+        this.claveCertificadoConfigurada = claveCertificadoConfigurada;
     }
 
     public String getPathFileServer() {

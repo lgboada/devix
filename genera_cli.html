@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+  <meta charset="utf-8" />
+  <title>Generar client_secret (AES-256)</title>
+  <body>
+    <button id="gen">Generar</button>
+    <pre id="out" style="user-select: all; font-size: 14px"></pre>
+    <script>
+      function gen() {
+        const bytes = new Uint8Array(32);
+        crypto.getRandomValues(bytes);
+        let bin = '';
+        for (const b of bytes) bin += String.fromCharCode(b);
+        document.getElementById('out').textContent = btoa(bin);
+      }
+      document.getElementById('gen').addEventListener('click', gen);
+      gen();
+    </script>
+  </body>
+</html>

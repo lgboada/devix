@@ -18,6 +18,8 @@ export interface ICompania {
   /** Nombre de archivo del certificado .p12 almacenado en el servidor (vía api/files). */
   pathCertificado?: string | null;
   claveCertificado?: string | null;
+  /** Indica si existe una clave configurada (sin exponerla). */
+  claveCertificadoConfigurada?: boolean | null;
   /** Directorio raíz externo para archivos de la compañía (servidor). */
   pathFileServer?: string | null;
 }

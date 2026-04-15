@@ -8,4 +8,15 @@ import org.mapstruct.*;
  * Mapper for the entity {@link Compania} and its DTO {@link CompaniaDTO}.
  */
 @Mapper(componentModel = "spring")
-public interface CompaniaMapper extends EntityMapper<CompaniaDTO, Compania> {}
+public interface CompaniaMapper extends EntityMapper<CompaniaDTO, Compania> {
+    @Override
+    @Mapping(target = "claveCertificado", ignore = true)
+    @Mapping(
+        target = "claveCertificadoConfigurada",
+        expression = "java(compania.getClaveCertificado() != null && !compania.getClaveCertificado().isBlank())"
+    )
+    CompaniaDTO toDto(Compania compania);
+
+    @Override
+    Compania toEntity(CompaniaDTO dto);
+}

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+  <meta charset="utf-8" />
+  <title>Descifrar clave_certificado (enc:v1)</title>
+  <style>
+    body {
+      font-family: system-ui, Arial;
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 12px;
+    }
+    textarea,
+    input {
+      width: 100%;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    textarea {
+      height: 120px;
+    }
+    .row {
+      margin: 12px 0;
+    }
+    button {
+      padding: 8px 12px;
+    }
+    pre {
+      background: #f6f8fa;
+      padding: 12px;
+      white-space: pre-wrap;
+    }
+  </style>
+  <body>
+    <h3>Descifrar <code>enc:v1:...</code> (AES-256-GCM)</h3>
+
+    <div class="row">
+      <label><b>client_secret</b> (Base64, 32 bytes):</label>
+      <input id="keyB64" placeholder="Ej: 9bq... (Base64)" />
+    </div>
+
+    <div class="row">
+      <label><b>clave_certificado</b> cifrada (de BD):</label>
+      <textarea id="enc" placeholder="enc:v1:..."></textarea>
+    </div>
+
+    <button id="go">Descifrar</button>
+
+    <h4>Resultado</h4>
+    <pre id="out">(aquí aparecerá el texto plano)</pre>
+
+    <script>
+      const PREFIX = 'enc:v1:';
+      const IV_LEN = 12;
+
+      function b64ToBytes(b64) {
+        const bin = atob(b64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return bytes;
+      }
+
+      async function decrypt() {
+        const keyB64 = document.getElementById('keyB64').value.trim();
+        const enc = document.getElementById('enc').value.trim();
+        const out = document.getElementById('out');
+
+        try {
+          if (!keyB64) throw new Error('Falta client_secret');
+          if (!enc.startsWith(PREFIX)) throw new Error("El valor no empieza con 'enc:v1:'");
+
+          const keyRaw = b64ToBytes(keyB64);
+          if (keyRaw.length !== 32) throw new Error('client_secret debe decodificar a 32 bytes');
+
+          const payloadB64 = enc.slice(PREFIX.length);
+          const all = b64ToBytes(payloadB64);
+          if (all.length <= IV_LEN) throw new Error('Payload muy corto');
+
+          const iv = all.slice(0, IV_LEN);
+          const cipherPlusTag = all.slice(IV_LEN); // ciphertext+tag (como en Java)
+
+          const cryptoKey = await crypto.subtle.importKey('raw', keyRaw, { name: 'AES-GCM' }, false, ['decrypt']);
+
+          const plainBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, cryptoKey, cipherPlusTag);
+
+          const plain = new TextDecoder().decode(new Uint8Array(plainBuf));
+          out.textContent = plain;
+        } catch (e) {
+          out.textContent = 'ERROR: ' + (e && e.message ? e.message : String(e));
+        }
+      }
+
+      document.getElementById('go').addEventListener('click', decrypt);
+    </script>
+  </body>
+</html>

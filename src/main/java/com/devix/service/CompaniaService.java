@@ -4,8 +4,11 @@ import com.devix.domain.Compania;
 import com.devix.repository.CompaniaRepository;
 import com.devix.service.dto.CompaniaDTO;
 import com.devix.service.mapper.CompaniaMapper;
+import com.devix.service.security.AesGcmCryptoService;
+import com.devix.service.security.CompanyClientSecretService;
 import com.devix.web.rest.errors.BadRequestAlertException;
 import java.util.Optional;
+import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,9 +28,19 @@ public class CompaniaService {
 
     private final CompaniaMapper companiaMapper;
 
-    public CompaniaService(CompaniaRepository companiaRepository, CompaniaMapper companiaMapper) {
+    private final CompanyClientSecretService companyClientSecretService;
+    private final AesGcmCryptoService aesGcmCryptoService;
+
+    public CompaniaService(
+        CompaniaRepository companiaRepository,
+        CompaniaMapper companiaMapper,
+        CompanyClientSecretService companyClientSecretService,
+        AesGcmCryptoService aesGcmCryptoService
+    ) {
         this.companiaRepository = companiaRepository;
         this.companiaMapper = companiaMapper;
+        this.companyClientSecretService = companyClientSecretService;
+        this.aesGcmCryptoService = aesGcmCryptoService;
     }
 
     /**
@@ -41,6 +54,7 @@ public class CompaniaService {
         validateUniqueDni(companiaDTO);
         validateUniqueNoCia(companiaDTO);
         Compania compania = companiaMapper.toEntity(companiaDTO);
+        applyClaveCertificadoEncryptionForCreateOrUpdate(compania, companiaDTO.getClaveCertificado());
         compania = companiaRepository.save(compania);
         return companiaMapper.toDto(compania);
     }
@@ -56,6 +70,14 @@ public class CompaniaService {
         validateUniqueDni(companiaDTO);
         validateUniqueNoCia(companiaDTO);
         Compania compania = companiaMapper.toEntity(companiaDTO);
+        String incoming = companiaDTO.getClaveCertificado();
+        if (incoming == null || incoming.isBlank()) {
+            // No sobrescribir la clave existente si el formulario viene vacío
+            String existingClave = companiaRepository.findById(companiaDTO.getId()).map(Compania::getClaveCertificado).orElse(null);
+            compania.setClaveCertificado(existingClave);
+        } else {
+            applyClaveCertificadoEncryptionForCreateOrUpdate(compania, incoming);
+        }
         compania = companiaRepository.save(compania);
         return companiaMapper.toDto(compania);
     }
@@ -76,6 +98,10 @@ public class CompaniaService {
                 validateUniqueDni(existingCompania);
                 validateUniqueNoCia(existingCompania);
 
+                String incoming = companiaDTO.getClaveCertificado();
+                if (incoming != null && !incoming.isBlank()) {
+                    applyClaveCertificadoEncryptionForCreateOrUpdate(existingCompania, incoming);
+                }
                 return existingCompania;
             })
             .map(companiaRepository::save)
@@ -102,6 +128,16 @@ public class CompaniaService {
     public void delete(Long id) {
         LOG.debug("Request to delete Compania : {}", id);
         companiaRepository.deleteById(id);
+    }
+
+    private void applyClaveCertificadoEncryptionForCreateOrUpdate(Compania compania, String claveCertificadoPlaintextOrNull) {
+        if (claveCertificadoPlaintextOrNull == null || claveCertificadoPlaintextOrNull.isBlank()) {
+            // En creación permitimos null; en actualización se maneja arriba para no pisar
+            compania.setClaveCertificado(null);
+            return;
+        }
+        SecretKey key = companyClientSecretService.getAesKeyOrThrow(compania);
+        compania.setClaveCertificado(aesGcmCryptoService.encrypt(claveCertificadoPlaintextOrNull, key));
     }
 
     private void validateUniqueDni(CompaniaDTO companiaDTO) {

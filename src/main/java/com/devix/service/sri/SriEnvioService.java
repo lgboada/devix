@@ -5,12 +5,15 @@ import com.devix.domain.FacturaLog;
 import com.devix.repository.CompaniaRepository;
 import com.devix.service.FacturaLogService;
 import com.devix.service.dto.FacturaLogDTO;
+import com.devix.service.security.AesGcmCryptoService;
+import com.devix.service.security.CompanyClientSecretService;
 import com.devix.service.sri.dto.RespuestaAutorizacion;
 import com.devix.service.sri.dto.RespuestaRecepcion;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,8 @@ public class SriEnvioService {
     private final SriSoapClientService sriSoapClientService;
     private final FacturaLogService facturaLogService;
     private final CompaniaRepository companiaRepository;
+    private final CompanyClientSecretService companyClientSecretService;
+    private final AesGcmCryptoService aesGcmCryptoService;
 
     public SriEnvioService(
         List<SriXmlGenerator> generadores,
@@ -42,7 +47,9 @@ public class SriEnvioService {
         SriSignatureService sriSignatureService,
         SriSoapClientService sriSoapClientService,
         FacturaLogService facturaLogService,
-        CompaniaRepository companiaRepository
+        CompaniaRepository companiaRepository,
+        CompanyClientSecretService companyClientSecretService,
+        AesGcmCryptoService aesGcmCryptoService
     ) {
         this.generadores = generadores.stream().collect(Collectors.toMap(SriXmlGenerator::getTipoDocumento, g -> g));
         this.sriClaveAccesoService = sriClaveAccesoService;
@@ -50,6 +57,8 @@ public class SriEnvioService {
         this.sriSoapClientService = sriSoapClientService;
         this.facturaLogService = facturaLogService;
         this.companiaRepository = companiaRepository;
+        this.companyClientSecretService = companyClientSecretService;
+        this.aesGcmCryptoService = aesGcmCryptoService;
     }
 
     /**
@@ -75,6 +84,11 @@ public class SriEnvioService {
             .findByNoCia(noCia)
             .orElseThrow(() -> new RuntimeException("Compañía no encontrada: " + noCia));
         validarConfiguracionSri(compania);
+
+        // Descifrar la clave del certificado solo en memoria (en BD queda cifrada)
+        SecretKey key = companyClientSecretService.getAesKeyOrThrow(compania);
+        String claveCertPlain = aesGcmCryptoService.decryptIfEncrypted(compania.getClaveCertificado(), key);
+        compania.setClaveCertificado(claveCertPlain);
 
         // 3. Generar clave de acceso
         String[] serieSeq = generador.getSerieYSecuencial(documentoId);
