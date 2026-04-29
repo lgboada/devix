@@ -1,0 +1,91 @@
+<div>
+  <h2 id="page-heading" data-cy="UCBHeading">
+    <span jhiTranslate="devixApp.usuarioCentroBodega.home.title">Bodegas del usuario</span>
+    @if (usuarioCentro) {
+      <small class="text-muted ms-2">
+        — {{ usuarioCentro.user?.login }} /
+        {{ usuarioCentro.centro?.descripcion }}
+      </small>
+    }
+
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-info" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.usuarioCentroBodega.home.refreshListLabel">Refrescar</span>
+      </button>
+
+      @if (usuarioCentro?.id) {
+        <button
+          type="button"
+          id="jh-create-entity"
+          class="btn btn-primary"
+          [routerLink]="['/usuario-centro', usuarioCentro!.id, 'bodegas', 'new']"
+        >
+          <fa-icon icon="plus"></fa-icon>
+          <span jhiTranslate="devixApp.usuarioCentroBodega.home.createLabel">Asignar bodega</span>
+        </button>
+      }
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+  <jhi-alert />
+
+  @if (items().length === 0 && !isLoading) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.usuarioCentroBodega.home.notFound">No hay bodegas asignadas</span>
+    </div>
+  } @else if (items().length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr>
+            <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col"><span jhiTranslate="devixApp.usuarioCentroBodega.bodegaCodigo">Código</span></th>
+            <th scope="col"><span jhiTranslate="devixApp.usuarioCentroBodega.bodegaNombre">Bodega</span></th>
+            <th scope="col"><span jhiTranslate="devixApp.usuarioCentroBodega.principal">Principal</span></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items(); track trackId(item)) {
+            <tr data-cy="entityTable">
+              <td>{{ item.id }}</td>
+              <td>{{ item.bodega?.codigo }}</td>
+              <td>{{ item.bodega?.nombre }}</td>
+              <td>
+                @if (item.principal) {
+                  <fa-icon icon="check" class="text-success"></fa-icon>
+                } @else {
+                  <fa-icon icon="times" class="text-danger"></fa-icon>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  @if (usuarioCentro?.id) {
+                    <a
+                      [routerLink]="['/usuario-centro', usuarioCentro!.id, 'bodegas', item.id, 'edit']"
+                      class="btn btn-primary btn-sm"
+                      data-cy="entityEditButton"
+                    >
+                      <fa-icon icon="pencil-alt"></fa-icon>
+                      <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                    </a>
+                  }
+                  <button type="button" (click)="delete(item)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <button type="button" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="devixApp.usuarioCentroBodega.action.backToUsuarioCentro">Volver</span>
+  </button>
+</div>

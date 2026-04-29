@@ -22,6 +22,11 @@ const centroRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
+    path: ':id/bodegas',
+    loadChildren: () => import('../bodega/bodega.routes'),
+    canActivate: [UserRouteAccessService],
+  },
+  {
     path: 'new',
     loadComponent: () => import('./update/centro-update.component').then(m => m.CentroUpdateComponent),
     resolve: {

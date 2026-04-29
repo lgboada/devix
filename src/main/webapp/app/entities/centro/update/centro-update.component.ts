@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import { CentroFormGroup, CentroFormService } from './centro-form.service';
 @Component({
   selector: 'jhi-centro-update',
   templateUrl: './centro-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterModule],
 })
 export class CentroUpdateComponent implements OnInit {
   isSaving = false;

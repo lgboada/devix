@@ -6,6 +6,8 @@ export class StateStorageService {
   private readonly authenticationKey = 'jhi-authenticationToken';
   private readonly localeKey = 'locale';
   private readonly activeCompanyNoCiaKey = 'activeCompanyNoCia';
+  private readonly activeCentroIdKey = 'activeCentroId';
+  private readonly activeBodegaIdKey = 'activeBodegaId';
 
   storeUrl(url: string): void {
     sessionStorage.setItem(this.previousUrlKey, JSON.stringify(url));
@@ -63,5 +65,31 @@ export class StateStorageService {
 
   clearActiveCompanyNoCia(): void {
     sessionStorage.removeItem(this.activeCompanyNoCiaKey);
+  }
+
+  storeActiveCentroId(centroId: number): void {
+    sessionStorage.setItem(this.activeCentroIdKey, JSON.stringify(centroId));
+  }
+
+  getActiveCentroId(): number | null {
+    const raw = sessionStorage.getItem(this.activeCentroIdKey);
+    return raw ? (JSON.parse(raw) as number) : null;
+  }
+
+  clearActiveCentroId(): void {
+    sessionStorage.removeItem(this.activeCentroIdKey);
+  }
+
+  storeActiveBodegaId(bodegaId: number): void {
+    sessionStorage.setItem(this.activeBodegaIdKey, JSON.stringify(bodegaId));
+  }
+
+  getActiveBodegaId(): number | null {
+    const raw = sessionStorage.getItem(this.activeBodegaIdKey);
+    return raw ? (JSON.parse(raw) as number) : null;
+  }
+
+  clearActiveBodegaId(): void {
+    sessionStorage.removeItem(this.activeBodegaIdKey);
   }
 }

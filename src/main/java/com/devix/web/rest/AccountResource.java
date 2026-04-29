@@ -1,6 +1,9 @@
 package com.devix.web.rest;
 
+import com.devix.repository.AccountBodegaProjection;
+import com.devix.repository.AccountCentroProjection;
 import com.devix.repository.AccountCompanyProjection;
+import com.devix.repository.UsuarioCentroBodegaRepository;
 import com.devix.repository.UsuarioCentroRepository;
 import com.devix.security.SecurityUtils;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -27,9 +30,11 @@ public class AccountResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccountResource.class);
     private final UsuarioCentroRepository usuarioCentroRepository;
+    private final UsuarioCentroBodegaRepository usuarioCentroBodegaRepository;
 
-    public AccountResource(UsuarioCentroRepository usuarioCentroRepository) {
+    public AccountResource(UsuarioCentroRepository usuarioCentroRepository, UsuarioCentroBodegaRepository usuarioCentroBodegaRepository) {
         this.usuarioCentroRepository = usuarioCentroRepository;
+        this.usuarioCentroBodegaRepository = usuarioCentroBodegaRepository;
     }
 
     private static class AccountResourceException extends RuntimeException {
@@ -124,7 +129,56 @@ public class AccountResource {
         }
     }
 
+    @GetMapping("/account/centros")
+    public List<CentroVM> getAccountCentros(
+        @org.springframework.web.bind.annotation.RequestParam("noCia") Long noCia,
+        Principal principal
+    ) {
+        if (!(principal instanceof AbstractAuthenticationToken authToken)) {
+            throw new AccountResourceException("User could not be found");
+        }
+        List<AccountCentroProjection> rows = usuarioCentroRepository.findDistinctAccountCentrosByUserLoginAndNoCia(
+            authToken.getName(),
+            noCia
+        );
+        return rows
+            .stream()
+            .map(row ->
+                new CentroVM(row.getCentroId(), row.getPrincipalInt() != null && row.getPrincipalInt() >= 1, nullIfBlank(row.getLabel()))
+            )
+            .toList();
+    }
+
+    @GetMapping("/account/bodegas")
+    public List<BodegaVM> getAccountBodegas(
+        @org.springframework.web.bind.annotation.RequestParam("centroId") Long centroId,
+        Principal principal
+    ) {
+        if (!(principal instanceof AbstractAuthenticationToken authToken)) {
+            throw new AccountResourceException("User could not be found");
+        }
+        List<AccountBodegaProjection> rows = usuarioCentroBodegaRepository.findDistinctAccountBodegasByUserLoginAndCentroId(
+            authToken.getName(),
+            centroId
+        );
+        return rows
+            .stream()
+            .map(row ->
+                new BodegaVM(
+                    row.getBodegaId(),
+                    row.getPrincipalInt() != null && row.getPrincipalInt() >= 1,
+                    nullIfBlank(row.getCodigo()),
+                    nullIfBlank(row.getLabel())
+                )
+            )
+            .toList();
+    }
+
     private record CompanyVM(Long noCia, boolean principal, String label) {}
+
+    private record CentroVM(Long centroId, boolean principal, String label) {}
+
+    private record BodegaVM(Long bodegaId, boolean principal, String codigo, String label) {}
 
     private static UserVM getUserFromAuthentication(AbstractAuthenticationToken authToken) {
         Map<String, Object> attributes;

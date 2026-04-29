@@ -1,0 +1,85 @@
+<div>
+  <h2 id="page-heading" data-cy="BodegaCentroHeading">
+    <span jhiTranslate="devixApp.bodega.home.titleCentro">Bodegas del centro</span>
+    @if (centro) {
+      <small class="text-muted ms-2">— {{ centro.descripcion }}</small>
+    }
+
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-info" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.bodega.home.refreshListLabel">Refrescar</span>
+      </button>
+
+      @if (centro; as c) {
+        @if (c.id) {
+          <button type="button" id="jh-create-entity" class="btn btn-primary" [routerLink]="['/centro', c.id, 'bodegas', 'new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span jhiTranslate="devixApp.bodega.home.createLabel">Nueva bodega</span>
+          </button>
+        }
+      }
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+  <jhi-alert />
+
+  @if (bodegas().length === 0 && !isLoading) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.bodega.home.notFound">No hay bodegas</span>
+    </div>
+  } @else if (bodegas().length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr>
+            <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col"><span jhiTranslate="devixApp.bodega.codigo">Código</span></th>
+            <th scope="col"><span jhiTranslate="devixApp.bodega.nombre">Nombre</span></th>
+            <th scope="col"><span jhiTranslate="devixApp.bodega.activa">Activa</span></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (bodega of bodegas(); track trackId(bodega)) {
+            <tr data-cy="entityTable">
+              <td>{{ bodega.id }}</td>
+              <td>{{ bodega.codigo }}</td>
+              <td>{{ bodega.nombre }}</td>
+              <td>
+                @if (bodega.activa) {
+                  <fa-icon icon="check" class="text-success"></fa-icon>
+                } @else {
+                  <fa-icon icon="times" class="text-danger"></fa-icon>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  @if (centro; as c) {
+                    <a
+                      [routerLink]="['/centro', c.id, 'bodegas', bodega.id, 'edit']"
+                      class="btn btn-primary btn-sm"
+                      data-cy="entityEditButton"
+                    >
+                      <fa-icon icon="pencil-alt"></fa-icon>
+                      <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                    </a>
+                  }
+                  <button type="button" (click)="delete(bodega)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <button type="button" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="devixApp.bodega.action.backToCentro">Volver al centro</span>
+  </button>
+</div>

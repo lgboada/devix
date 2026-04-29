@@ -1,0 +1,65 @@
+<div>
+  <div class="col-8 m-auto">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-bodega-heading" data-cy="BodegaCreateUpdateHeading" jhiTranslate="devixApp.bodega.home.createOrEditLabel">
+        Crear o editar bodega
+      </h2>
+
+      @if (centro) {
+        <p class="text-muted"><span jhiTranslate="devixApp.bodega.centro">Centro</span>: {{ centro.descripcion }}</p>
+      }
+
+      <jhi-alert-error />
+
+      <div class="mb-3">
+        <label class="form-label" for="field_codigo" jhiTranslate="devixApp.bodega.codigo">Código</label>
+        <input type="text" class="form-control" name="codigo" id="field_codigo" data-cy="codigo" formControlName="codigo" />
+        @if (editForm.get('codigo')!.invalid && (editForm.get('codigo')!.dirty || editForm.get('codigo')!.touched)) {
+          <div>
+            @if (editForm.get('codigo')?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Requerido</small>
+            }
+            @if (editForm.get('codigo')?.errors?.maxlength) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '50' }"
+                >Máximo 50</small
+              >
+            }
+          </div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_nombre" jhiTranslate="devixApp.bodega.nombre">Nombre</label>
+        <input type="text" class="form-control" name="nombre" id="field_nombre" data-cy="nombre" formControlName="nombre" />
+        @if (editForm.get('nombre')!.invalid && (editForm.get('nombre')!.dirty || editForm.get('nombre')!.touched)) {
+          <div>
+            @if (editForm.get('nombre')?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Requerido</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" name="activa" id="field_activa" data-cy="activa" formControlName="activa" />
+        <label class="form-check-label" for="field_activa" jhiTranslate="devixApp.bodega.activa">Activa</label>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

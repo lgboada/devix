@@ -35,22 +35,77 @@
         @if (account() !== null) {
           @if (availableCompanies().length > 0) {
             <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
-              <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="company-menu">
+              <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="context-menu">
                 <span>
                   <fa-icon icon="list"></fa-icon>
-                  <span>Compania: {{ activeCompany()?.label || (activeCompany()?.noCia ?? '-') }}</span>
+                  <span>{{ activeCompany()?.label || (activeCompany()?.noCia ?? '-') }}</span>
                 </span>
               </a>
-              <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="company-menu">
+              <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="context-menu">
+                <li>
+                  <h6 class="dropdown-header"><fa-icon icon="users" [fixedWidth]="true"></fa-icon> Empresas</h6>
+                </li>
                 @for (company of availableCompanies(); track company.noCia) {
                   <li>
-                    <a class="dropdown-item" href="javascript:void(0);" (click)="changeActiveCompany(company.noCia)">
-                      {{ company.noCia }} — {{ company.label || 'Empresa' }}
-                      @if (company.principal) {
-                        (Principal)
+                    <a
+                      class="dropdown-item d-flex align-items-center gap-2"
+                      href="javascript:void(0);"
+                      (click)="changeActiveCompany(company.noCia)"
+                    >
+                      @if (company.noCia === activeCompany()?.noCia) {
+                        <fa-icon icon="check" class="text-success" style="width: 14px"></fa-icon>
+                      } @else {
+                        <span style="width: 14px; display: inline-block"></span>
                       }
+                      {{ company.label || company.noCia }}
                     </a>
                   </li>
+                }
+
+                @if (availableCentros().length > 0) {
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <h6 class="dropdown-header"><fa-icon icon="road" [fixedWidth]="true"></fa-icon> Agencias</h6>
+                  </li>
+                  @for (centro of availableCentros(); track centro.centroId) {
+                    <li>
+                      <a
+                        class="dropdown-item d-flex align-items-center gap-2"
+                        href="javascript:void(0);"
+                        (click)="changeActiveCentro(centro.centroId)"
+                      >
+                        @if (centro.centroId === activeCentro()?.centroId) {
+                          <fa-icon icon="check" class="text-success" style="width: 14px"></fa-icon>
+                        } @else {
+                          <span style="width: 14px; display: inline-block"></span>
+                        }
+                        {{ centro.label || centro.centroId }}
+                      </a>
+                    </li>
+                  }
+                }
+
+                @if (availableBodegas().length > 0) {
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <h6 class="dropdown-header"><fa-icon icon="warehouse" [fixedWidth]="true"></fa-icon> Bodegas</h6>
+                  </li>
+                  @for (bodega of availableBodegas(); track bodega.bodegaId) {
+                    <li>
+                      <a
+                        class="dropdown-item d-flex align-items-center gap-2"
+                        href="javascript:void(0);"
+                        (click)="changeActiveBodega(bodega.bodegaId)"
+                      >
+                        @if (bodega.bodegaId === activeBodega()?.bodegaId) {
+                          <fa-icon icon="check" class="text-success" style="width: 14px"></fa-icon>
+                        } @else {
+                          <span style="width: 14px; display: inline-block"></span>
+                        }
+                        {{ bodega.codigo }} — {{ bodega.label }}
+                      </a>
+                    </li>
+                  }
                 }
               </ul>
             </li>

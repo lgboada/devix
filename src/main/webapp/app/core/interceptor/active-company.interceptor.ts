@@ -3,10 +3,14 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 
 import { ActiveCompanyService } from 'app/core/auth/active-company.service';
+import { ActiveCentroService } from 'app/core/auth/active-centro.service';
+import { ActiveBodegaService } from 'app/core/auth/active-bodega.service';
 
 @Injectable()
 export class ActiveCompanyInterceptor implements HttpInterceptor {
   private readonly activeCompanyService = inject(ActiveCompanyService);
+  private readonly activeCentroService = inject(ActiveCentroService);
+  private readonly activeBodegaService = inject(ActiveBodegaService);
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const activeCompany = this.activeCompanyService.trackActiveCompany()();
@@ -15,12 +19,19 @@ export class ActiveCompanyInterceptor implements HttpInterceptor {
     }
 
     let requestToSend = request;
+
     if (!requestToSend.headers.has('X-Company-Id')) {
-      requestToSend = requestToSend.clone({
-        setHeaders: {
-          'X-Company-Id': `${activeCompany.noCia}`,
-        },
-      });
+      requestToSend = requestToSend.clone({ setHeaders: { 'X-Company-Id': `${activeCompany.noCia}` } });
+    }
+
+    const activeCentro = this.activeCentroService.trackActiveCentro()();
+    if (activeCentro && !requestToSend.headers.has('X-Centro-Id')) {
+      requestToSend = requestToSend.clone({ setHeaders: { 'X-Centro-Id': `${activeCentro.centroId}` } });
+    }
+
+    const activeBodega = this.activeBodegaService.trackActiveBodega()();
+    if (activeBodega && !requestToSend.headers.has('X-Bodega-Id')) {
+      requestToSend = requestToSend.clone({ setHeaders: { 'X-Bodega-Id': `${activeBodega.bodegaId}` } });
     }
 
     if (this.shouldAttachNoCiaInBody(requestToSend)) {

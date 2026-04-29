@@ -1,0 +1,28 @@
+@if (bodega) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(bodega.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="bodegaDeleteDialogHeading" jhiTranslate="entity.delete.title">Confirmar</h4>
+      <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <p
+        id="jhi-delete-bodega-heading"
+        jhiTranslate="devixApp.bodega.delete.question"
+        [translateValues]="{ id: bodega.id, codigo: bodega.codigo }"
+      >
+        ¿Eliminar bodega?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+      </button>
+
+      <button id="jhi-confirm-delete-bodega" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Eliminar</span>
+      </button>
+    </div>
+  </form>
+}

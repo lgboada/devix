@@ -3,6 +3,8 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ActiveCompanyService } from 'app/core/auth/active-company.service';
+import { ActiveCentroService } from 'app/core/auth/active-centro.service';
+import { ActiveBodegaService } from 'app/core/auth/active-bodega.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
@@ -28,9 +30,14 @@ export default class NavbarComponent implements OnInit {
   languages = LANGUAGES;
   openAPIEnabled?: boolean;
   version = '';
+
   account = inject(AccountService).trackCurrentAccount();
   activeCompany = inject(ActiveCompanyService).trackActiveCompany();
   availableCompanies = inject(ActiveCompanyService).trackAvailableCompanies();
+  activeCentro = inject(ActiveCentroService).trackActiveCentro();
+  availableCentros = inject(ActiveCentroService).trackAvailableCentros();
+  activeBodega = inject(ActiveBodegaService).trackActiveBodega();
+  availableBodegas = inject(ActiveBodegaService).trackAvailableBodegas();
   theme = inject(CompanyThemeService).trackTheme();
   entitiesNavbarItems: NavbarItem[] = [];
 
@@ -38,6 +45,7 @@ export default class NavbarComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
   private readonly stateStorageService = inject(StateStorageService);
   private readonly profileService = inject(ProfileService);
+  private readonly accountService = inject(AccountService);
   private readonly activeCompanyService = inject(ActiveCompanyService);
   private readonly router = inject(Router);
 
@@ -77,7 +85,17 @@ export default class NavbarComponent implements OnInit {
   }
 
   changeActiveCompany(noCia: number): void {
-    this.activeCompanyService.selectCompany(noCia);
+    this.accountService.selectCompanyAndReload(noCia).subscribe();
+    this.collapseNavbar();
+  }
+
+  changeActiveCentro(centroId: number): void {
+    this.accountService.selectCentroAndReload(centroId).subscribe();
+    this.collapseNavbar();
+  }
+
+  changeActiveBodega(bodegaId: number): void {
+    this.accountService.selectBodega(bodegaId);
     this.collapseNavbar();
   }
 

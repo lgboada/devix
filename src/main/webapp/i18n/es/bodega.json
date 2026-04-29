@@ -1,0 +1,24 @@
+{
+  "devixApp": {
+    "bodega": {
+      "home": {
+        "title": "Bodegas",
+        "titleCentro": "Bodegas del centro",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Nueva bodega",
+        "createOrEditLabel": "Crear o editar bodega",
+        "notFound": "No hay bodegas registradas para este centro"
+      },
+      "delete": {
+        "question": "¿Seguro que desea eliminar la bodega {{ codigo }} (id {{ id }})?"
+      },
+      "action": {
+        "backToCentro": "Volver al centro"
+      },
+      "codigo": "Código",
+      "nombre": "Nombre",
+      "activa": "Activa",
+      "centro": "Centro"
+    }
+  }
+}

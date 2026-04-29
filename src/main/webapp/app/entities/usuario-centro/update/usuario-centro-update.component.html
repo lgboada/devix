@@ -107,6 +107,12 @@
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
         </button>
+
+        @if (editForm.controls.id.value !== null) {
+          <a [routerLink]="['/usuario-centro', editForm.controls.id.value, 'bodegas']" class="btn btn-secondary">
+            <fa-icon icon="warehouse"></fa-icon>&nbsp;<span jhiTranslate="devixApp.usuarioCentroBodega.home.title">Bodegas</span>
+          </a>
+        }
       </div>
     </form>
   </div>

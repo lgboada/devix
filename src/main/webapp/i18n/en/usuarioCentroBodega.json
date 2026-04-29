@@ -1,0 +1,25 @@
+{
+  "devixApp": {
+    "usuarioCentroBodega": {
+      "home": {
+        "title": "User warehouses",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Assign warehouse",
+        "createOrEditLabel": "Assign warehouse to user",
+        "notFound": "No warehouses assigned to this user for this center"
+      },
+      "delete": {
+        "question": "Are you sure you want to remove warehouse {{ bodega }} (id {{ id }}) assignment?"
+      },
+      "action": {
+        "backToUsuarioCentro": "Back to user center"
+      },
+      "bodega": "Warehouse",
+      "bodegaCodigo": "Code",
+      "bodegaNombre": "Warehouse",
+      "principal": "Principal",
+      "centro": "Center",
+      "usuario": "User"
+    }
+  }
+}

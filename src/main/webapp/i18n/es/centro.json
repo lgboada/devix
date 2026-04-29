@@ -17,6 +17,7 @@
       "detail": {
         "title": "Centro"
       },
+      "manageBodegas": "Bodegas",
       "id": "ID",
       "noCia": "No Cia",
       "descripcion": "Descripcion",

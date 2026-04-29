@@ -6,7 +6,11 @@ import { Observable, ReplaySubject, of } from 'rxjs';
 import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 import { ActiveCompany } from 'app/core/auth/active-company.model';
+import { ActiveCentro } from 'app/core/auth/active-centro.model';
+import { ActiveBodega } from 'app/core/auth/active-bodega.model';
 import { ActiveCompanyService } from 'app/core/auth/active-company.service';
+import { ActiveCentroService } from 'app/core/auth/active-centro.service';
+import { ActiveBodegaService } from 'app/core/auth/active-bodega.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { Account } from 'app/core/auth/account.model';
 import { ApplicationConfigService } from '../config/application-config.service';
@@ -21,6 +25,8 @@ export class AccountService {
   private readonly http = inject(HttpClient);
   private readonly stateStorageService = inject(StateStorageService);
   private readonly activeCompanyService = inject(ActiveCompanyService);
+  private readonly activeCentroService = inject(ActiveCentroService);
+  private readonly activeBodegaService = inject(ActiveBodegaService);
   private readonly router = inject(Router);
   private readonly applicationConfigService = inject(ApplicationConfigService);
 
@@ -30,6 +36,8 @@ export class AccountService {
     if (!identity) {
       this.accountCache$ = null;
       this.activeCompanyService.clear();
+      this.activeCentroService.clear();
+      this.activeBodegaService.clear();
     }
   }
 
@@ -54,25 +62,61 @@ export class AccountService {
         switchMap((account: Account) =>
           this.fetchAccountCompanies().pipe(
             tap(companies => this.activeCompanyService.initializeCompanies(companies)),
+            switchMap(() => {
+              const noCia = this.activeCompanyService.trackActiveCompany()()?.noCia;
+              return noCia != null ? this.fetchAccountCentros(noCia) : of([]);
+            }),
+            tap(centros => this.activeCentroService.initializeCentros(centros)),
+            switchMap(() => {
+              const centroId = this.activeCentroService.trackActiveCentro()()?.centroId;
+              return centroId != null ? this.fetchAccountBodegas(centroId) : of([]);
+            }),
+            tap(bodegas => this.activeBodegaService.initializeBodegas(bodegas)),
             map(() => account),
           ),
         ),
         tap((account: Account) => {
           this.authenticate(account);
-
-          // After retrieve the account info, the language will be changed to
-          // the user's preferred language configured in the account setting
-          // unless user have chosen another language in the current session
           if (!this.stateStorageService.getLocale()) {
             this.translateService.use(account.langKey);
           }
-
           this.navigateToStoredUrl();
         }),
         shareReplay(),
       );
     }
     return this.accountCache$.pipe(catchError(() => of(null)));
+  }
+
+  /** Cambia la compañía activa y recarga centros + bodegas en cascada. */
+  selectCompanyAndReload(noCia: number): Observable<void> {
+    this.activeCompanyService.selectCompany(noCia);
+    this.activeCentroService.clear();
+    this.activeBodegaService.clear();
+    return this.fetchAccountCentros(noCia).pipe(
+      tap(centros => this.activeCentroService.initializeCentros(centros)),
+      switchMap(() => {
+        const centroId = this.activeCentroService.trackActiveCentro()()?.centroId;
+        return centroId != null ? this.fetchAccountBodegas(centroId) : of([]);
+      }),
+      tap(bodegas => this.activeBodegaService.initializeBodegas(bodegas)),
+      map(() => undefined),
+    );
+  }
+
+  /** Cambia el centro activo y recarga bodegas. */
+  selectCentroAndReload(centroId: number): Observable<void> {
+    this.activeCentroService.selectCentro(centroId);
+    this.activeBodegaService.clear();
+    return this.fetchAccountBodegas(centroId).pipe(
+      tap(bodegas => this.activeBodegaService.initializeBodegas(bodegas)),
+      map(() => undefined),
+    );
+  }
+
+  /** Cambia la bodega activa (sin recarga de dependientes). */
+  selectBodega(bodegaId: number): void {
+    this.activeBodegaService.selectBodega(bodegaId);
   }
 
   isAuthenticated(): boolean {
@@ -93,9 +137,19 @@ export class AccountService {
       .pipe(catchError(() => of([])));
   }
 
+  private fetchAccountCentros(noCia: number): Observable<ActiveCentro[]> {
+    return this.http
+      .get<ActiveCentro[]>(this.applicationConfigService.getEndpointFor(`api/account/centros?noCia=${noCia}`))
+      .pipe(catchError(() => of([])));
+  }
+
+  private fetchAccountBodegas(centroId: number): Observable<ActiveBodega[]> {
+    return this.http
+      .get<ActiveBodega[]>(this.applicationConfigService.getEndpointFor(`api/account/bodegas?centroId=${centroId}`))
+      .pipe(catchError(() => of([])));
+  }
+
   private navigateToStoredUrl(): void {
-    // previousState can be set in the authExpiredInterceptor and in the userRouteAccessService
-    // if login is successful, go to stored previousState and clear previousState
     const previousUrl = this.stateStorageService.getUrl();
     if (previousUrl) {
       this.stateStorageService.clearUrl();

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ import { UsuarioCentroFormGroup, UsuarioCentroFormService } from './usuario-cent
 @Component({
   selector: 'jhi-usuario-centro-update',
   templateUrl: './usuario-centro-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterModule],
 })
 export class UsuarioCentroUpdateComponent implements OnInit {
   isSaving = false;
@@ -149,7 +149,7 @@ export class UsuarioCentroUpdateComponent implements OnInit {
 
         this.centrosSharedCollection = merged;
 
-        if (currentCentro && (!mismoNoCia(currentCentro) || !merged.some(c => c.id === currentCentro.id))) {
+        if (currentCentro && !merged.some(c => c.id === currentCentro.id)) {
           this.editForm.controls.centro.setValue(null);
         }
       });

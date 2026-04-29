@@ -1,0 +1,52 @@
+<div>
+  <div class="col-8 m-auto">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-ucb-heading" data-cy="UCBCreateUpdateHeading" jhiTranslate="devixApp.usuarioCentroBodega.home.createOrEditLabel">
+        Asignar bodega
+      </h2>
+
+      @if (usuarioCentro) {
+        <p class="text-muted">
+          <span jhiTranslate="devixApp.usuarioCentroBodega.usuario">Usuario</span>: {{ usuarioCentro.user?.login }} &mdash;
+          <span jhiTranslate="devixApp.usuarioCentroBodega.centro">Centro</span>: {{ usuarioCentro.centro?.descripcion }}
+        </p>
+      }
+
+      <jhi-alert-error />
+
+      <div class="mb-3">
+        <label class="form-label" for="field_bodega" jhiTranslate="devixApp.usuarioCentroBodega.bodega">Bodega</label>
+        <select class="form-control" id="field_bodega" name="bodega" formControlName="bodega" [compareWith]="compareBodega">
+          <option [ngValue]="null"></option>
+          @for (b of bodegasDisponibles; track b.id) {
+            <option [ngValue]="b">{{ b.codigo }} — {{ b.nombre }}</option>
+          }
+        </select>
+        @if (editForm.get('bodega')!.invalid && (editForm.get('bodega')!.dirty || editForm.get('bodega')!.touched)) {
+          <small class="form-text text-danger" jhiTranslate="entity.validation.required">Requerido</small>
+        }
+      </div>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" name="principal" id="field_principal" formControlName="principal" />
+        <label class="form-check-label" for="field_principal" jhiTranslate="devixApp.usuarioCentroBodega.principal">Principal</label>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

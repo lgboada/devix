@@ -37,6 +37,11 @@ const usuarioCentroRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   },
+  {
+    path: ':id/bodegas',
+    loadChildren: () => import('../usuario-centro-bodega/usuario-centro-bodega.routes'),
+    canActivate: [UserRouteAccessService],
+  },
 ];
 
 export default usuarioCentroRoute;

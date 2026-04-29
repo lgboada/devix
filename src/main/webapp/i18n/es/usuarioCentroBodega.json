@@ -1,0 +1,25 @@
+{
+  "devixApp": {
+    "usuarioCentroBodega": {
+      "home": {
+        "title": "Bodegas del usuario",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Asignar bodega",
+        "createOrEditLabel": "Asignar bodega al usuario",
+        "notFound": "No hay bodegas asignadas a este usuario para este centro"
+      },
+      "delete": {
+        "question": "¿Seguro que desea eliminar la asignación de la bodega {{ bodega }} (id {{ id }})?"
+      },
+      "action": {
+        "backToUsuarioCentro": "Volver al usuario centro"
+      },
+      "bodega": "Bodega",
+      "bodegaCodigo": "Código",
+      "bodegaNombre": "Bodega",
+      "principal": "Principal",
+      "centro": "Centro",
+      "usuario": "Usuario"
+    }
+  }
+}
