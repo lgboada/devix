@@ -1,0 +1,398 @@
+<div class="d-flex justify-content-center">
+  <div class="col-md-10">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-paciente-heading" data-cy="PacienteCreateUpdateHeading" jhiTranslate="devixApp.paciente.home.createOrEditLabel">
+        Crear o editar Paciente
+      </h2>
+
+      <jhi-alert-error />
+
+      @if (editForm.get('id')!.value !== null) {
+        <div class="mb-3 row">
+          <label class="col-sm-2 col-form-label" for="field_id" jhiTranslate="global.field.id">ID</label>
+          <div class="col-sm-10"><input type="number" class="form-control" id="field_id" formControlName="id" readonly /></div>
+        </div>
+      }
+
+      <!-- ── IDENTIFICACIÓN ───────────────────────────────────── -->
+      <h5 class="mt-3 mb-2 text-muted border-bottom pb-1">Identificación</h5>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_tipoDni" jhiTranslate="devixApp.paciente.tipoDni">Tipo DNI</label>
+          <select class="form-select" id="field_tipoDni" formControlName="tipoDni">
+            <option value="">-- Seleccione --</option>
+            @for (op of tipoDniOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_dni" jhiTranslate="devixApp.paciente.dni">DNI</label>
+          <input
+            type="text"
+            class="form-control"
+            id="field_dni"
+            formControlName="dni"
+            maxlength="50"
+            [class.is-invalid]="editForm.get('dni')!.invalid && editForm.get('dni')!.touched"
+          />
+          @if (editForm.get('dni')!.invalid && editForm.get('dni')!.touched) {
+            <div class="invalid-feedback"><span jhiTranslate="entity.validation.required">Requerido.</span></div>
+          }
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label" for="field_numeroHistoria" jhiTranslate="devixApp.paciente.numeroHistoria">N° Historia</label>
+          <input type="text" class="form-control" id="field_numeroHistoria" formControlName="numeroHistoria" maxlength="15" />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_tipoHistoria" jhiTranslate="devixApp.paciente.tipoHistoria">Tipo Historia</label>
+          <input type="text" class="form-control" id="field_tipoHistoria" formControlName="tipoHistoria" maxlength="30" />
+        </div>
+      </div>
+
+      <!-- ── DATOS PERSONALES ─────────────────────────────────── -->
+      <h5 class="mt-2 mb-2 text-muted border-bottom pb-1">Datos Personales</h5>
+      <div class="row">
+        <div class="col-md-2 mb-3">
+          <label class="form-label" for="field_titulo" jhiTranslate="devixApp.paciente.titulo">Título</label>
+          <input type="text" class="form-control" id="field_titulo" formControlName="titulo" maxlength="250" />
+        </div>
+        <div class="col-md-5 mb-3">
+          <label class="form-label" for="field_apellidos" jhiTranslate="devixApp.paciente.apellidos">Apellidos *</label>
+          <input
+            type="text"
+            class="form-control"
+            id="field_apellidos"
+            formControlName="apellidos"
+            maxlength="200"
+            [class.is-invalid]="editForm.get('apellidos')!.invalid && editForm.get('apellidos')!.touched"
+          />
+          @if (editForm.get('apellidos')!.invalid && editForm.get('apellidos')!.touched) {
+            <div class="invalid-feedback"><span jhiTranslate="entity.validation.required">Requerido.</span></div>
+          }
+        </div>
+        <div class="col-md-5 mb-3">
+          <label class="form-label" for="field_nombres" jhiTranslate="devixApp.paciente.nombres">Nombres *</label>
+          <input
+            type="text"
+            class="form-control"
+            id="field_nombres"
+            formControlName="nombres"
+            maxlength="200"
+            [class.is-invalid]="editForm.get('nombres')!.invalid && editForm.get('nombres')!.touched"
+          />
+          @if (editForm.get('nombres')!.invalid && editForm.get('nombres')!.touched) {
+            <div class="invalid-feedback"><span jhiTranslate="entity.validation.required">Requerido.</span></div>
+          }
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_fechaNacimiento" jhiTranslate="devixApp.paciente.fechaNacimiento">F. Nacimiento</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="field_fechaNacimiento"
+              formControlName="fechaNacimiento"
+              ngbDatepicker
+              #fechaNacimientoDp="ngbDatepicker"
+              placeholder="dd/mm/aaaa"
+            />
+            <button type="button" class="btn btn-outline-secondary" (click)="fechaNacimientoDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_sexo" jhiTranslate="devixApp.paciente.sexo">Sexo</label>
+          <select class="form-select" id="field_sexo" formControlName="sexo">
+            <option value="">-- Seleccione --</option>
+            @for (op of sexoOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_estadoCivil" jhiTranslate="devixApp.paciente.estadoCivil">Estado Civil</label>
+          <select class="form-select" id="field_estadoCivil" formControlName="estadoCivil">
+            <option value="">-- Seleccione --</option>
+            @for (op of estadoCivilOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_grupoSanguineo" jhiTranslate="devixApp.paciente.grupoSanguineo">Grupo Sanguíneo</label>
+          <select class="form-select" id="field_grupoSanguineo" formControlName="grupoSanguineo">
+            <option value="">-- Seleccione --</option>
+            @for (op of grupoSanguineoOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_orientacionGenero" jhiTranslate="devixApp.paciente.orientacionGenero"
+            >Orientación Género</label
+          >
+          <select class="form-select" id="field_orientacionGenero" formControlName="orientacionGenero">
+            <option value="">-- Seleccione --</option>
+            @for (op of orientacionGeneroOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_identidadSexual" jhiTranslate="devixApp.paciente.identidadSexual">Identidad Sexual</label>
+          <select class="form-select" id="field_identidadSexual" formControlName="identidadSexual">
+            <option value="">-- Seleccione --</option>
+            @for (op of identidadSexualOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_lateralidad" jhiTranslate="devixApp.paciente.lateralidad">Lateralidad</label>
+          <select class="form-select" id="field_lateralidad" formControlName="lateralidad">
+            <option value="">-- Seleccione --</option>
+            @for (op of lateralidadOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_categoriaPaciente" jhiTranslate="devixApp.paciente.categoriaPaciente">Categoría</label>
+          <select
+            class="form-select"
+            id="field_categoriaPaciente"
+            formControlName="categoriaPaciente"
+            [compareWith]="compareCategoriaPaciente"
+          >
+            <option [ngValue]="null">-- Ninguna --</option>
+            @for (cat of categoriasPacienteSharedCollection; track cat.id) {
+              <option [ngValue]="cat">{{ cat.nombre }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_provincia">Provincia</label>
+          <select
+            class="form-select"
+            id="field_provincia"
+            [(ngModel)]="selectedProvinciaId"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onProvinciaChange($event)"
+          >
+            <option [ngValue]="null">-- Seleccione --</option>
+            @for (prov of provinciasSharedCollection; track prov.id) {
+              <option [ngValue]="prov.id">{{ prov.descripcion }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_ciudad" jhiTranslate="devixApp.paciente.ciudad">Ciudad</label>
+          <select
+            class="form-select"
+            id="field_ciudad"
+            formControlName="ciudad"
+            [compareWith]="compareCiudad"
+            [attr.disabled]="selectedProvinciaId === null ? true : null"
+          >
+            <option [ngValue]="null">-- Seleccione --</option>
+            @for (c of filteredCiudadsCollection; track c.id) {
+              <option [ngValue]="c">{{ c.descripcion }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- ── FOTOGRAFÍA ────────────────────────────────────────── -->
+      <h5 class="mt-2 mb-2 text-muted border-bottom pb-1">Fotografía</h5>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="field_foto_file">Foto</label>
+          <input type="file" class="form-control" id="field_foto_file" accept="image/*" (change)="onFileSelected($event)" />
+          @if (isUploading) {
+            <small class="form-text text-info">Subiendo imagen...</small>
+          }
+          @if (uploadError) {
+            <small class="form-text text-danger">{{ uploadError }}</small>
+          }
+          @if (editForm.get('foto')?.value) {
+            <div class="mt-2">
+              <small class="form-text text-muted">Archivo: {{ editForm.get('foto')?.value }}</small>
+              @if (getCurrentImageUrl(); as imageUrl) {
+                <div class="mt-2">
+                  <img
+                    [src]="imageUrl"
+                    alt="Foto paciente"
+                    style="max-width: 180px; max-height: 180px; border: 1px solid #ddd; padding: 2px; border-radius: 4px"
+                  />
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- ── DISCAPACIDAD ─────────────────────────────────────── -->
+      <h5 class="mt-2 mb-2 text-muted border-bottom pb-1">Discapacidad</h5>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_tipoDiscapacidad" jhiTranslate="devixApp.paciente.tipoDiscapacidad">Tipo Discapacidad</label>
+          <select class="form-select" id="field_tipoDiscapacidad" formControlName="tipoDiscapacidad">
+            <option value="">-- Seleccione --</option>
+            @for (op of tipoDiscapacidadOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_porcentajeDiscapacidad" jhiTranslate="devixApp.paciente.porcentajeDiscapacidad"
+            >% Discapacidad</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="field_porcentajeDiscapacidad"
+            formControlName="porcentajeDiscapacidad"
+            maxlength="45"
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_prioritario" jhiTranslate="devixApp.paciente.prioritario">Prioritario</label>
+          <select class="form-select" id="field_prioritario" formControlName="prioritario">
+            <option value="">-- Seleccione --</option>
+            @for (op of prioritarioOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- ── DATOS SOCIO-LABORALES ───────────────────────────── -->
+      <h5 class="mt-2 mb-2 text-muted border-bottom pb-1">Datos Socio-Laborales</h5>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_nivelEstudio" jhiTranslate="devixApp.paciente.nivelEstudio">Nivel Estudio</label>
+          <input type="text" class="form-control" id="field_nivelEstudio" formControlName="nivelEstudio" maxlength="250" />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_ocupacion" jhiTranslate="devixApp.paciente.ocupacion">Ocupación</label>
+          <input type="text" class="form-control" id="field_ocupacion" formControlName="ocupacion" maxlength="120" />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_religion" jhiTranslate="devixApp.paciente.religion">Religión</label>
+          <select class="form-select" id="field_religion" formControlName="religion">
+            <option value="">-- Seleccione --</option>
+            @for (op of religionOptions; track op.code) {
+              <option [value]="op.code">{{ op.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_agencia" jhiTranslate="devixApp.paciente.agencia">Agencia</label>
+          <input type="text" class="form-control" id="field_agencia" formControlName="agencia" maxlength="45" />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_area" jhiTranslate="devixApp.paciente.area">Área</label>
+          <input type="text" class="form-control" id="field_area" formControlName="area" maxlength="45" />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="field_ciiu" jhiTranslate="devixApp.paciente.ciiu">CIIU</label>
+          <input type="text" class="form-control" id="field_ciiu" formControlName="ciiu" maxlength="45" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <label class="form-label" for="field_actividades" jhiTranslate="devixApp.paciente.actividades">Actividades</label>
+          <input type="text" class="form-control" id="field_actividades" formControlName="actividades" maxlength="255" />
+        </div>
+      </div>
+
+      <!-- ── CONTROL ADMINISTRATIVO ──────────────────────────── -->
+      <h5 class="mt-2 mb-2 text-muted border-bottom pb-1">Control</h5>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_fechaIngreso" jhiTranslate="devixApp.paciente.fechaIngreso">F. Ingreso</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="field_fechaIngreso"
+              formControlName="fechaIngreso"
+              ngbDatepicker
+              #fechaIngresoDp="ngbDatepicker"
+              placeholder="dd/mm/aaaa"
+            />
+            <button type="button" class="btn btn-outline-secondary" (click)="fechaIngresoDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_fechaEgreso" jhiTranslate="devixApp.paciente.fechaEgreso">F. Egreso</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="field_fechaEgreso"
+              formControlName="fechaEgreso"
+              ngbDatepicker
+              #fechaEgresoDp="ngbDatepicker"
+              placeholder="dd/mm/aaaa"
+            />
+            <button type="button" class="btn btn-outline-secondary" (click)="fechaEgresoDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_motivoSalida" jhiTranslate="devixApp.paciente.motivoSalida">Motivo Salida</label>
+          <input type="text" class="form-control" id="field_motivoSalida" formControlName="motivoSalida" maxlength="30" />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label" for="field_estado" jhiTranslate="devixApp.paciente.estado">Estado</label>
+          <input type="text" class="form-control" id="field_estado" formControlName="estado" maxlength="3" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <label class="form-label" for="field_comentario" jhiTranslate="devixApp.paciente.comentario">Comentario</label>
+          <textarea class="form-control" id="field_comentario" formControlName="comentario" rows="3" maxlength="255"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 mb-3 d-flex align-items-center">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="field_activo" formControlName="activo" />
+            <label class="form-check-label" for="field_activo" jhiTranslate="devixApp.paciente.activo">Activo</label>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div>
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary ms-1"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

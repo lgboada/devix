@@ -1,0 +1,58 @@
+{
+  "devixApp": {
+    "paciente": {
+      "home": {
+        "title": "Patients",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "New Patient",
+        "createOrEditLabel": "Create or edit Patient",
+        "notFound": "No patients found"
+      },
+      "created": "A new Patient has been created with identifier {{ param }}",
+      "updated": "A Patient has been updated with identifier {{ param }}",
+      "deleted": "A Patient has been deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Patient {{ id }}?"
+      },
+      "detail": {
+        "title": "Patient"
+      },
+      "id": "ID",
+      "noCia": "Company No",
+      "dni": "ID Number",
+      "tipoDni": "ID Type",
+      "nombres": "First Names",
+      "apellidos": "Last Names",
+      "titulo": "Title",
+      "fechaNacimiento": "Date of Birth",
+      "sexo": "Sex",
+      "orientacionGenero": "Gender Orientation",
+      "identidadSexual": "Sexual Identity",
+      "grupoSanguineo": "Blood Type",
+      "estadoCivil": "Marital Status",
+      "nivelEstudio": "Education Level",
+      "ocupacion": "Occupation",
+      "religion": "Religion",
+      "tipoDiscapacidad": "Disability Type",
+      "porcentajeDiscapacidad": "Disability %",
+      "lateralidad": "Laterality",
+      "foto": "Photo",
+      "numeroHistoria": "Record Number",
+      "tipoHistoria": "Record Type",
+      "prioritario": "Priority",
+      "comentario": "Comment",
+      "actividades": "Activities",
+      "agencia": "Agency",
+      "area": "Area",
+      "ciiu": "CIIU",
+      "fechaIngreso": "Admission Date",
+      "fechaEgreso": "Discharge Date",
+      "motivoSalida": "Discharge Reason",
+      "activo": "Active",
+      "estado": "Status",
+      "fechaCreacion": "Created Date",
+      "ciudad": "City",
+      "categoriaPaciente": "Category"
+    }
+  }
+}

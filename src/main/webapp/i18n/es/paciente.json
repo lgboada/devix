@@ -1,0 +1,58 @@
+{
+  "devixApp": {
+    "paciente": {
+      "home": {
+        "title": "Pacientes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Nuevo Paciente",
+        "createOrEditLabel": "Crear o editar Paciente",
+        "notFound": "Ningún paciente encontrado"
+      },
+      "created": "Un nuevo Paciente ha sido creado con el identificador {{ param }}",
+      "updated": "Un Paciente ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Paciente ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Paciente {{ id }}?"
+      },
+      "detail": {
+        "title": "Paciente"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "dni": "DNI",
+      "tipoDni": "Tipo DNI",
+      "nombres": "Nombres",
+      "apellidos": "Apellidos",
+      "titulo": "Título",
+      "fechaNacimiento": "F. Nacimiento",
+      "sexo": "Sexo",
+      "orientacionGenero": "Orientación Género",
+      "identidadSexual": "Identidad Sexual",
+      "grupoSanguineo": "Grupo Sanguíneo",
+      "estadoCivil": "Estado Civil",
+      "nivelEstudio": "Nivel Estudio",
+      "ocupacion": "Ocupación",
+      "religion": "Religión",
+      "tipoDiscapacidad": "Tipo Discapacidad",
+      "porcentajeDiscapacidad": "% Discapacidad",
+      "lateralidad": "Lateralidad",
+      "foto": "Foto",
+      "numeroHistoria": "N° Historia",
+      "tipoHistoria": "Tipo Historia",
+      "prioritario": "Prioritario",
+      "comentario": "Comentario",
+      "actividades": "Actividades",
+      "agencia": "Agencia",
+      "area": "Área",
+      "ciiu": "CIIU",
+      "fechaIngreso": "F. Ingreso",
+      "fechaEgreso": "F. Egreso",
+      "motivoSalida": "Motivo Salida",
+      "activo": "Activo",
+      "estado": "Estado",
+      "fechaCreacion": "F. Creación",
+      "ciudad": "Ciudad",
+      "categoriaPaciente": "Categoría"
+    }
+  }
+}

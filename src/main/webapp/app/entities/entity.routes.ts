@@ -136,6 +136,10 @@ const routes: Routes = [
     data: { pageTitle: 'Tipos de Documento' },
     loadChildren: () => import('./tipo-documento/tipo-documento.routes'),
   },
+  {
+    path: 'historia-clinica',
+    loadChildren: () => import('./historia-clinica/historia-clinica.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

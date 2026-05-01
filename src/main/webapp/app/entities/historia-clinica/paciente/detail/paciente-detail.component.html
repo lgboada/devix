@@ -1,0 +1,110 @@
+<div class="d-flex justify-content-center">
+  <div class="col-md-10">
+    @if (paciente(); as p) {
+      <div>
+        <h2 data-cy="pacienteDetailsHeading"><span jhiTranslate="devixApp.paciente.detail.title">Paciente</span></h2>
+        <hr />
+        <jhi-alert-error />
+        <jhi-alert />
+
+        <ul class="nav nav-tabs mb-3" id="pacienteTabs" role="tablist">
+          <li class="nav-item"><a class="nav-link active" id="tab-datos" data-bs-toggle="tab" href="#datos">Datos Personales</a></li>
+          <li class="nav-item"><a class="nav-link" id="tab-clinica" data-bs-toggle="tab" href="#clinica">Datos Clínicos</a></li>
+          <li class="nav-item"><a class="nav-link" id="tab-laboral" data-bs-toggle="tab" href="#laboral">Datos Laborales</a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="datos">
+            <dl class="row jh-entity-details">
+              <dt><span jhiTranslate="global.field.id">ID</span></dt>
+              <dd>{{ p.id }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.numeroHistoria">N° Historia</span></dt>
+              <dd>{{ p.numeroHistoria }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.dni">DNI</span></dt>
+              <dd>{{ p.tipoDni }} - {{ p.dni }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.apellidos">Apellidos</span></dt>
+              <dd>{{ p.apellidos }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.nombres">Nombres</span></dt>
+              <dd>{{ p.nombres }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.titulo">Título</span></dt>
+              <dd>{{ p.titulo }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.fechaNacimiento">F. Nacimiento</span></dt>
+              <dd>{{ p.fechaNacimiento | formatMediumDate }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.sexo">Sexo</span></dt>
+              <dd>{{ p.sexo }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.orientacionGenero">Orientación Género</span></dt>
+              <dd>{{ p.orientacionGenero }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.identidadSexual">Identidad Sexual</span></dt>
+              <dd>{{ p.identidadSexual }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.estadoCivil">Estado Civil</span></dt>
+              <dd>{{ p.estadoCivil }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.ciudad">Ciudad</span></dt>
+              <dd>
+                @if (p.ciudad) {
+                  <a [routerLink]="['/ciudad', p.ciudad.id, 'view']">{{ p.ciudad.id }}</a>
+                }
+              </dd>
+              <dt><span jhiTranslate="devixApp.paciente.categoriaPaciente">Categoría</span></dt>
+              <dd>{{ p.categoriaPaciente?.nombre }}</dd>
+            </dl>
+          </div>
+
+          <div class="tab-pane fade" id="clinica">
+            <dl class="row jh-entity-details">
+              <dt><span jhiTranslate="devixApp.paciente.grupoSanguineo">Grupo Sanguíneo</span></dt>
+              <dd>{{ p.grupoSanguineo }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.tipoDiscapacidad">Tipo Discapacidad</span></dt>
+              <dd>{{ p.tipoDiscapacidad }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.porcentajeDiscapacidad">% Discapacidad</span></dt>
+              <dd>{{ p.porcentajeDiscapacidad }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.lateralidad">Lateralidad</span></dt>
+              <dd>{{ p.lateralidad }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.tipoHistoria">Tipo Historia</span></dt>
+              <dd>{{ p.tipoHistoria }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.prioritario">Prioritario</span></dt>
+              <dd>{{ p.prioritario }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.comentario">Comentario</span></dt>
+              <dd>{{ p.comentario }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.fechaIngreso">F. Ingreso</span></dt>
+              <dd>{{ p.fechaIngreso | formatMediumDate }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.fechaEgreso">F. Egreso</span></dt>
+              <dd>{{ p.fechaEgreso | formatMediumDate }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.motivoSalida">Motivo Salida</span></dt>
+              <dd>{{ p.motivoSalida }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.activo">Activo</span></dt>
+              <dd>{{ p.activo }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.estado">Estado</span></dt>
+              <dd>{{ p.estado }}</dd>
+            </dl>
+          </div>
+
+          <div class="tab-pane fade" id="laboral">
+            <dl class="row jh-entity-details">
+              <dt><span jhiTranslate="devixApp.paciente.nivelEstudio">Nivel Estudio</span></dt>
+              <dd>{{ p.nivelEstudio }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.ocupacion">Ocupación</span></dt>
+              <dd>{{ p.ocupacion }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.religion">Religión</span></dt>
+              <dd>{{ p.religion }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.actividades">Actividades</span></dt>
+              <dd>{{ p.actividades }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.agencia">Agencia</span></dt>
+              <dd>{{ p.agencia }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.area">Área</span></dt>
+              <dd>{{ p.area }}</dd>
+              <dt><span jhiTranslate="devixApp.paciente.ciiu">CIIU</span></dt>
+              <dd>{{ p.ciiu }}</dd>
+            </dl>
+          </div>
+        </div>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+        <button type="button" [routerLink]="['/historia-clinica/paciente', p.id, 'edit']" class="btn btn-primary ms-1">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

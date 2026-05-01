@@ -1,0 +1,159 @@
+<div>
+  <h2 id="page-heading" data-cy="PacienteHeading">
+    <span jhiTranslate="devixApp.paciente.home.title">Pacientes</span>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="devixApp.paciente.home.refreshListLabel">Refrescar lista</span>
+      </button>
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity"
+        [routerLink]="['/historia-clinica/paciente/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="devixApp.paciente.home.createLabel">Nuevo Paciente</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+  <jhi-alert />
+
+  <div class="row mb-3">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar por DNI, nombres o apellidos"
+          [(ngModel)]="searchText"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="btn btn-outline-primary" type="button" (click)="onSearch()">
+          <fa-icon icon="search"></fa-icon>
+          <span class="ms-1">Buscar</span>
+        </button>
+        <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()" [disabled]="!searchText">
+          <fa-icon icon="times"></fa-icon>
+          <span class="ms-1">Limpiar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  @if (pacientes().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="devixApp.paciente.home.notFound">Ningún paciente encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex"><span jhiTranslate="global.field.id">ID</span><fa-icon class="p-1" icon="sort"></fa-icon></div>
+            </th>
+            <th scope="col" jhiSortBy="numeroHistoria">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.paciente.numeroHistoria">N° Historia</span><fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dni">
+              <div class="d-flex"><span jhiTranslate="devixApp.paciente.dni">DNI</span><fa-icon class="p-1" icon="sort"></fa-icon></div>
+            </th>
+            <th scope="col" jhiSortBy="apellidos">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.paciente.apellidos">Apellidos</span><fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nombres">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.paciente.nombres">Nombres</span><fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fechaNacimiento">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.paciente.fechaNacimiento">F. Nacimiento</span><fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="sexo">
+              <div class="d-flex"><span jhiTranslate="devixApp.paciente.sexo">Sexo</span><fa-icon class="p-1" icon="sort"></fa-icon></div>
+            </th>
+            <th scope="col" jhiSortBy="grupoSanguineo">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.paciente.grupoSanguineo">Grupo</span><fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="activo">
+              <div class="d-flex">
+                <span jhiTranslate="devixApp.paciente.activo">Activo</span><fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (paciente of pacientes(); track trackId(paciente)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/historia-clinica/paciente', paciente.id, 'view']">{{ paciente.id }}</a>
+              </td>
+              <td>{{ paciente.numeroHistoria }}</td>
+              <td>{{ paciente.dni }}</td>
+              <td>{{ paciente.apellidos }}</td>
+              <td>{{ paciente.nombres }}</td>
+              <td>{{ paciente.fechaNacimiento | formatMediumDate }}</td>
+              <td>{{ paciente.sexo }}</td>
+              <td>{{ paciente.grupoSanguineo }}</td>
+              <td>{{ paciente.activo }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/historia-clinica/paciente', paciente.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+                  <a
+                    [routerLink]="['/historia-clinica/paciente', paciente.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+                  <button type="submit" (click)="delete(paciente)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (pacientes().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

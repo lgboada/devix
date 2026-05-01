@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-categoria-paciente-heading"
+        data-cy="CategoriaPacienteCreateUpdateHeading"
+        jhiTranslate="devixApp.categoriaPaciente.home.createOrEditLabel"
+      >
+        Crear o editar Categoría de Paciente
+      </h2>
+
+      <jhi-alert-error />
+
+      @if (editForm.get('id')!.value !== null) {
+        <div class="mb-3">
+          <label class="form-label" for="field_id" jhiTranslate="global.field.id">ID</label>
+          <input type="number" class="form-control" id="field_id" name="id" formControlName="id" readonly />
+        </div>
+      }
+
+      <div class="mb-3">
+        <label class="form-label" for="field_noCia" jhiTranslate="devixApp.categoriaPaciente.noCia">No Cia</label>
+        <input
+          type="number"
+          class="form-control"
+          id="field_noCia"
+          name="noCia"
+          formControlName="noCia"
+          [class.is-invalid]="editForm.get('noCia')!.invalid && (editForm.get('noCia')!.dirty || editForm.get('noCia')!.touched)"
+        />
+        @if (editForm.get('noCia')!.invalid && (editForm.get('noCia')!.dirty || editForm.get('noCia')!.touched)) {
+          <div class="invalid-feedback">
+            <div *ngIf="editForm.get('noCia')!.errors?.['required']" jhiTranslate="entity.validation.required">Campo requerido.</div>
+          </div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="field_nombre" jhiTranslate="devixApp.categoriaPaciente.nombre">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="field_nombre"
+          name="nombre"
+          formControlName="nombre"
+          maxlength="60"
+          [class.is-invalid]="editForm.get('nombre')!.invalid && (editForm.get('nombre')!.dirty || editForm.get('nombre')!.touched)"
+        />
+        @if (editForm.get('nombre')!.invalid && (editForm.get('nombre')!.dirty || editForm.get('nombre')!.touched)) {
+          <div class="invalid-feedback">
+            <div *ngIf="editForm.get('nombre')!.errors?.['required']" jhiTranslate="entity.validation.required">Campo requerido.</div>
+            <div
+              *ngIf="editForm.get('nombre')!.errors?.['maxlength']"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 60 }"
+            >
+              Máximo 60 caracteres.
+            </div>
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary ms-1"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

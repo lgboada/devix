@@ -13,7 +13,7 @@ import {
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
 import './config/dayjs';
 import { TranslationModule } from 'app/shared/language/translation.module';
@@ -21,7 +21,7 @@ import { environment } from 'environments/environment';
 import { httpInterceptorProviders } from './core/interceptor';
 import routes from './app.routes';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
+import { NgbDateDayjsAdapter, NgbDateDdMmYyyyFormatter } from './config/datepicker-adapter';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 
 const routerFeatures: RouterFeatures[] = [
@@ -55,6 +55,7 @@ export const appConfig: ApplicationConfig = {
     // Números en pantalla: coma como separador de miles y punto decimal (p. ej. 1,150.63). Coherente con XSD decimal del SRI en backend.
     { provide: LOCALE_ID, useValue: 'en-US' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
+    { provide: NgbDateParserFormatter, useClass: NgbDateDdMmYyyyFormatter },
     httpInterceptorProviders,
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
     // jhipster-needle-angular-add-module JHipster will add new module here

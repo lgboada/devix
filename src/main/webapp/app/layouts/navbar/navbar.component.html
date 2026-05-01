@@ -295,6 +295,46 @@
               <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
             </ul>
           </li>
+          <li
+            ngbDropdown
+            class="nav-item dropdown pointer"
+            display="dynamic"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="historia-clinica-menu">
+              <span>
+                <fa-icon icon="hospital"></fa-icon>
+                <span>Historia Clínica</span>
+              </span>
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="historia-clinica-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/historia-clinica/paciente"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+                  <span jhiTranslate="devixApp.paciente.home.title">Pacientes</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/historia-clinica/categoria-paciente"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span jhiTranslate="devixApp.categoriaPaciente.home.title">Categorías Paciente</span>
+                </a>
+              </li>
+            </ul>
+          </li>
         }
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"

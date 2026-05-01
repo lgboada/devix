@@ -1,0 +1,25 @@
+{
+  "devixApp": {
+    "categoriaPaciente": {
+      "home": {
+        "title": "Categorías de Paciente",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Nueva Categoría",
+        "createOrEditLabel": "Crear o editar Categoría de Paciente",
+        "notFound": "Ninguna categoría de paciente encontrada"
+      },
+      "created": "Una nueva Categoría de Paciente ha sido creada con el identificador {{ param }}",
+      "updated": "Una Categoría de Paciente ha sido actualizada con el identificador {{ param }}",
+      "deleted": "Una Categoría de Paciente ha sido eliminada con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Categoría de Paciente {{ id }}?"
+      },
+      "detail": {
+        "title": "Categoría de Paciente"
+      },
+      "id": "ID",
+      "noCia": "No Cia",
+      "nombre": "Nombre"
+    }
+  }
+}

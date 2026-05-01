@@ -79,5 +79,7 @@
     <include file="config/liquibase/changelog/20260415140000_ensure_factura_log_table.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260415160000_align_factura_logs_legacy.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260428110000_added_entity_UsuarioCentroBodega.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260429100000_added_entity_CategoriaPaciente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260429110000_added_entity_Paciente.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
